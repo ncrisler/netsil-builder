@@ -20,7 +20,7 @@
       "http_directory": "files",
       "iso_checksum": "{{user `checksum`}}",
       "iso_checksum_type": "md5",
-      "iso_url": "file:///opt/images/coreos_production_qemu_image.img",
+      "iso_url": "file:///{{user `image_path`}}/coreos_production_qemu_image.img",
       "disk_image": true,
       "shutdown_command": "sudo -S shutdown -P now",
       "ssh_port": 22,

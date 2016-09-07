@@ -14,7 +14,7 @@ fi
 export PACKER_LOG_PATH="/opt/packer.log"
 export PACKER_LOG="${PACKER_LOG:-0}"
 export ANSIBLE_SCP_IF_SSH=1
-export IMAGE_PATH="${IMAGE_NAME:-/opt/images}"
+export IMAGE_PATH="${IMAGE_PATH:-/opt/images}"
 export IMAGE_NAME="${IMAGE_NAME:-coreos-stable}"
 
 # Local environment variables
