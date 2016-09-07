@@ -1,0 +1,12 @@
+---
+agent_list:
+  - {{ansible_eth0.ipv4.address}}
+bootstrap_url: file:///home/core/genconf/serve
+cluster_name: netsil-cluster
+exhibitor_storage_backend: static
+ip_detect_filename: /genconf/ip-detect
+master_discovery: static
+master_list:
+  - {{ansible_eth0.ipv4.address}}
+ssh_port: 22
+ssh_user: core

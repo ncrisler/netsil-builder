@@ -1,0 +1,20 @@
+- hosts: all
+  gather_facts: False
+  become: True
+  become_user: root
+
+  vars:
+    ansible_user: core
+    ansible_python_interpreter: /opt/bin/python
+
+  roles:
+    - coreos-bootstrap
+
+- hosts: all
+  gather_facts: True
+  become: yes
+  become_user: root
+
+  roles:
+    - dcos-install-master
+    - dcos-install-slave

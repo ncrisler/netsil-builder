@@ -1,0 +1,20 @@
+---
+- name: Install DCOS slave services
+  command: bash genconf/serve/dcos_install.sh --disable-preflight slave
+
+- name: Find and output the location of dcos-mesos-slave.service
+  shell: "find /opt/mesosphere | grep dcos-mesos-slave.service"
+  register: dcos_mesos_slave
+
+- debug: msg="{{ dcos_mesos_slave.stdout }}"
+- name: Link dcos-mesos-slave into /etc/system/systemd
+  file: src={{ dcos_mesos_slave.stdout }} dest=/etc/systemd/system/dcos-mesos-slave.service state=link
+
+- name: Link dcos-mesos-slave into /etc/system/systemd/dcos.target.wants. This enables the service.
+  file: src={{ dcos_mesos_slave.stdout }} dest=/etc/systemd/system/dcos.target.wants/dcos-mesos-slave.service state=link
+
+- name: Create slave role
+  file: path=/etc/mesosphere/roles/slave state=file
+
+- name: Set slave resources
+  copy: src=mesos-resources dest=/var/lib/dcos/mesos-resources

@@ -1,0 +1,54 @@
+{
+  "variables": {
+    "channel": "stable",
+    "version": "current",
+    "checksum_type": "md5",
+    "checksum": "1a094aa25f912f6cbe5f92f7d1cd381e",
+    "ssh_private_key": "{{env `SSH_PRIVATE_KEY`}}",
+    "image_path": "{{env `IMAGE_PATH`}}",
+    "image_name": "{{env `IMAGE_NAME`}}"
+  },
+  "builders": [
+    {
+      "type": "qemu",
+      "output_directory": "{{user `image_path`}}/packer",
+      "name": "coreos-{{user `channel`}}",
+      "vm_name": "{{user `image_name`}}.qcow2",
+      "accelerator": "kvm",
+      "format": "qcow2",
+      "headless": true,
+      "http_directory": "files",
+      "iso_checksum": "{{user `checksum`}}",
+      "iso_checksum_type": "md5",
+      "iso_url": "file:///opt/images/coreos_production_qemu_image.img",
+      "disk_image": true,
+      "shutdown_command": "sudo -S shutdown -P now",
+      "ssh_port": 22,
+      "ssh_username": "core",
+      "ssh_private_key_file": "{{user `ssh_private_key`}}",
+      "ssh_wait_timeout": "1000000s",
+      "net_device": "virtio",
+      "qemuargs": [
+         ["-m", "2048M"],
+         ["-fsdev", "local,id=conf,security_model=none,readonly,path=/opt/builder/data"],
+         ["-device", "virtio-9p-pci,fsdev=conf,mount_tag=config-2"],
+         ["-device", "virtio-net,netdev=user.0"],
+         ["-netdev", "user,id=user.0,hostfwd=tcp::{{ .SSHHostPort }}-:22,hostname=coreos_production_qemu-1068-10-0"]
+       ],
+      "boot_wait": "10s"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "ansible/dcos-bootstrap.yml",
+      "user": "core"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "shell-local",
+      "inline": ["ansible-playbook ansible/convert-images.yml"]
+    }
+  ]
+}

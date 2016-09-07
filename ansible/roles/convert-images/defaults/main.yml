@@ -1,0 +1,5 @@
+image_name: "{{ lookup('env', 'IMAGE_PATH') }}/packer/{{ lookup('env', 'IMAGE_NAME')}}"
+qcow2: True
+vdi: True
+vhd: True
+vmdk: True

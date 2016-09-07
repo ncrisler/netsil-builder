@@ -1,0 +1,16 @@
+---
+# - name: Create QEMU qcow2 image
+#   command: qemu-img convert -f raw -O qcow2 "{{image_name}}".raw "{{image_name}}".qcow2
+#   when: qcow2 == True
+
+- name: Create VirtualBox vdi image
+  command: qemu-img convert -f qcow2 -O vdi "{{image_name}}".qcow2 "{{image_name}}".vdi
+  when: vdi == True
+
+- name: Create Microsoft vpc/vhd image
+  command: qemu-img convert -f qcow2 -O vpc "{{image_name}}".qcow2 "{{image_name}}".vhd
+  when: vhd == True
+
+- name: Create VMware vmdk image
+  command: qemu-img convert -f qcow2 -O vmdk "{{image_name}}".qcow2 "{{image_name}}".vmdk
+  when: vmdk == True
