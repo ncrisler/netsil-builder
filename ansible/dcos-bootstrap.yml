@@ -15,6 +15,11 @@
   become: yes
   become_user: root
 
+  vars:
+    ansible_user: core
+    ansible_python_interpreter: /opt/bin/python
+
   roles:
     - dcos-install-master
     - dcos-install-slave
+    - dcos-install-cleanup

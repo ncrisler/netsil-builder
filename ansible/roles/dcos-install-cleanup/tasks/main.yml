@@ -1,0 +1,15 @@
+---
+- name: Remove DCOS install tar file
+  file: path=/home/core/dcos-genconf.14509fe1e7899f4395-3a2b7e03c45cd615da.tar state=absent
+
+- name: Remove DCOS install download file
+  file: path=/home/core/dcos_generate_config.sh state=absent
+
+- name: Remove DCOS bootstrap file
+  file: path=/home/core/genconf/serve/bootstrap state=absent
+
+- name: Remove DCOS genconf Docker image
+  shell: docker rmi `docker images | grep dcos-genconf | awk '{print $3}'`
+
+- name: Zero empty space
+  shell: dd if=/dev/zero of=/tmpfile || rm -f /tmpfile

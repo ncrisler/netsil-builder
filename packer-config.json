@@ -22,6 +22,7 @@
       "iso_checksum_type": "md5",
       "iso_url": "file:///{{user `image_path`}}/coreos_production_qemu_image.img",
       "disk_image": true,
+      "disk_size": 10000,
       "shutdown_command": "sudo -S shutdown -P now",
       "ssh_port": 22,
       "ssh_username": "core",
