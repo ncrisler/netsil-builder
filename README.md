@@ -49,13 +49,15 @@ The Packer `packer-config.json` requires the MD5 checksum of the CoreOS QEMU ima
 
 ### Packer Build Types
 
-Both local VM images (vhd, vmdk, etc.) and an Amazon AMI will be built by default. To build only the local images:
+By default, only local images (qcow2, vhd, vmdk, etc.) using QEMU will be built. If the `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` environment variables are included in the Docker `run` command, then an AWS AMI will also be built.
 
-    docker run ... -e BUILD_TYPE=qemu
+Either QEMU **or** AWS images can be explicitly built.
+
+    docker run -e BUILD_TYPE=qemu ...
 
 To build only an AMI:
 
-    docker run ... -e BUILD_TYPE=amazon-ebs
+    docker run -e AWS_ACCESS_KEY=1234 -e AWS_SECRET_KEY=abcxyz -e BUILD_TYPE=amazon-ebs ...
 
 ## Usage
 
@@ -82,10 +84,10 @@ To build only an AMI:
 
 ## Docker Variables
 
-* **AWS_ACCESS_KEY** - AWS access key.
-* **AWS_SECRET_KEY** - AWS secret key.
+* **AWS_ACCESS_KEY** - AWS account access key.
+* **AWS_SECRET_KEY** - AWS account secret key.
 * **AWS_REGION** - AWS region for the build. Default: `us-west-2`
-* **BUILD_TYPE** - The Packer build type can be either `amazon-ebs` or `qemu`. Both types will be built if omitted.
+* **BUILD_TYPE** - The Packer build type can be either `amazon-ebs` or `qemu`.
 * **IMAGE_NAME** - The name of the images without any extension. Default: `coreso-stable`
 * **IMAGE_PATH** - The path inside the container where the images will be saved. This *should* map to a location on the host system. Default: `/opt/images`
 * **SSH_PRIVATE_KEY** - The SSH private key used to connect to the CoreOS VM instance by Packer and Ansible. This will be necessary to save as it provides SSH access to the image VM.
