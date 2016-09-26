@@ -10,12 +10,17 @@ if [ -z "$SSH_PUBLIC_KEY" ]; then
     exit 1
 fi
 
+if [ -n "$BUILD_TYPE" ]; then
+    BUILD_TYPE="-only=${BUILD_TYPE}"
+fi
+
 # Environment variables inherited by Packer and Ansible.
 export PACKER_LOG_PATH="/opt/packer.log"
 export PACKER_LOG="${PACKER_LOG:-0}"
 export ANSIBLE_SCP_IF_SSH=1
 export IMAGE_PATH="${IMAGE_PATH:-/opt/images}"
 export IMAGE_NAME="${IMAGE_NAME:-coreos-stable}"
+export AWS_REGION="${AWS_REGION:-us-west-2}"
 
 # Local environment variables
 DATESTAMP=$(date +"%Y%m%d-%H%M%S")
@@ -46,8 +51,10 @@ echo "$SSH_PUBLIC_KEY_TEXT" | write_user_data > \
      "data/openstack/latest/user_data"
 
 # Run the Packer build.
-/opt/builder/packer build packer-config.json
+/opt/builder/packer build $BUILD_TYPE packer-config.json
 
 # The image ouput directory must not exist on subsequent runs, so the directory
 # is renamed with a datestamp.
-mv ${IMAGE_PATH}/packer ${IMAGE_PATH}/${DATESTAMP}
+if [ -d "${IMAGE_PATH}/packer" ]; then
+    mv ${IMAGE_PATH}/packer ${IMAGE_PATH}/${DATESTAMP}
+fi
