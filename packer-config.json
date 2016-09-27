@@ -20,7 +20,7 @@
       "source_ami": "ami-26ca1d46",
       "instance_type": "m3.large",
       "ssh_username": "core",
-      "ami_name": "packer-example {{timestamp}}"
+      "ami_name": "{{user `image_name`}}-{{timestamp}}"
     },
     {
       "type": "qemu",
