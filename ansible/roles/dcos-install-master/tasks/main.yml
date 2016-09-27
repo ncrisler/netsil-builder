@@ -9,7 +9,7 @@
   template: src="config.yaml.j2" dest="genconf/config.yaml"
 
 - name: Retrieve dcos_generate_config
-  command: curl -O https://downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/dcos_generate_config.sh
+  command: curl -O https://downloads.dcos.io/dcos/stable/commit/e64024af95b62c632c90b9063ed06296fcf38ea5/dcos_generate_config.sh
   # Generates a CA certificate error
   # get_url: url=https://downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/dcos_generate_config.sh dest=dcos_generate_config.sh
 

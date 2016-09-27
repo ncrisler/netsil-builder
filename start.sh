@@ -17,11 +17,14 @@ export ANSIBLE_SCP_IF_SSH=1
 export IMAGE_PATH="${IMAGE_PATH:-/opt/images}"
 export IMAGE_NAME="${IMAGE_NAME:-coreos-stable}"
 export AWS_REGION="${AWS_REGION:-us-west-2}"
-export BUILD_TYPE="${BUILD_TYPE:-qemu}"
 
 # Include AWS AMI build if AWS credentials are specified.
-if [[ -n "$AWS_ACCESS_KEY" && -n "$AWS_SECRET_KEY" ]]; then
-    BUILD_TYPE="$BUILD_TYPE,amazon-ebs"
+if [ "$BUILD_TYPE" == "amazon-ebs" ]; then
+    BUILD_TYPE="amazon-ebs"
+elif [ "$BUILD_TYPE" == "qemu" ]; then
+    BUILD_TYPE="qemu"
+elif [[ -n "$AWS_ACCESS_KEY" && -n "$AWS_SECRET_KEY" ]]; then
+    BUILD_TYPE="qemu,amazon-ebs"
 fi
 
 # Local environment variables
