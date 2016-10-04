@@ -3,7 +3,7 @@
     "channel": "stable",
     "version": "current",
     "checksum_type": "md5",
-    "checksum": "1a094aa25f912f6cbe5f92f7d1cd381e",
+    "checksum": "fc57fe0bc3d899b141876894d7a5b1f0",
     "ssh_private_key": "{{env `SSH_PRIVATE_KEY`}}",
     "image_path": "{{env `IMAGE_PATH`}}",
     "image_name": "{{env `IMAGE_NAME`}}",
