@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 if [ -z "$SSH_PRIVATE_KEY" ]; then
     echo "SSH_PRIVATE_KEY is not set."
@@ -15,7 +16,7 @@ export PACKER_LOG_PATH="/opt/packer.log"
 export PACKER_LOG="${PACKER_LOG:-0}"
 export ANSIBLE_SCP_IF_SSH=1
 export IMAGE_PATH="${IMAGE_PATH:-/opt/images}"
-export IMAGE_NAME="${IMAGE_NAME:-coreos-stable}"
+export IMAGE_NAME="${IMAGE_NAME:-base-dcos}"
 export AWS_REGION="${AWS_REGION:-us-west-2}"
 
 # Include AWS AMI build if AWS credentials are specified.
@@ -61,5 +62,5 @@ echo "$SSH_PUBLIC_KEY_TEXT" | write_user_data > \
 # The image ouput directory must not exist on subsequent runs, so the directory
 # is renamed with a datestamp.
 if [ -d "${IMAGE_PATH}/packer" ]; then
-    mv ${IMAGE_PATH}/packer ${IMAGE_PATH}/${DATESTAMP}
+    mv ${IMAGE_PATH}/packer ${IMAGE_PATH}/${IMAGE_NAME}-${DATESTAMP}
 fi

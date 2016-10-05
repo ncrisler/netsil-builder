@@ -68,7 +68,7 @@ To build only an AMI:
           -e SSH_PUBLIC_KEY=/opt/secrets/id_rsa.pub \
           -e SSH_PRIVATE_KEY=/opt/secrets/id_rsa \
           -e IMAGE_PATH=/opt/images \
-          -e IMAGE_NAME=coreos-stable \
+          -e IMAGE_NAME=base-dcos \
           -e AWS_ACCESS_KEY="ACCESSKEY" \
           -e AWS_SECRET_KEY="SECRETKEY" \
           netsil-builder
