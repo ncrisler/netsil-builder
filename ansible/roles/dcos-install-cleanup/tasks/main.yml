@@ -1,6 +1,6 @@
 ---
 - name: Remove DCOS install tar file
-  file: path=/home/core/dcos-genconf.e64024af95b62c632c-5b4aa43610c57ee1d6.tar state=absent
+  file: path=/home/core/dcos-genconf.14509fe1e7899f4395-3a2b7e03c45cd615da.tar state=absent
 
 - name: Remove DCOS install download file
   file: path=/home/core/dcos_generate_config.sh state=absent
