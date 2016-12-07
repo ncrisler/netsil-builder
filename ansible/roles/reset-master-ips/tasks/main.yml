@@ -1,8 +1,0 @@
----
-- name: Set /opt/mesosphere/etc/master_list to 127.0.0.1
-  template: src=master_list.j2 dest=/opt/mesosphere/etc/master_list
-
-# TODO: When we have more than one master, we'll need to rewrite the "line"
-# TODO: Because right now mesos_master_ip_list is just one IP
-- name: Set exhibitor ensemble config to use localhost
-  lineinfile: dest=/opt/mesosphere/etc/exhibitor regexp='^EXHIBITOR_STATICENSEMBLE' line="EXHIBITOR_STATICENSEMBLE=1:{{ mesos_master_ip_list }}"

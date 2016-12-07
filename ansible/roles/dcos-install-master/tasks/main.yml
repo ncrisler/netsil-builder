@@ -3,7 +3,7 @@
   file: path=genconf state=directory
 
 - name: Copy over ip-detect script
-  copy: src=ip-detect dest=genconf/ip-detect mode=744
+  template: src=ip-detect.j2 dest=genconf/ip-detect mode=744
 
 - name: Generate dcos config
   template: src="config.yaml.j2" dest="genconf/config.yaml"

@@ -9,7 +9,10 @@
     "image_name": "{{env `IMAGE_NAME`}}",
     "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
     "aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
-    "aws_region": "{{env `AWS_REGION`}}"
+    "azure_client_secret": "{{env `AZURE_CLIENT_SECRET`}}",
+    "aws_region": "{{env `AWS_REGION`}}",
+    "ssh_user": "core",
+    "ssh_pass": null
   },
   "builders": [
     {
@@ -19,8 +22,36 @@
       "region": "{{user `aws_region`}}",
       "source_ami": "ami-dc6ba3bc",
       "instance_type": "m3.large",
-      "ssh_username": "core",
+      "ssh_username": "{{user `ssh_user`}}",
       "ami_name": "{{user `image_name`}}-{{timestamp}}"
+    },
+    {
+      "type": "googlecompute",
+      "account_file": "/opt/secrets/account.json",
+      "project_id": "netsil-test",
+      "source_image": "coreos-stable-1185-3-0-v20161101",
+      "ssh_username": "{{user `ssh_user`}}",
+      "zone": "us-west1-a"
+    },
+    {
+      "type": "azure-arm",
+      "tenant_id": "82e30a2a-4179-42c3-bee4-6c43439c25d5",
+      "subscription_id": "9362fd5d-17bb-419a-87f7-09d7892b6d09",
+      "client_id": "a2b388fc-cf6a-47dd-b5fe-2dbc8abc4abd",
+      "client_secret": "{{user `azure_client_secret`}}",
+      "resource_group_name": "netsil-builder",
+      "storage_account": "netsilimages",
+      "capture_container_name": "myimages",
+      "capture_name_prefix": "NETSIL",
+      "image_publisher": "CoreOS",
+      "image_offer": "CoreOS",
+      "image_sku": "Stable",
+      "location": "westus2",
+      "os_type": "Linux",
+      "ssh_username": "{{user `ssh_user`}}",
+      "ssh_password": "{{user `ssh_pass`}}",
+      "ssh_pty": true,
+      "vm_size": "Standard_A2"
     },
     {
       "type": "qemu",
@@ -37,7 +68,7 @@
       "disk_size": 10000,
       "shutdown_command": "sudo -S shutdown -P now",
       "ssh_port": 22,
-      "ssh_username": "core",
+      "ssh_username": "{{user `ssh_user`}}",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
       "ssh_wait_timeout": "1000000s",
       "net_device": "virtio",
@@ -55,7 +86,16 @@
     {
       "type": "ansible",
       "playbook_file": "ansible/dcos-bootstrap.yml",
+      "extra_arguments": [ "--extra-vars", "ansible_become_pass=Password1234" ],
       "user": "core"
+    },
+    {
+      "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo -S -E sh '{{ .Path }}'",
+      "inline":["/usr/share/oem/python/bin/python -u /usr/share/oem/bin/waagent -force -deprovision && export HISTSIZE=0 && sync"],
+      "inline_shebang": "/bin/sh -x",
+      "type": "shell",
+      "skip_clean": true,
+      "only": ["azure-arm"]
     }
   ],
   "post-processors": [
