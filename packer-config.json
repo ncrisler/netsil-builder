@@ -9,8 +9,8 @@
     "image_name": "{{env `IMAGE_NAME`}}",
     "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
     "aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
-    "azure_client_secret": "{{env `AZURE_CLIENT_SECRET`}}",
     "aws_region": "{{env `AWS_REGION`}}",
+    "azure_client_secret": "{{env `AZURE_CLIENT_SECRET`}}",
     "ssh_user": "core",
     "ssh_pass": null
   },
@@ -28,7 +28,7 @@
     {
       "type": "googlecompute",
       "account_file": "/opt/secrets/account.json",
-      "project_id": "netsil-test",
+      "project_id": "netsil-dev",
       "source_image": "coreos-stable-1185-3-0-v20161101",
       "ssh_username": "{{user `ssh_user`}}",
       "zone": "us-west1-a"
