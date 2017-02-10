@@ -10,7 +10,7 @@ RUN apt-get -qq update && \
     ansible ca-certificates curl qemu qemu-utils ssh-client unzip vim python-pip python-setuptools
 
 ## Start: TODO: We have these two lines because we run ansible locally for the templating tasks...we should do away with that and run it remotely
-RUN apt-get install -y sudo && \
+RUN apt-get update && apt-get install -y sudo && \
     pip install pystache && \
     mkdir -p /opt/bin && \
     ln -s /usr/bin/python /opt/bin/python

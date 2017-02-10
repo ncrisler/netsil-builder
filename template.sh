@@ -8,4 +8,4 @@ docker build -t ${URI_NAMESPACE}/netsil-builder ${DIR}
 
 docker run -e "INVENTORY=[agents]\nlocalhost ansible_connection=local" \
        -v ${APPS_DIR}:/apps \
-       -it ${URI_NAMESPACE}/netsil-builder /opt/builder/start-template.sh
+       -t ${URI_NAMESPACE}/netsil-builder /opt/builder/start-template.sh
