@@ -64,6 +64,7 @@
       "image_url": "https://netsilimages.blob.core.windows.net/system/Microsoft.Compute/Images/myimages/NETSIL-osDisk.ac44a309-0713-479d-9533-871eb540012b.vhd",
       "location": "westus2",
       "os_type": "Linux",
+      "os_disk_size_gb": 120,
       "ssh_username": "{{user `ssh_user`}}",
       "ssh_password": "{{user `ssh_pass`}}",
       "ssh_pty": true,
