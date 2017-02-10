@@ -61,7 +61,7 @@
       "storage_account": "netsilimages",
       "capture_container_name": "myimages",
       "capture_name_prefix": "NETSIL",
-      "image_url": "https://netsilimages.blob.core.windows.net/system/Microsoft.Compute/Images/myimages/NETSIL-osDisk.a78ae647-e9f2-4d45-9675-4a8a4a1ee46b.vhd",
+      "image_url": "https://netsilimages.blob.core.windows.net/system/Microsoft.Compute/Images/myimages/NETSIL-osDisk.ac44a309-0713-479d-9533-871eb540012b.vhd",
       "location": "westus2",
       "os_type": "Linux",
       "ssh_username": "{{user `ssh_user`}}",

@@ -48,7 +48,7 @@
       "image_publisher": "CoreOS",
       "image_offer": "CoreOS",
       "image_sku": "Stable",
-      "image_version": "1068.9.0",
+      "image_version": "1185.3.0",
       "location": "westus2",
       "os_type": "Linux",
       "ssh_username": "{{user `ssh_user`}}",
