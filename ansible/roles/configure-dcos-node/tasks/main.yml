@@ -1,0 +1,88 @@
+# TODO: Reorganize this ansible role later
+---
+# Configure version number
+# TODO: We have this "latest symlink exists" job elsewhere. Maybe it could be refactored into an "initial setup" role or "configure paths" role?
+- name: Ensure /opt/netsil version directory exists
+  file: path=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }} state=directory mode=0755
+
+- name: Ensure latest symlink exists
+  file: src=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }} dest=/opt/netsil/latest state=link force=yes
+
+- name: Templates the cluster version number onto the host
+  template: src=version-info.json.j2 dest=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }}/version-info
+  vars:
+    netsil_version_number: "{{ services_vars['netsil_version_number'] }}"
+
+# Some misc configurations
+- name: Find and output the location of dcos-mesos-slave.service
+  shell: "find /opt/mesosphere | grep dcos-mesos-slave.service"
+  register: dcos_mesos_slave
+
+- debug: msg="{{ dcos_mesos_slave.stdout }}"
+- name: Link dcos-mesos-slave into /etc/system/systemd
+  file: src={{ dcos_mesos_slave.stdout }} dest=/etc/systemd/system/dcos-mesos-slave.service state=link
+
+- name: Link dcos-mesos-slave into /etc/system/systemd/dcos.target.wants. This enables the service.
+  file: src={{ dcos_mesos_slave.stdout }} dest=/etc/systemd/system/dcos.target.wants/dcos-mesos-slave.service state=link
+
+- name: Create slave role in /etc
+  file: path=/etc/mesosphere/roles/slave state=file
+
+- name: Create slave role in /opt/mesosphere
+  file: path=/opt/mesosphere/etc/roles/slave state=directory
+
+- name: Set slave resources
+  copy: src=mesos-resources dest=/var/lib/dcos/mesos-resources
+
+# Exhibitor configuration
+- name: Set max client connections to 500 in defaults.conf
+  lineinfile: dest=/run/dcos_exhibitor/exhibitor_defaults.conf regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=5&autopurge.purgeInterval\=6"
+
+- name: Set max client connections to 500 in start exhibitor
+  lineinfile: dest=/opt/mesosphere/active/exhibitor/usr/exhibitor/start_exhibitor.py regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=5&autopurge.purgeInterval\=6"
+
+# Disabling systemd coredumps
+- name: Stop and disable coredump service
+  shell: "systemctl stop systemd-coredump.socket && systemctl disable systemd-coredump.socket"
+
+- name: Further disable by setting the conf file
+  copy: src=coredump.conf dest=/etc/systemd/coredump.conf
+
+# Cleanup exited containers and dangling volumes on a timer
+- name: Install docker-cleanup.service 
+  copy: src=docker-cleanup.service dest=/etc/systemd/system/docker-cleanup.service
+
+- name: Install docker-cleanup.timer 
+  copy: src=docker-cleanup.timer dest=/etc/systemd/system/docker-cleanup.timer
+
+- name: Start/enable docker-cleanup.timer
+  shell: "systemctl start docker-cleanup.timer && systemctl enable docker-cleanup.timer"
+
+# Disable updates and reboot
+# TODO: We need only do these for coreos
+- name: Disable reboot
+  copy: src=update.conf dest=/etc/coreos/update.conf
+
+- name: Stop and disable updates
+  service: name={{ item }} state=stopped enabled=no
+  with_items:
+    - update-engine
+    - locksmithd
+
+- name: Must mask updates as well. The 'masked' param is not supported in the 'service' module.
+  shell: "systemctl mask update-engine && systemctl mask locksmithd"
+
+- name: Disable cosmos and minuteman
+  service: name={{ item }} enabled=no
+  with_items:
+    - dcos-cosmos
+    - dcos-minuteman
+
+# Reconfigure slave disconnect timeout
+- name: Reconfigure disconnect timeout of slave
+  lineinfile: dest=/opt/mesosphere/etc/mesos-master regexp='^MESOS_MAX_SLAVE_PING_TIMEOUTS=' line="MESOS_MAX_SLAVE_PING_TIMEOUTS=5"
+
+# Reconfigure gc_delay so executors clean up failed tasks more frequently
+- name: Reconfigure executor GC of slave
+  lineinfile: dest=/opt/mesosphere/etc/mesos-slave-common regexp='^MESOS_GC_DELAY=' line="MESOS_GC_DELAY=60mins"
+

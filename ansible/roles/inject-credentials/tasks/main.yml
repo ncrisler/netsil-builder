@@ -1,0 +1,13 @@
+---
+# TODO: Will it always be "/root"?
+- name: Create .docker directory
+  file: path=/root/.docker state=directory
+  when: uri_namespace != "netsil"
+
+- name: Copy JSON auth token
+  copy: src=/opt/secrets/netsil-dev-docker-auth.json dest=/root/.docker/config.json
+  when: uri_namespace != "netsil"
+
+- name: Generate /etc/docker.tar.gz
+  shell: cd /root && tar czf docker.tar.gz .docker && cp docker.tar.gz /etc/
+  when: uri_namespace != "netsil"

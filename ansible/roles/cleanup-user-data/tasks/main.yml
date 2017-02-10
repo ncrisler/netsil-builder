@@ -1,0 +1,30 @@
+---
+# TODO: Eventually, we should look for docker.tar.gz in all home directories. Move this to a bash script if it's easier
+- name: Clean docker credentials in /etc/docker.tar.gz
+  file: path=/etc/docker.tar.gz state=absent
+  when: uri_namespace == "netsil"
+
+- name: Clean docker credentials in ~/docker.tar.gz (and any other home directory as well)
+  file: path=/root/docker.tar.gz state=absent
+  when: uri_namespace == "netsil"
+
+- name: Clean docker credentials in ~/.docker/config.json (in any home directory)
+  file: path=/root/.docker/config.json state=absent
+  when: uri_namespace == "netsil"
+
+- name: Clean docker credentials in ~/docker.tar.gz (and any other home directory as well)
+  file: path=/home/core/docker.tar.gz state=absent
+  when: uri_namespace == "netsil"
+
+- name: Clean docker credentials in ~/.docker/config.json (in any home directory)
+  file: path=/home/core/.docker state=absent
+  when: uri_namespace == "netsil"
+
+- name: Clean up authorized keys
+  file: path=/home/core/.ssh/authorized_keys state=absent
+
+- name: Clean up authorized keys directory
+  file: path=/home/core/.ssh/authorized_keys.d state=absent
+
+- name: Clean up genconf
+  shell: "rm -rf /home/core/*.tar genconf"

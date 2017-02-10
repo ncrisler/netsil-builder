@@ -3,16 +3,16 @@
     "channel": "stable",
     "version": "current",
     "checksum_type": "md5",
-    "checksum": "fc57fe0bc3d899b141876894d7a5b1f0",
+    "checksum": "3a5020b1acd6832b6360e79d503b6609",
     "ssh_private_key": "{{env `SSH_PRIVATE_KEY`}}",
     "image_path": "{{env `IMAGE_PATH`}}",
     "image_name": "{{env `IMAGE_NAME`}}",
+    "version_info": "{{env `VERSION_INFO`}}",
     "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
     "aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
     "aws_region": "{{env `AWS_REGION`}}",
     "azure_client_secret": "{{env `AZURE_CLIENT_SECRET`}}",
-    "ssh_user": "core",
-    "ssh_pass": null
+    "base_dcos_image": "{{env `BASE_DCOS_IMAGE`}}"
   },
   "builders": [
     {
@@ -20,20 +20,36 @@
       "access_key": "{{user `aws_access_key`}}",
       "secret_key": "{{user `aws_secret_key`}}",
       "region": "{{user `aws_region`}}",
-      "source_ami": "ami-dc6ba3bc",
-      "instance_type": "m3.large",
-      "ssh_username": "{{user `ssh_user`}}",
-      "ami_name": "{{user `image_name`}}-{{timestamp}}"
+      "source_ami": "{{ user `base_dcos_image` }}",
+      "instance_type": "m4.xlarge",
+      "ssh_username": "core",
+      "ami_name": "{{user `image_name`}}-{{ timestamp }}",
+      "ami_description": "{{user `version_info`}}",
+      "tags": {
+        "version_info": "{{user `version_info`}}"
+      },
+      "ami_block_device_mappings": [{
+        "device_name": "/dev/xvda",
+        "volume_size": 20,
+        "delete_on_termination": true
+      }],
+      "launch_block_device_mappings": [{
+        "device_name": "/dev/xvda",
+        "volume_size": 80,
+        "delete_on_termination": true
+      }]
     },
     {
       "type": "googlecompute",
       "account_file": "/opt/secrets/account.json",
       "project_id": "netsil-dev",
-      "source_image": "coreos-stable-1068-9-0-v20160809",
+      "source_image": "base-dcos-1485391386",
+      "machine_type": "n1-standard-4",
+      "disk_size": 20,
       "ssh_username": "{{user `ssh_user`}}",
       "zone": "us-west1-a",
       "image_name": "{{user `image_name`}}-{{ timestamp }}",
-      "image_description": "Base DCOS image, uses CoreOS Stable 1068.9.0"
+      "image_description": "Version info: {{user `version_info`}}"
     },
     {
       "type": "azure-arm",
@@ -45,16 +61,17 @@
       "storage_account": "netsilimages",
       "capture_container_name": "myimages",
       "capture_name_prefix": "NETSIL",
-      "image_publisher": "CoreOS",
-      "image_offer": "CoreOS",
-      "image_sku": "Stable",
-      "image_version": "1068.9.0",
+      "image_url": "https://netsilimages.blob.core.windows.net/system/Microsoft.Compute/Images/myimages/NETSIL-osDisk.a78ae647-e9f2-4d45-9675-4a8a4a1ee46b.vhd",
       "location": "westus2",
       "os_type": "Linux",
       "ssh_username": "{{user `ssh_user`}}",
       "ssh_password": "{{user `ssh_pass`}}",
       "ssh_pty": true,
-      "vm_size": "Standard_A2"
+      "vm_size": "Standard_A4",
+      "azure_tags": {
+        "version_info": "{{user `version_info`}}",
+        "timestamp": "{{ timestamp }}"
+      }
     },
     {
       "type": "qemu",
@@ -66,17 +83,18 @@
       "http_directory": "files",
       "iso_checksum": "{{user `checksum`}}",
       "iso_checksum_type": "md5",
-      "iso_url": "file:///{{user `image_path`}}/coreos_production_qemu_image.img",
+      "iso_url": "file:///{{user `image_path`}}/base-dcos/base-dcos.qcow2",
       "disk_image": true,
-      "disk_size": 10000,
+      "disk_size": 20000,
       "shutdown_command": "sudo -S shutdown -P now",
       "ssh_port": 22,
-      "ssh_username": "{{user `ssh_user`}}",
+      "ssh_username": "core",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
       "ssh_wait_timeout": "1000000s",
       "net_device": "virtio",
       "qemuargs": [
-         ["-m", "2048M"],
+         ["-m", "16G"],
+         ["-smp", "8"],
          ["-fsdev", "local,id=conf,security_model=none,readonly,path=/opt/builder/data"],
          ["-device", "virtio-9p-pci,fsdev=conf,mount_tag=config-2"],
          ["-device", "virtio-net,netdev=user.0"],
@@ -88,13 +106,13 @@
   "provisioners": [
     {
       "type": "ansible",
-      "playbook_file": "ansible/dcos-bootstrap.yml",
-      "extra_arguments": [ "--extra-vars", "ansible_become_pass=Password1234" ],
+      "playbook_file": "./ansible/seed-node.yml",
+      "extra_arguments": [ "--extra-vars", "ansible_become_pass=Password1234 build_type={{build_type}}" ],
       "user": "core"
     },
     {
       "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo -S -E sh '{{ .Path }}'",
-      "inline":["/usr/share/oem/python/bin/python -u /usr/share/oem/bin/waagent -force -deprovision && export HISTSIZE=0 && sync"],
+      "inline":["/usr/share/oem/python/bin/python -u /usr/share/oem/bin/waagent -force -deprovision+user && export HISTSIZE=0 &&  sync"],
       "inline_shebang": "/bin/sh -x",
       "type": "shell",
       "skip_clean": true,
@@ -109,7 +127,7 @@
   "post-processors": [
     {
       "type": "shell-local",
-      "inline": ["ansible-playbook ansible/convert-images.yml"],
+      "inline": ["ansible-playbook ./ansible/convert-images.yml"],
       "only": ["qemu"]
     }
   ]

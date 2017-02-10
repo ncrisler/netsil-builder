@@ -1,4 +1,51 @@
 ## Description
+The *netsil-builder* has two functions. 
+
+1. Provisions DCOS from a base CoreOS image. 
+2. Provisions Netsil AOC on top of the DCOS system provisioned in *1*.
+
+The build process for Netsil AOC takes one external input: an `apps` directory with mustache templates and build-time variables. 
+This `apps` directory essentially defines the version of Netsil AOC to be built.
+
+## Usage
+### Building the DCOS or Netsil AOC machine image
+Use the `bake.sh` script to build the DCOS or Netsil AOC machine image. 
+For the Netsil AOC build, set the `APPS_DIR` environment variable as the full path of the `apps` directory on your filesystem.
+To specify whether to build DCOS or Netsil AOC, set the `BUILD_OUTPUT` environment variable as `base-dcos` or `netsil-aoc`, respectively.
+
+Examples of both build invocations are given below.
+
+**DCOS**
+```
+BUILD_TYPE=amazon-ebs BUILD_OUTPUT=base-dcos ./netsil-builder/bake.sh
+```
+
+**Netsil AOC**
+```
+BUILD_TYPE=amazon-ebs BUILD_OUTPUT=netsil-aoc BASE_DCOS_IMAGE=ami-57f25337 APPS_DIR=/home/dev/AOC/apps ./netsil-builder/bake.sh
+```
+### Secrets
+In order to support AWS, googlecompute, and azure-arm builds, you may have to set some secret keys and credentials files. These are detailed below:
+
+**SSH Keys**
+* Put a private and public SSH key, named `id_rsa` and `id_rsa.pub` in your secrets directory.
+
+**Docker auth**
+* This is only necessary if you're building Netsil AOC from non-production docker images. If so, provide a file named `netsil-dev-docker-auth.json` in your secrets directory that has your docker credentials. This is usually found in `~/.docker/config.json` after logging in with `docker login`
+
+**AWS**
+* You will need the `aws-cli` tool installed, as well as AWS credentials configured in the *default* profile from the host where you're running these build scripts.
+
+**Googlecompute**
+* Provide an account file named `account.json` in your secrets directory. See the [packer docs](https://www.packer.io/docs/builders/googlecompute.html) for details.
+
+**Azure-arm**
+* Provide the password or secret for your "service principal" in a file called `azure-client-secret` in your secrets directory
+
+### Templating
+A `template.sh` script is provided if you only wish to template the app definitions. This will mostly be used by Netsil internally.
+
+## Technical Details
 
 The Packer build process utilizes QEMU, Ansible, and Packer within a Docker container. The container runs a script which begins the Packer build. A CoreOS QEMU image is brought online and Packer uses Ansible to provision DCOS, create a new image, and finally converts the image to the various formats. Here are the steps involved.
 

@@ -1,0 +1,45 @@
+# This will install a startup script that will install all the marathon apps
+# Run it only when the dcos-marathon service is up and running
+# TODO: Of course, these startup scripts will only work if systemd is installed...But we have a dependency chain of DCOS --> systemd --> CoreOS, where A implies B is installed if "A --> B", so I think it's safe to say that systemd will be installed.
+- name: Ensure latest symlink exists
+  file: src=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }} dest=/opt/netsil/latest state=link force=yes
+
+- name: Ensure netsil bin directory exists
+  file: path=/opt/netsil/latest/bin state=directory
+
+- name: Install install-netsil-apps.sh for installing netsil apps in marathon
+  copy: src=manage-netsil-apps.sh dest=/opt/netsil/latest/bin/manage-netsil-apps.sh mode=744
+
+- name: Install setup-node.sh for joining workers
+  copy: src=setup-node.sh dest=/opt/netsil/latest/bin/setup-node.sh mode=744
+
+# TODO: We should do like mesosphere and put this netsil-startup.service file inside /opt/netsil/latest and symlink to it from /etc/systemd/system
+# TODO: In fact, go through and look for any .service files. Symlink them the same way.
+- name: Install netsil startup service
+  copy: src=netsil-startup.service dest=/etc/systemd/system/netsil-startup.service
+
+- name: Enable netsil startup service
+  service: name=netsil-startup enabled=yes
+
+- name: Install debug script
+  copy: src=grab-debug.sh dest=/opt/netsil/latest/bin/grab-debug.sh mode=755
+
+# Install marathon health checker
+- name: Install marathon-health-checker.sh for restarting marathon if it gets into a bad state
+  copy: src=marathon-health-checker.sh dest=/opt/netsil/latest/bin/marathon-health-checker.sh mode=744
+
+- name: Install marathon-health-checker service
+  copy: src=marathon-health-checker.service dest=/etc/systemd/system/marathon-health-checker.service
+
+- name: Enable marathon-health-checker service
+  service: name=marathon-health-checker enabled=yes
+
+# Install zk health checker
+- name: Install zk-health-checker.py for repairing zookeeper if it gets into a bad state
+  copy: src=zk-health-checker.py dest=/opt/netsil/latest/bin/zk-health-checker.py mode=744
+
+- name: Install zk-health-checker service
+  copy: src=zk-health-checker.service dest=/etc/systemd/system/zk-health-checker.service
+
+- name: Enable zk-health-checker service
+  service: name=zk-health-checker enabled=yes

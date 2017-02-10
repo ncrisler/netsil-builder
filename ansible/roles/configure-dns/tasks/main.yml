@@ -1,0 +1,34 @@
+---
+# TODO: Only do this on certain OSes that have systemd-resolved
+- name: Stop systemd-resolved
+  service: name=systemd-resolved enabled=no state=stopped
+
+- name: Mask systemd-resolved
+  shell: "systemctl mask systemd-resolved"
+
+# We must use rm and touch here because the file module can't set it to absent and then to a file
+- name: Remove /etc/resolv.conf symlink
+  shell: "rm -rf /etc/resolv.conf"
+
+- name: Create /etc/resolv.conf
+  shell: "touch /etc/resolv.conf"
+
+- name: Set facts based on machine image build type
+  set_fact:
+    dns_resolvers: "169.254.169.253"
+  when: build_type == "amazon-ebs"
+
+- name: Set facts based on machine image build type
+  set_fact:
+    dns_resolvers: "169.254.169.254"
+  when: build_type == "googlecompute"
+
+# TODO: We'll need to parameterize this for each cloud-platform
+# TODO: We should just fill `/etc/hosts` with the hostname returned by `hostname` as a stop-gap, since we don't know the DNS details for each cloud provider/virtualization software
+- name: Template various dns config files with the correct internal DNS resolver
+  template: src={{ item }}.j2 dest=/opt/mesosphere/etc/{{ item }}
+  with_items:
+    - dns_config
+    - mesos-dns.json
+    - spartan.json
+  when: build_type == "amazon-ebs" or build_type == "googlecompute"

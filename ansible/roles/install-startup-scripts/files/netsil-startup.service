@@ -1,0 +1,10 @@
+[Unit]
+Description=Install netsil apps in marathon
+
+[Service]
+Type=oneshot
+# manage-netsil-apps.sh has proper restart logic
+ExecStart=/opt/netsil/latest/bin/manage-netsil-apps.sh install
+
+[Install]
+WantedBy=multi-user.target

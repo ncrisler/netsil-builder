@@ -1,0 +1,13 @@
+[Unit]
+Description=Marathon Health checker
+After=dcos-marathon.service
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /opt/netsil/latest/bin/marathon-health-checker.sh
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

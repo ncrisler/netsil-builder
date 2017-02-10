@@ -1,0 +1,6 @@
+---
+- name: Reconfigure the HTTP port of the DCOS-UI
+  lineinfile: dest=/opt/mesosphere/active/adminrouter/nginx/conf/nginx.conf regexp='^\\s*listen 80 default_server;' line="listen 8081 default_server;" backrefs=yes
+
+- name: Reconfigure the HTTPS port of the DCOS-UI
+  lineinfile: dest=/opt/mesosphere/active/adminrouter/nginx/conf/nginx.conf regexp='^\\s*listen 443 ssl spdy default_server;' line="listen 4443 ssl spdy default_server;" backrefs=yes

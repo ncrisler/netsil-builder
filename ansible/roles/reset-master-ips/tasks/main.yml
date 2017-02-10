@@ -1,0 +1,7 @@
+---
+# TODO: To make this a bit more future-proof, we should assume everywhere that multiple master ips can be passed. E.g. for exhibitor ensemble, we should correctly template the ensemble instead of assuming {{ mesos_master_ip_list }} is just one ip
+- name: Set /opt/mesosphere/etc/master_list to 127.0.0.1
+  template: src=master_list.j2 dest=/opt/mesosphere/etc/master_list
+
+- name: Set exhibitor ensemble config to use localhost
+  lineinfile: dest=/opt/mesosphere/etc/exhibitor regexp='^EXHIBITOR_STATICENSEMBLE' line="EXHIBITOR_STATICENSEMBLE=1:{{ mesos_master_ip_list }}"

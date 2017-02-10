@@ -1,0 +1,10 @@
+[Unit]
+Description=Cleans up dangling images, volumes, and exited containers
+
+[Service]
+Type=oneshot
+# TODO: Will all OSes have these paths for their binaries? CoreOS at least does
+ExecStartPre=/usr/bin/echo "Cleaning up leftover docker artifacts"
+ExecStart=-/bin/sh -c "docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi -f"
+ExecStart=-/bin/sh -c "docker rm -v $(docker ps -a -q -f status=exited)"
+ExecStart=-/bin/sh -c "docker volume rm $(docker volume ls -q -f dangling=true)"
