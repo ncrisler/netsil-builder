@@ -1,7 +1,7 @@
 #!/bin/bash
 cmd=$1
 
-MARATHON_HOST=${MARATHON_HOST:-127.0.0.1}
+MARATHON_HOST=${MARATHON_HOST:-marathon.mesos}
 MARATHON_PORT=${MARATHON_PORT:-8080}
 
 http_ret_code=0
@@ -36,7 +36,7 @@ function check_cmd_ret_code() {
 }
 
 function wait_for_marathon() {
-    timeout=1200
+    timeout=1800
     count=0
     step=5
     while true ; do
