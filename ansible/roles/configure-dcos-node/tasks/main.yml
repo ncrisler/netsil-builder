@@ -86,3 +86,10 @@
 - name: Reconfigure executor GC of slave
   lineinfile: dest=/opt/mesosphere/etc/mesos-slave-common regexp='^MESOS_GC_DELAY=' line="MESOS_GC_DELAY=60mins"
 
+# Overcommit memory
+- name: Overcommit memory to fix things like redis startup
+  copy: src=overcommit.conf dest=/etc/sysctl.d/overcommit.conf
+
+- name: Reload sysctl
+  shell: "sysctl --system"
+
