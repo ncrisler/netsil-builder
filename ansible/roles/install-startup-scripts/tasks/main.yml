@@ -43,3 +43,19 @@
 
 - name: Enable zk-health-checker service
   service: name=zk-health-checker enabled=yes
+
+# Install docker-healthcheck
+- name: Install docker-healthcheck script
+  copy: src=docker-healthcheck dest=/opt/netsil/latest/bin/docker-healthcheck mode=755
+
+- name: Install docker-healthcheck service
+  copy: src=docker-healthcheck.service dest=/etc/systemd/system/docker-healthcheck.service
+
+- name: Install docker-healthcheck timer
+  copy: src=docker-healthcheck.timer dest=/etc/systemd/system/docker-healthcheck.timer
+
+- name: Enable docker-healthcheck timer
+  service: name=docker-healthcheck.timer enabled=yes
+
+- name: Enable docker-healthcheck service
+  service: name=docker-healthcheck.service enabled=yes

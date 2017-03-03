@@ -91,5 +91,5 @@
   copy: src=overcommit.conf dest=/etc/sysctl.d/overcommit.conf
 
 - name: Reload sysctl
-  shell: "sysctl --system"
+  shell: "sysctl -p /etc/sysctl.d/overcommit.conf"
 
