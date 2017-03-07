@@ -27,4 +27,4 @@ COPY . /opt/builder/
 
 # Setup environment and launch Packer.
 ENTRYPOINT ["/bin/sh", "-c"]
-CMD [ "/opt/builder/start.sh" ]
+CMD [ "/opt/builder/scripts/start.sh" ]

@@ -21,6 +21,10 @@
 - name: Enable netsil startup service
   service: name=netsil-startup enabled=yes
 
+- name: Start netsil startup service
+  service: name=netsil-startup state=started
+  when: build_type == "deploy"
+
 - name: Install debug script
   copy: src=grab-debug.sh dest=/opt/netsil/latest/bin/grab-debug.sh mode=755
 
@@ -34,6 +38,10 @@
 - name: Enable marathon-health-checker service
   service: name=marathon-health-checker enabled=yes
 
+- name: Start marathon-health-checker service
+  service: name=marathon-health-checker state=started
+  when: build_type == "deploy"
+
 # Install zk health checker
 - name: Install zk-health-checker.py for repairing zookeeper if it gets into a bad state
   copy: src=zk-health-checker.py dest=/opt/netsil/latest/bin/zk-health-checker.py mode=744
@@ -43,6 +51,10 @@
 
 - name: Enable zk-health-checker service
   service: name=zk-health-checker enabled=yes
+
+- name: Start zk-health-checker service
+  service: name=zk-health-checker state=started
+  when: build_type == "deploy"
 
 # Install docker-healthcheck
 - name: Install docker-healthcheck script
@@ -59,3 +71,7 @@
 
 - name: Enable docker-healthcheck service
   service: name=docker-healthcheck.service enabled=yes
+
+- name: Start docker-healthcheck service
+  service: name=docker-healthcheck.service state=started
+  when: build_type == "deploy"

@@ -93,3 +93,7 @@
 - name: Reload sysctl
   shell: "sysctl -p /etc/sysctl.d/overcommit.conf"
 
+- name: Restart DCOS services
+  service: name={{ item }} state=restarted
+  with_items:
+    - dcos.target

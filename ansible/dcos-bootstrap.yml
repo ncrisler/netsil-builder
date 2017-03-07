@@ -18,8 +18,9 @@
   vars:
     ansible_user: core
     ansible_python_interpreter: /opt/bin/python
+    build_type: "{{ lookup('env', 'BUILD_TYPE') }}"
 
   roles:
-    - dcos-install-master
-    - dcos-install-slave
-    - dcos-install-cleanup
+    - install-dcos-master
+    - install-dcos-slave
+    - cleanup-dcos-install
