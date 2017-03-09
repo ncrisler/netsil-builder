@@ -2,7 +2,7 @@
 Description=Trigger docker-healthcheck periodically
 
 [Timer]
-OnUnitInactiveSec=10s
+OnUnitInactiveSec=300s
 Unit=docker-healthcheck.service
 
 [Install]
