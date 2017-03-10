@@ -38,7 +38,10 @@ sleep 60
 
 if timeout 10 docker ps > /dev/null; then
   echo "docker recovered"
+  # We've typically found that the node requires a reboot when docker gets to this failure state
+  reboot
   exit 0
 fi
 
-echo "docker still failing"
+echo "docker still failing. Going to reboot."
+reboot
