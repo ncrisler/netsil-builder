@@ -17,31 +17,41 @@
 # This script is intended to be run periodically, to check the health
 # of docker.  If it detects a failure, it will restart docker using systemctl.
 
-if timeout 10 docker ps > /dev/null; then
-  exit 0
-fi
+# wait for marathon to initialize before starting health check
+echo "Waiting 20 minutes for Docker to initialize..."
+sleep 20m
 
-echo "docker failed"
-echo "Giving docker 30 seconds grace before restarting"
-sleep 30
+# monitor docker health periodically
+echo "Starting docker ping..."
+while true
+do
+    sleep 5m
+    if timeout 10 docker ps > /dev/null; then
+        echo "No issues with docker"
+        continue
+    fi
 
-if timeout 10 docker ps > /dev/null; then
-  echo "docker recovered"
-  exit 0
-fi
+    echo "docker failed"
+    echo "Giving docker 30 seconds grace before restarting"
+    sleep 30
 
-echo "docker still down; triggering docker restart"
-systemctl restart docker
+    if timeout 10 docker ps > /dev/null; then
+        echo "docker recovered"
+        continue
+    fi
 
-echo "Waiting 60 seconds to give docker time to start"
-sleep 60
+    echo "docker still down; triggering docker restart"
+    systemctl restart docker
 
-if timeout 10 docker ps > /dev/null; then
-  echo "docker recovered"
-  # We've typically found that the node requires a reboot when docker gets to this failure state
-  reboot
-  exit 0
-fi
+    echo "Waiting 60 seconds to give docker time to start"
+    sleep 60
 
-echo "docker still failing. Going to reboot."
-reboot
+    if timeout 10 docker ps > /dev/null; then
+        echo "docker recovered. Rebooting because we've reached a failure state."
+        # We've typically found that the node requires a reboot when docker gets to this failure state
+        reboot
+    fi
+
+    echo "docker still failing. Going to reboot."
+    reboot
+done
