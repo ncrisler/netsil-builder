@@ -97,3 +97,4 @@
   service: name={{ item }} state=restarted
   with_items:
     - dcos.target
+  when: build_type == "deploy"
