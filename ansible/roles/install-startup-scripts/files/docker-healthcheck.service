@@ -1,9 +1,13 @@
 [Unit]
-Description=Run docker-healthcheck once
+Description=Run docker-healthcheck
+After=docker.service
 
 [Service]
-Type=oneshot
+Type=simple
 ExecStart=/opt/netsil/latest/bin/docker-healthcheck
+
+Restart=always
+RestartSec=60
 
 [Install]
 WantedBy=multi-user.target
