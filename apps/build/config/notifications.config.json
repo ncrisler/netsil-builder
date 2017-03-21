@@ -1,0 +1,34 @@
+{
+  "notifications": {
+    "app_id": "notifications",
+    "port": 8882,
+    "alerts_service_host": "alerts.marathon.mesos",
+    "alerts_service_port": 8881,
+    "user_persistence_host": "user-persistence.marathon.mesos",
+    "user_persistence_port": "8891",
+    "netsil_events_host": "ingestion-server.marathon.mesos",
+    "netsil_events_port": 5000,
+    "time_series_endpoint_host": "time-series-query-service.marathon.mesos",
+    "time_series_endpoint_port": "9047",
+    "redis_host": "redis.marathon.mesos",
+    "redis_port": 6379,
+    "production": "true",
+    "nodejs_env": "NODE_ENV=production",
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.0.9",
+    "netsil_commit_hash": "f19a8b984",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.0.9",
+    "netsil_service_tag": "stable-1.0.9",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "product_flavor": "Pro",
+    "instances": 1
+
+  }
+}

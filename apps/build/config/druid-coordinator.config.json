@@ -1,0 +1,25 @@
+{
+  "druid-coordinator": {
+    "app_id": "druid-coordinator",
+    "druid_service": "druid-coordinator",
+    "druid_port": "31001",
+    "druid_coordinator_load_timeout": "PT30S",
+    "druid_coordinator_period": "PT60S",
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.0.9",
+    "netsil_commit_hash": "f19a8b984",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.0.9",
+    "netsil_service_tag": "stable-1.0.9",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "product_flavor": "Pro",
+    "instances": 1
+
+  }
+}

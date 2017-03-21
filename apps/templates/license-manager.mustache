@@ -1,0 +1,61 @@
+{
+  "id": "{{ license-manager.app_id }}",
+  "container": {
+      "type": "DOCKER",
+      "volumes": [
+        {
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        },
+        {
+          "containerPath": "licenses",
+          "mode": "RW",
+          "persistent": {
+            "size": 1
+          }
+        },
+        {
+          "containerPath": "/opt/netsil/license-manager/licenses",
+          "hostPath": "licenses",
+          "mode": "RW"
+        }
+      ],
+      "docker": {
+          "network": "BRIDGE",
+          "image": "{{ license-manager.uri_namespace }}/license-manager:{{ license-manager.netsil_service_tag }}",
+          "forcePullImage": false,
+          "portMappings": [
+              {"containerPort": {{ license-manager.port }}, "hostPort": {{ license-manager.port }}, "protocol":"tcp"}
+          ]
+      }
+  },
+  "cpus": {{ license-manager.cpus }},
+  "mem": {{ license-manager.mem }},
+  "instances": {{ license-manager.instances }},
+  "acceptedResourceRoles": ["{{ license-manager.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#license-manager.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/license-manager.private}}
+  "env": {
+    "LICENSE_MANAGER_SERVICE_PORT": "{{ license-manager.port }}",
+    "URI_NAMESPACE": "{{ license-manager.uri_namespace }}",
+    "NETSIL_BUILD_BRANCH": "{{ license-manager.netsil_build_branch }}",
+    "NETSIL_VERSION_NUMBER": "{{ license-manager.netsil_version_number }}",
+    "NETSIL_COMMIT_HASH": "{{ license-manager.netsil_commit_hash }}",
+    "NETSIL_BUILD_NUMBER": "{{ license-manager.netsil_build_number }}",
+    "NETSIL_SERVICE_TAG": "{{ license-manager.netsil_service_tag }}",
+    "NETSIL_VERSION_TAG": "{{ license-manager.netsil_version_tag }}",
+    "BUILD_ENV": "{{ license-manager.build_env }}"
+  },
+  "residency": {
+    "taskLostBehavior": "WAIT_FOREVER"
+  }
+}

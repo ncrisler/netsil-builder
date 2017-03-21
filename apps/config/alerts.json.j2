@@ -1,0 +1,23 @@
+{
+  "alerts": {
+    "app_id": "alerts",
+    "bosun_web_port": 8070,
+    "alert_service_port": 8881,
+    "user_db_host": "user-db.marathon.mesos",
+    "user_db_port": "3306",
+    "user_persistence_host": "user-persistence.marathon.mesos",
+    "user_persistence_port": "8891",
+    "netsil_events_host": "ingestion-server.marathon.mesos",
+    "netsil_events_port": 5000,
+    "time_series_endpoint_host": "time-series-query-service.marathon.mesos",
+    "time_series_endpoint_port": "9047",
+    "redis_host": "redis.marathon.mesos",
+    "redis_port": 6379,
+    "nodejs_env": "NODE_ENV={{ build_env }}",
+    "build_env": "{{ build_env }}",
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

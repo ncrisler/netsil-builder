@@ -1,0 +1,12 @@
+{
+  "druid-broker": {
+    "app_id": "druid-broker",
+    "druid_service": "druid-broker",
+    "druid_port": "31004",
+    "druid_server_http_numThreads": "20",
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

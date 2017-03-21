@@ -1,0 +1,58 @@
+{
+ "id": "kafka",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+         "containerPath": "kafka-log-dir",
+         "mode": "RW",
+         "persistent": {
+           "size": 10000
+         }
+       },
+       {
+         "containerPath": "/opt/netsil/kafka/kafka-log-dir",
+         "hostPath": "kafka-log-dir",
+         "mode": "RW"
+       },
+       {
+         "hostPath": "/var/log/netsil",
+         "containerPath": "/var/log/netsil",
+         "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/kafka:stable-1.0.9",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 9092, "hostPort": 9092, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "DEPLOY_ENV": "marathon",
+    "START_TIMEOUT": "10",
+    "KAFKA_ADVERTISED_PORT": "9092",
+    "KAFKA_ZOOKEEPER_CONNECT": "leader.mesos:2181",
+    "KAFKA_LOG_RETENTION_BYTES": "262144000",
+    "KAFKA_LOG_RETENTION_HOURS": "2",
+    "KAFKA_LOG_DIRS": "/opt/netsil/kafka/kafka-log-dir",
+    "KAFKA_LOG_SEGMENT_BYTES": "104857600",
+    "KAFKA_NUM_PARTITIONS": "4"
+  },
+  "residency": {
+    "taskLostBehavior": "WAIT_FOREVER"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "id": "license-manager",
+  "container": {
+      "type": "DOCKER",
+      "volumes": [
+        {
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        },
+        {
+          "containerPath": "licenses",
+          "mode": "RW",
+          "persistent": {
+            "size": 1
+          }
+        },
+        {
+          "containerPath": "/opt/netsil/license-manager/licenses",
+          "hostPath": "licenses",
+          "mode": "RW"
+        }
+      ],
+      "docker": {
+          "network": "BRIDGE",
+          "image": "netsil/license-manager:stable-1.0.9",
+          "forcePullImage": false,
+          "portMappings": [
+              {"containerPort": 9009, "hostPort": 9009, "protocol":"tcp"}
+          ]
+      }
+  },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "LICENSE_MANAGER_SERVICE_PORT": "9009",
+    "URI_NAMESPACE": "netsil",
+    "NETSIL_BUILD_BRANCH": "stable",
+    "NETSIL_VERSION_NUMBER": "1.0.9",
+    "NETSIL_COMMIT_HASH": "f19a8b984",
+    "NETSIL_BUILD_NUMBER": "0",
+    "NETSIL_SERVICE_TAG": "stable-1.0.9",
+    "NETSIL_VERSION_TAG": "stable-1.0.9",
+    "BUILD_ENV": "production"
+  },
+  "residency": {
+    "taskLostBehavior": "WAIT_FOREVER"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "id": "{{ druid-overlord.app_id }}",
+  "container": {
+    "volumes": [
+    ],
+    "docker": {
+      "network": "BRIDGE",
+      "image": "{{ druid-overlord.uri_namespace }}/druid-overlord:{{ druid-overlord.netsil_service_tag }}",
+      "forcePullImage": false,
+      "portMappings": [
+        {"containerPort": {{ druid-overlord.druid_port }}, "hostPort": {{ druid-overlord.druid_port }}},
+        {"containerPort": 31011, "hostPort": 31011},
+        {"containerPort": 31012, "hostPort": 31012},
+        {"containerPort": 31013, "hostPort": 31013},
+        {"containerPort": 31014, "hostPort": 31014},
+        {"containerPort": 31015, "hostPort": 31015}
+      ]
+    },
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "/tmp/druid/localStorage",
+        "hostPath": "druid-overlord-data",
+        "mode": "RW"
+      },
+      {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+      }
+    ]
+  },
+  "cpus": {{ druid-overlord.cpus }},
+  "mem": {{ druid-overlord.mem }},
+  "instances": {{ druid-overlord.instances }},
+  "acceptedResourceRoles": ["{{ druid-overlord.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#druid-overlord.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/druid-overlord.private}}
+  "env": {
+    "NODE_TYPE": "overlord",
+    "PRODUCT_FLAVOR": "{{ druid-overlord.product_flavor }}",
+    "DEPLOY_ENV": "marathon",
+    "druid_service": "{{ druid-overlord.druid_service }}",
+    "druid_port": "{{ druid-overlord.druid_port }}",
+    "druid_indexer_runner_type": "{{ druid-overlord.druid_indexer_runner_type }}",
+    "druid_indexer_runner_startPort": "{{ druid-overlord.druid_indexer_runner_startPort }}",
+    "druid_indexer_runner_javaOpts": "{{ druid-overlord.druid_indexer_runner_javaOpts }}",
+    "druid_worker_ip": "{{ druid-overlord.druid_worker_ip }}",
+    "druid_indexer_task_baseTaskDir": "{{ druid-overlord.druid_indexer_task_baseTaskDir }}",
+    "druid_indexer_storage_type": "{{ druid-overlord.druid_indexer_storage_type }}",
+    "druid_indexer_queue_startDelay": "{{ druid-overlord.druid_indexer_queue_startDelay }}",
+    "druid_indexer_fork_property_druid_processing_numThreads": "{{ druid-overlord.druid_indexer_fork_property_druid_processing_numThreads }}",
+    "druid_indexer_fork_property_druid_computation_buffer_size": "{{ druid-overlord.druid_indexer_fork_property_druid_computation_buffer_size}}"
+  }
+}

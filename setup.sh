@@ -80,11 +80,13 @@ while [ $# -gt 0 ]; do
     esac
 done
 
+# Get the directory this script is in
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ### Set default values and convert to absolute paths ###
 SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY:-~/.ssh/id_rsa}
 SSH_PRIVATE_KEY=$(abs_path $SSH_PRIVATE_KEY)
-APPS_DIR=${APPS_DIR:-./apps}
+APPS_DIR=${APPS_DIR:-$DIR/apps}
 APPS_DIR=$(abs_path $APPS_DIR)
 
 ### Start: Docker-specific env vars ###
@@ -102,9 +104,6 @@ export NETSIL_BUILD_NUMBER=${NETSIL_BUILD_NUMBER}
 export RESOURCE_ROLE=${RESOURCE_ROLE:-*}
 export FORCE_PULL_IMAGE=${FORCE_PULL_IMAGE:-false}
 ### End: Netsil-specific env vars ###
-
-# Get the directory this script is in
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ###########################
 ### Interactive setting ###

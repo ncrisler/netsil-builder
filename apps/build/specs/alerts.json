@@ -1,0 +1,60 @@
+{
+ "id": "alerts",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/alerts:stable-1.0.9",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 8070, "hostPort": 8070, "protocol":"tcp"},
+             {"containerPort": 8881, "hostPort": 8881, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cmd": "/opt/netsil/alerts/scripts/startup.sh && supervisord -c /opt/netsil/alerts/supervisor/alerts-supervisor-include.conf",
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "NODEJS_ENV": "NODE_ENV=production",
+    "USER_DB_HOST": "user-db.marathon.mesos",
+    "USER_DB_PORT": "3306",
+    "NETSIL_EVENTS_HOST": "ingestion-server.marathon.mesos",
+    "NETSIL_EVENTS_PORT": "5000",
+    "USER_PERSISTENCE_HOST": "user-persistence.marathon.mesos",
+    "USER_PERSISTENCE_PORT": "8891",
+    "TIME_SERIES_ENDPOINT_HOST": "time-series-query-service.marathon.mesos",
+    "TIME_SERIES_ENDPOINT_PORT": "9047",
+    "REDIS_HOST": "redis.marathon.mesos",
+    "REDIS_PORT": "6379",
+    "BOSUN_CONF_FILE": "/opt/bosun.conf",
+    "BOSUN_START_SECS": "5",
+    "BOSUN_HOSTNAME": "localhost",
+    "BOSUN_PORT": "8070",
+    "PRODUCT_FLAVOR": "Pro",
+    "SUPERVISOR_CONF": "/opt/netsil/alerts/supervisor/alerts-supervisor-include.conf",
+    "BUILD_ENV": "production",
+    "MYSQL_ROOT_PASSWORD": "epoch2391",
+    "MYSQL_DATABASE": "netsil",
+    "MYSQL_ALLOW_EMPTY_PASSWORD": "no",
+    "MYSQL_USER": "netsil",
+    "MYSQL_PASSWORD": "epoch2391"
+  }
+}
+

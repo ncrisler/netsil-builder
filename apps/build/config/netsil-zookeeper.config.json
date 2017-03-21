@@ -1,0 +1,21 @@
+{
+  "netsil-zookeeper": {
+    "app_id": "netsil-zookeeper",
+    "port": 12181,
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.0.1",
+    "netsil_commit_hash": "09df57b",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.0.1",
+    "netsil_service_tag": "stable-0.2.1",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "instances": 1
+
+  }
+}

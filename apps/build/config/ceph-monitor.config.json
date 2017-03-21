@@ -1,0 +1,26 @@
+{
+  "ceph-monitor": {
+    "app_id": "ceph-monitor",
+    "mon_port": "9001",
+    "ceph_conf_dir": "/etc/ceph/mon",
+    "ceph_daemon": "mon",
+    "restapi_port": "9005",
+    "ceph_data_dir": "/var/lib/ceph-data",
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.0.9",
+    "netsil_commit_hash": "f19a8b984",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.0.9",
+    "netsil_service_tag": "stable-1.0.9",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "product_flavor": "Pro",
+    "instances": 1
+
+  }
+}

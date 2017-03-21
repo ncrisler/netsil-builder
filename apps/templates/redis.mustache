@@ -1,0 +1,64 @@
+{
+ "id": "{{ redis.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+{{#redis.production}}
+       {
+           "containerPath": "redis_data",
+           "mode": "RW",
+           "persistent": {
+             "size": 1000
+           }
+       },
+       {
+           "containerPath": "/var/lib/redis",
+           "hostPath": "redis_data",
+           "mode": "RW"
+       },
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+{{/redis.production}}
+{{#redis.development}}
+       {
+        "hostPath": "../tools/data-pipeline/redis",
+        "containerPath": "/opt/netsil/redis",
+        "mode": "RW"
+       },
+       {
+        "hostPath": "../pro/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+{{/redis.development}}
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ redis.uri_namespace }}/redis:{{ redis.netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ redis.port }}, "hostPort": {{ redis.port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+  "acceptedResourceRoles": ["{{ redis.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#redis.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/redis.private}}
+  "cpus": {{ redis.cpus }},
+  "mem": {{ redis.mem }},
+  "instances": {{ redis.instances }},
+  "residency": {
+    "taskLostBehavior": "WAIT_FOREVER"
+  }
+}

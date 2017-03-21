@@ -1,0 +1,54 @@
+{
+  "id": "{{ topology-service.app_id }}",
+  "container": {
+      "type": "DOCKER",
+      "volumes": [
+        {
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        },
+        {
+          "hostPath": "/var/tmp",
+          "containerPath": "/var/tmp",
+          "mode": "RW"
+        }
+      ],
+      "docker": {
+          "network": "BRIDGE",
+          "image": "{{ topology-service.uri_namespace }}/topology-service:{{ topology-service.netsil_service_tag }}",
+          "forcePullImage": false,
+          "portMappings": [
+              {"containerPort": {{ topology-service.port }}, "hostPort": {{ topology-service.port }}, "protocol":"tcp"}
+          ]
+      }
+  },
+  "cmd": ". /root/netsil-proxy/exports.sh && /root/netsil-proxy/startup.sh && supervisord -c /opt/netsil/netsil-proxy/tools/netsil-proxy/supervisor/netsil-proxy-supervisor-include.conf",
+  "cpus": {{ topology-service.cpus }},
+  "mem": {{ topology-service.mem }},
+  "instances": {{ topology-service.instances }},
+  "acceptedResourceRoles": ["{{ topology-service.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#topology-service.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/topology-service.private}}
+  "env": {
+    "TIME_SERIES_ENDPOINT_HOST": "{{ topology-service.time_series_endpoint_host }}",
+    "TIME_SERIES_ENDPOINT_PORT": "{{ topology-service.time_series_endpoint_port }}",
+    "USER_PERSISTENCE_SERVER_HOST": "{{ topology-service.user_persistence_server_host }}",
+    "USER_PERSISTENCE_SERVER_PORT": "{{ topology-service.user_persistence_server_port }}",
+  {{#topology-service.development}}
+    "BUILD_ENV": "development",
+  {{/topology-service.development}}
+  {{#topology-service.production}}
+    "BUILD_ENV": "production",
+  {{/topology-service.production}}
+    "PYTHON_SERVICE": "topology_service"
+  }
+}

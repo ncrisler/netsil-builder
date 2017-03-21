@@ -1,0 +1,72 @@
+{
+ "id": "{{ druid-realtime.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+        {
+          "containerPath": "realtime-segments",
+          "mode": "RW",
+          "persistent": {
+            "size": 5000
+          }
+        },
+        {
+          "containerPath": "/opt/netsil/druid/realtime-segments",
+          "hostPath": "realtime-segments",
+          "mode": "RW"
+        },
+        {
+          "containerPath": "localStorage",
+          "mode": "RW",   
+          "persistent": {
+            "size": 20000
+          }
+        },
+        {
+          "containerPath": "/tmp/druid/localStorage",
+          "hostPath": "localStorage",
+          "mode": "RW"
+        },
+        {
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ druid-realtime.uri_namespace }}/druid-realtime:{{ druid-realtime.netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ druid-realtime.druid_port }}, "hostPort": {{ druid-realtime.druid_port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": {{ druid-realtime.cpus }},
+  "mem": {{ druid-realtime.mem }},
+  "instances": {{ druid-realtime.instances }},
+  "acceptedResourceRoles": ["{{ druid-realtime.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#druid-realtime.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/druid-realtime.private}}
+  "env": {
+    "DO_SCALE": "yes",
+    "PRODUCT_FLAVOR": "{{ druid-realtime.product_flavor }}",
+    "DEPLOY_ENV": "marathon",
+    "NODE_TYPE": "realtime",
+    "druid_service": "{{ druid-realtime.druid_service }}",
+    "druid_port": "{{ druid-realtime.druid_port }}",
+    "druid_realtime_specFile": "{{ druid-realtime.druid_realtime_specFile }}",
+    "druid_server_http_numThreads": "{{ druid-realtime.druid_server_http_numThreads }}"
+  },
+  "residency": {
+    "taskLostBehavior": "WAIT_FOREVER"
+  }
+}

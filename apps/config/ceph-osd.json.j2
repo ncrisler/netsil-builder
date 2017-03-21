@@ -1,0 +1,17 @@
+{
+  "ceph-osd": {
+    "app_id": "ceph-osd",
+    "mon_ip": "ceph-monitor.marathon.mesos",
+    "mon_port": "9001",
+    "ceph_conf_dir": "/etc/ceph/osd",
+    "ceph_daemon": "osd",
+    "restapi_ip": "ceph-monitor.marathon.mesos",
+    "restapi_port": "9005",
+    "ceph_data_dir": "/var/lib/ceph-data",
+    "osd_type": "directory",
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

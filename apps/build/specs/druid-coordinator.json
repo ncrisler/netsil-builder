@@ -1,0 +1,42 @@
+{
+ "id": "druid-coordinator",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/druid-coordinator:stable-1.0.9",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 31001, "hostPort": 31001, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "NODE_TYPE": "coordinator",
+    "PRODUCT_FLAVOR": "Pro",
+    "DEPLOY_ENV": "marathon",
+    "druid_service": "druid-coordinator",
+    "druid_port": "31001",
+    "druid_coordinator_load_timeout": "PT30S",
+    "druid_coordinator_period": "PT60S"
+  }
+}
+

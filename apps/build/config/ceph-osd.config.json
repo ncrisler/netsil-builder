@@ -1,0 +1,29 @@
+{
+  "ceph-osd": {
+    "app_id": "ceph-osd",
+    "mon_ip": "ceph-monitor.marathon.mesos",
+    "mon_port": "9001",
+    "ceph_conf_dir": "/etc/ceph/osd",
+    "ceph_daemon": "osd",
+    "restapi_ip": "ceph-monitor.marathon.mesos",
+    "restapi_port": "9005",
+    "ceph_data_dir": "/var/lib/ceph-data",
+    "osd_type": "directory",
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.0.9",
+    "netsil_commit_hash": "f19a8b984",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.0.9",
+    "netsil_service_tag": "stable-1.0.9",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "product_flavor": "Pro",
+    "instances": 1
+
+  }
+}

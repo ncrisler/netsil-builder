@@ -1,0 +1,46 @@
+{
+  "id": "{{ metadata.app_id }}",
+  "container": {
+      "type": "DOCKER",
+      "volumes": [
+        {
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        }
+      ],
+      "docker": {
+          "network": "BRIDGE",
+          "image": "{{ metadata.uri_namespace }}/metadata:{{ metadata.netsil_service_tag }}",
+          "forcePullImage": false,
+          "portMappings": [
+              {"containerPort": 5444, "hostPort": {{ metadata.port }}, "protocol":"tcp"}
+          ]
+      }
+  },
+  "cpus": {{ metadata.cpus }},
+  "mem": {{ metadata.mem }},
+  "instances": {{ metadata.instances }},
+  "acceptedResourceRoles": ["{{ metadata.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#metadata.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/metadata.private}}
+  "env": {
+    "DO_SCALE": "yes",
+    "URI_NAMESPACE": "{{ metadata.uri_namespace }}",
+    "NETSIL_BUILD_BRANCH": "{{ metadata.netsil_build_branch }}",
+    "NETSIL_VERSION_NUMBER": "{{ metadata.netsil_version_number }}",
+    "NETSIL_COMMIT_HASH": "{{ metadata.netsil_commit_hash }}",
+    "NETSIL_BUILD_NUMBER": "{{ metadata.netsil_build_number }}",
+    "NETSIL_SERVICE_TAG": "{{ metadata.netsil_service_tag }}",
+    "NETSIL_VERSION_TAG": "{{ metadata.netsil_version_tag }}",
+    "BUILD_ENV": "{{ metadata.build_env }}"
+  }
+}

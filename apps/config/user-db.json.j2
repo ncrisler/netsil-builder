@@ -1,0 +1,10 @@
+{
+  "user-db": {
+    "app_id": "user-db",
+    "port": 3306,
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

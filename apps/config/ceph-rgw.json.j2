@@ -1,0 +1,17 @@
+{
+  "ceph-rgw": {
+    "app_id": "ceph-rgw",
+    "mon_ip": "ceph-monitor.marathon.mesos",
+    "mon_port": "9001",
+    "ceph_conf_dir": "/etc/ceph/rgw",
+    "ceph_daemon": "rgw",
+    "restapi_ip": "ceph-monitor.marathon.mesos",
+    "restapi_port": "9005",
+    "ceph_data_dir": "/var/lib/ceph-data",
+    "rgw_civetweb_port": "9004",
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

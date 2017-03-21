@@ -1,0 +1,28 @@
+{
+  "ingestion-server": {
+    "app_id": "ingestion-server",
+    "port": 5000,
+    "kafka_server": "kafka.marathon.mesos",
+    "kafka_port": 9092,
+    "pythonunbuffered": 0,
+    "elasticsearch_server": "elasticsearch.marathon.mesos",
+    "elasticsearch_port": 9200,
+    "valid_index_names": "events,notifications",
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.0.9",
+    "netsil_commit_hash": "f19a8b984",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.0.9",
+    "netsil_service_tag": "stable-1.0.9",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "product_flavor": "Pro",
+    "instances": 1
+
+  }
+}

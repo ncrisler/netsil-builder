@@ -1,0 +1,63 @@
+{
+ "id": "{{ frontend.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+{{#frontend.production}}
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+{{/frontend.production}}
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ frontend.uri_namespace }}/frontend:{{ frontend.netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ frontend.https_remote_port }}, "hostPort": {{ frontend.https_remote_port }}, "protocol":"tcp"},
+             {"containerPort": {{ frontend.http_local_port }}, "hostPort": {{ frontend.http_local_port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": {{ frontend.cpus }},
+  "mem": {{ frontend.mem }},
+  "instances": {{ frontend.instances }},
+  "acceptedResourceRoles": ["{{ frontend.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#frontend.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/frontend.private}}
+  "env": {
+    "DO_SCALE": "yes",
+    "TIME_SERIES_ENDPOINT_HOST": "{{ frontend.time_series_endpoint_host }}",
+    "TIME_SERIES_ENDPOINT_PORT": "{{ frontend.time_series_endpoint_port }}",
+    "API_SERVER_HOST": "{{ frontend.api_server_host }}",
+    "API_SERVER_PORT": "{{ frontend.api_server_port }}",
+    "USER_PERSISTENCE_HOST": "{{ frontend.user_persistence_host }}",
+    "USER_PERSISTENCE_PORT": "{{ frontend.user_persistence_port }}",
+    "TOPOLOGY_SERVICE_HOST": "{{ frontend.topology_service_host }}",
+    "TOPOLOGY_SERVICE_PORT": "{{ frontend.topology_service_port }}",
+    "ALERTS_SERVICE_HOST": "{{ frontend.alerts_service_host }}",
+    "ALERTS_SERVICE_PORT": "{{ frontend.alerts_service_port }}",
+    "ELASTICSEARCH_SERVER": "{{ frontend.elasticsearch_server }}",
+    "ELASTICSEARCH_PORT": "{{ frontend.elasticsearch_port }}",
+    "METADATA_HOST": "{{ frontend.metadata_service_host }}",
+    "METADATA_PORT": "{{ frontend.metadata_service_port }}",
+    "LICENSE_MANAGER_HOST": "{{ frontend.license_manager_service_host }}",
+    "LICENSE_MANAGER_PORT": "{{ frontend.license_manager_service_port }}",
+    "REDIS_HOST": "{{ frontend.redis_host }}",
+    "REDIS_PORT": "{{ frontend.redis_port }}",
+    "NODEJS_ENV": "{{ frontend.nodejs_env }}",
+    "HTTPS_REMOTE_PORT": "{{ frontend.https_remote_port }}",
+    "HTTP_LOCAL_PORT": "{{ frontend.http_local_port }}",
+    "PRODUCT_FLAVOR": "{{ frontend.product_flavor }}"
+  }
+}

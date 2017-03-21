@@ -1,0 +1,75 @@
+{
+ "id": "{{ ceph-rgw.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+      {
+        "containerPath": "ceph-data",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      },
+      {
+        "containerPath": "/var/lib/ceph-data",
+        "hostPath": "ceph-data",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "rgw",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      },
+      {
+        "containerPath": "/etc/ceph/rgw",
+        "hostPath": "rgw",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/var/log/netsil",
+        "hostPath": "/var/log/netsil",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/var/run/ceph",
+        "hostPath": "/var/run/ceph",
+        "mode": "RW"
+      }
+     ],
+     "docker": {
+         "network": "HOST",
+         "image": "{{ ceph-rgw.uri_namespace }}/ceph-rgw:{{ ceph-rgw.netsil_service_tag }}",
+         "forcePullImage": false,
+         "privileged": false
+     }
+ },
+  "cpus": {{ ceph-rgw.cpus }},
+  "mem": {{ ceph-rgw.mem }},
+  "instances": {{ ceph-rgw.instances }},
+  "acceptedResourceRoles": ["{{ ceph-rgw.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#ceph-rgw.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/ceph-rgw.private}}
+  "env": {
+    "MON_IP": "{{ ceph-rgw.mon_ip }}",
+    "MON_PORT": "{{ ceph-rgw.mon_port }}",
+    "CEPH_CONF_DIR": "{{ ceph-rgw.ceph_conf_dir }}",
+    "CEPH_DAEMON": "{{ ceph-rgw.ceph_daemon }}",
+    "RESTAPI_IP": "{{ ceph-rgw.restapi_ip }}",
+    "RESTAPI_PORT": "{{ ceph-rgw.restapi_port }}",
+    "CEPH_DATA_DIR": "{{ ceph-rgw.ceph_data_dir }}",
+    "RGW_CIVETWEB_PORT": "{{ ceph-rgw.rgw_civetweb_port }}"
+  }
+}
+
+
+

@@ -1,0 +1,11 @@
+{
+  "license-manager": {
+    "app_id": "license-manager",
+    "build_env": "{{ build_env }}",
+    "port": 9009,
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}
