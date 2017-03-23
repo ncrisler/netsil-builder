@@ -47,7 +47,7 @@ function check_docker() {
     fi
 }
 
-function check_ssh() {
+function check_ssh_auth() {
     ssh -i $SSH_PRIVATE_KEY \
         -o StrictHostKeyChecking=no \
         -o BatchMode=yes \
@@ -58,6 +58,15 @@ function check_ssh() {
     fi
 }
 
+function setup_ssh_auth() {
+    ssh-keygen -q -b 2048 -t rsa -N '' -f $DIR/netsil_rsa
+    cat $DIR/netsil_rsa.pub >> ~/.ssh/authorized_keys
+    SSH_PRIVATE_KEY=$DIR/netsil_rsa
+}
+
+####################################
+### Parse command line arguments ###
+####################################
 while [ $# -gt 0 ]; do
     case $1 in
         -h|--host)
@@ -124,7 +133,11 @@ if [ -z ${HOST} ]; then
     exit 1
 fi
 
-if [ ! -f "${SSH_PRIVATE_KEY}" ]; then
+if [ "$HOST" == "localhost" ] || [ "$HOST" == "127.0.0.1" ]; then
+    DEPLOY=local
+fi
+
+if [ ! -f "${SSH_PRIVATE_KEY}" ] && [ "$DEPLOY" != "local" ]; then
     echo "The private SSH key \"$SSH_PRIVATE_KEY\" does not appear to exist."
     display_usage
     exit 1
@@ -136,10 +149,28 @@ if [ ! -d "${APPS_DIR}" ]; then
     exit 1
 fi
 
-######################################################
-### Perform prerequisite checks for Docker and SSH ###
-######################################################
-check_docker && check_ssh
+#############################################
+### Perform prerequisite check for Docker ###
+#############################################
+check_docker
+
+##########################################
+### Local deployment pre-configuration ###
+##########################################
+if [ "$DEPLOY" == "local" ]; then
+    # Use Docker bridge IP address when setting host to localhost.
+    HOST=$(ip -f inet addr show docker0 | grep -Po 'inet \K[\d.]+')
+
+    # Setup local SSH key authentication.
+    if [ ! -f "${SSH_PRIVATE_KEY}" ]; then
+        setup_ssh_auth
+    fi
+fi
+
+##########################################
+### Perform prerequisite check for SSH ###
+##########################################
+check_ssh_auth
 
 ####################################
 ### Resolving NETSIL_VERSION_TAG ###
