@@ -1,0 +1,50 @@
+{
+ "id": "{{ notifications.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+{{#notifications.production}}
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+{{/notifications.production}}
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ notifications.uri_namespace }}/notifications:{{ notifications.netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ notifications.port }}, "hostPort": {{ notifications.port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": {{ notifications.cpus }},
+  "mem": {{ notifications.mem }},
+  "instances": {{ notifications.instances }},
+  "acceptedResourceRoles": ["{{ notifications.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#notifications.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/notifications.private}}
+  "env": {
+    "ALERTS_SERVICE_HOST": "{{ notifications.alerts_service_host }}",
+    "ALERTS_SERVICE_PORT": "{{ notifications.alerts_service_port }}",
+    "NETSIL_EVENTS_HOST": "{{ notifications.netsil_events_host }}",
+    "NETSIL_EVENTS_PORT": "{{ notifications.netsil_events_port }}",
+    "TIME_SERIES_ENDPOINT_HOST": "{{ notifications.time_series_endpoint_host }}",
+    "TIME_SERIES_ENDPOINT_PORT": "{{ notifications.time_series_endpoint_port }}",
+    "USER_PERSISTENCE_HOST": "{{ notifications.user_persistence_host }}",
+    "USER_PERSISTENCE_PORT": "{{ notifications.user_persistence_port }}",
+    "REDIS_HOST": "{{ notifications.redis_host }}",
+    "REDIS_PORT": "{{ notifications.redis_port }}",
+    "NODEJS_ENV": "{{ notifications.nodejs_env }}"
+  }
+}

@@ -1,0 +1,73 @@
+{
+ "id": "{{ ceph-osd.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+      {
+        "containerPath": "ceph-data",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      },
+      {
+        "containerPath": "/var/lib/ceph-data",
+        "hostPath": "ceph-data",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "osd",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      },
+      {
+        "containerPath": "/etc/ceph/osd",
+        "hostPath": "osd",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/var/log/netsil",
+        "hostPath": "/var/log/netsil",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/var/run/ceph",
+        "hostPath": "/var/run/ceph",
+        "mode": "RW"
+      }
+     ],
+     "docker": {
+         "network": "HOST",
+         "image": "{{ ceph-osd.uri_namespace }}/ceph-osd:{{ ceph-osd.netsil_service_tag }}",
+         "forcePullImage": false,
+         "privileged": false
+     }
+ },
+  "cpus": {{ ceph-osd.cpus }},
+  "mem": {{ ceph-osd.mem }},
+  "instances": {{ ceph-osd.instances }},
+  "acceptedResourceRoles": ["{{ ceph-osd.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#ceph-osd.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/ceph-osd.private}}
+  "env": {
+    "DO_SCALE": "yes",
+    "MON_IP": "{{ ceph-osd.mon_ip }}",
+    "MON_PORT": "{{ ceph-osd.mon_port }}",
+    "CEPH_CONF_DIR": "{{ ceph-osd.ceph_conf_dir }}",
+    "CEPH_DAEMON": "{{ ceph-osd.ceph_daemon }}",
+    "RESTAPI_IP": "{{ ceph-osd.restapi_ip }}",
+    "RESTAPI_PORT": "{{ ceph-osd.restapi_port }}",
+    "CEPH_DATA_DIR": "{{ ceph-osd.ceph_data_dir }}",
+    "OSD_TYPE": "{{ ceph-osd.osd_type }}"
+  }
+}

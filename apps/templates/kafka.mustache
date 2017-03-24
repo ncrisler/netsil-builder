@@ -1,0 +1,61 @@
+{
+ "id": "{{ kafka.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+         "containerPath": "kafka-log-dir",
+         "mode": "RW",
+         "persistent": {
+           "size": 10000
+         }
+       },
+       {
+         "containerPath": "/opt/netsil/kafka/kafka-log-dir",
+         "hostPath": "kafka-log-dir",
+         "mode": "RW"
+       },
+       {
+         "hostPath": "/var/log/netsil",
+         "containerPath": "/var/log/netsil",
+         "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ kafka.uri_namespace }}/kafka:{{ kafka.netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ kafka.port }}, "hostPort": {{ kafka.port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": {{ kafka.cpus }},
+  "mem": {{ kafka.mem }},
+  "instances": {{ kafka.instances }},
+  "acceptedResourceRoles": ["{{ kafka.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#kafka.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/kafka.private}}
+  "env": {
+    "DEPLOY_ENV": "marathon",
+    "START_TIMEOUT": "{{ kafka.start_timeout }}",
+    "KAFKA_ADVERTISED_PORT": "{{ kafka.port }}",
+    "KAFKA_ZOOKEEPER_CONNECT": "{{ kafka.zk_connect }}",
+    "KAFKA_LOG_RETENTION_BYTES": "{{ kafka.log_retention_bytes }}",
+    "KAFKA_LOG_RETENTION_HOURS": "{{ kafka.log_retention_hours }}",
+    "KAFKA_LOG_DIRS": "{{ kafka.log_dirs }}",
+    "KAFKA_LOG_SEGMENT_BYTES": "{{ kafka.log_segment_bytes }}",
+    "KAFKA_NUM_PARTITIONS": "{{ kafka.num_partitions }}"
+  },
+  "residency": {
+    "taskLostBehavior": "WAIT_FOREVER"
+  }
+}

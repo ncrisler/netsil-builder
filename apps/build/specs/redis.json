@@ -1,0 +1,47 @@
+{
+ "id": "redis",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+           "containerPath": "redis_data",
+           "mode": "RW",
+           "persistent": {
+             "size": 1000
+           }
+       },
+       {
+           "containerPath": "/var/lib/redis",
+           "hostPath": "redis_data",
+           "mode": "RW"
+       },
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/redis:stable-1.1.2",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 6379, "hostPort": 6379, "protocol":"tcp"}
+         ]
+     }
+ },
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "residency": {
+    "taskLostBehavior": "WAIT_FOREVER"
+  }
+}

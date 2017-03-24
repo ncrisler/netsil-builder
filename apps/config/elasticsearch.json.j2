@@ -1,0 +1,11 @@
+{
+  "elasticsearch": {
+    "app_id": "elasticsearch",
+    "http_port": 9200,
+    "transport_port": 9300,
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

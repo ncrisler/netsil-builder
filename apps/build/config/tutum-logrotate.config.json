@@ -1,0 +1,21 @@
+{
+  "tutum-logrotate": {
+    "app_id": "tutum-logrotate",
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.1.2",
+    "netsil_commit_hash": "298b19425",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.1.2",
+    "netsil_service_tag": "stable-1.1.2",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "product_flavor": "Pro",
+    "instances": 1
+
+  }
+}

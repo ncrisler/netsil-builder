@@ -1,0 +1,56 @@
+{
+ "id": "stream-processor",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       },
+       {
+        "hostPath": "/",
+        "containerPath": "/outer_host",
+        "mode": "RW"
+       },
+       {
+        "hostPath": "/var/tmp",
+        "containerPath": "/var/tmp",
+        "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/stream-processor:stable-1.1.2",
+         "forcePullImage": false,
+         "privileged": true,
+         "portMappings": [
+             {"containerPort": 2001, "hostPort": 2001, "protocol":"tcp"},
+             {"containerPort": 2003, "hostPort": 2003, "protocol":"udp,tcp"},
+             {"containerPort": 8888, "hostPort": 8888, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cmd": ". /root/stream-processor/exports.sh && /root/stream-processor/startup.sh && supervisord -c /opt/netsil/stream-processor/supervisor/stream-processor-supervisor-include.conf",
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "DO_SCALE": "yes",
+    "PRODUCT_FLAVOR": "Pro",
+    "DEPLOY_ENV": "marathon",
+    "ZK_HOST": "leader.mesos",
+    "ZK_PORT": "2181",
+    "NETSIL_EVENTS_HOST": "ingestion-server.marathon.mesos",
+    "NETSIL_EVENTS_PORT": "5000"
+  }
+}
+

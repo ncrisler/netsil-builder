@@ -1,0 +1,61 @@
+{
+  "id": "druid-overlord",
+  "container": {
+    "volumes": [
+    ],
+    "docker": {
+      "network": "BRIDGE",
+      "image": "netsil/druid-overlord:stable-1.1.2",
+      "forcePullImage": false,
+      "portMappings": [
+        {"containerPort": 31006, "hostPort": 31006},
+        {"containerPort": 31011, "hostPort": 31011},
+        {"containerPort": 31012, "hostPort": 31012},
+        {"containerPort": 31013, "hostPort": 31013},
+        {"containerPort": 31014, "hostPort": 31014},
+        {"containerPort": 31015, "hostPort": 31015}
+      ]
+    },
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "/tmp/druid/localStorage",
+        "hostPath": "druid-overlord-data",
+        "mode": "RW"
+      },
+      {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+      }
+    ]
+  },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "NODE_TYPE": "overlord",
+    "PRODUCT_FLAVOR": "Pro",
+    "DEPLOY_ENV": "marathon",
+    "druid_service": "druid-overlord",
+    "druid_port": "31006",
+    "druid_indexer_runner_type": "local",
+    "druid_indexer_runner_startPort": "31011",
+    "druid_indexer_runner_javaOpts": "-server -Xmx1g -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager",
+    "druid_worker_ip": "druid-overlord.marathon.mesos",
+    "druid_indexer_task_baseTaskDir": "var/druid/task",
+    "druid_indexer_storage_type": "metadata",
+    "druid_indexer_queue_startDelay": "PT30S",
+    "druid_indexer_fork_property_druid_processing_numThreads": "4",
+    "druid_indexer_fork_property_druid_computation_buffer_size": "100000000"
+  }
+}
+

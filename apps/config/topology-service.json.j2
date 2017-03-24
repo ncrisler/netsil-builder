@@ -1,0 +1,14 @@
+{
+  "topology-service": {
+    "app_id": "topology-service",
+    "port": 9002,
+    "time_series_endpoint_host": "time-series-query-service.marathon.mesos",
+    "time_series_endpoint_port": "9047",
+    "user_persistence_server_host": "user-persistence.marathon.mesos",
+    "user_persistence_server_port": "8891",
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

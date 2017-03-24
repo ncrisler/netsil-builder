@@ -1,0 +1,45 @@
+{
+ "id": "user-persistence",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/user-persistence:stable-1.1.2",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 8891, "hostPort": 8891, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "PRODUCT_FLAVOR": "Pro",
+    "REDIS_HOST": "redis.marathon.mesos",
+    "REDIS_PORT": "6379",
+    "NODEJS_ENV": "NODE_ENV=production",
+    "USER_DB_HOST": "user-db.marathon.mesos",
+    "USER_DB_PORT": "3306",
+    "MYSQL_ROOT_PASSWORD": "epoch2391",
+    "MYSQL_DATABASE": "netsil",
+    "MYSQL_ALLOW_EMPTY_PASSWORD": "no",
+    "MYSQL_USER": "netsil",
+    "MYSQL_PASSWORD": "epoch2391"
+  }
+}

@@ -1,0 +1,73 @@
+{
+ "id": "ceph-rgw",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+      {
+        "containerPath": "ceph-data",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      },
+      {
+        "containerPath": "/var/lib/ceph-data",
+        "hostPath": "ceph-data",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "rgw",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      },
+      {
+        "containerPath": "/etc/ceph/rgw",
+        "hostPath": "rgw",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/var/log/netsil",
+        "hostPath": "/var/log/netsil",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/var/run/ceph",
+        "hostPath": "/var/run/ceph",
+        "mode": "RW"
+      }
+     ],
+     "docker": {
+         "network": "HOST",
+         "image": "netsil/ceph-rgw:stable-1.1.2",
+         "forcePullImage": false,
+         "privileged": false
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "MON_IP": "ceph-monitor.marathon.mesos",
+    "MON_PORT": "9001",
+    "CEPH_CONF_DIR": "/etc/ceph/rgw",
+    "CEPH_DAEMON": "rgw",
+    "RESTAPI_IP": "ceph-monitor.marathon.mesos",
+    "RESTAPI_PORT": "9005",
+    "CEPH_DATA_DIR": "/var/lib/ceph-data",
+    "RGW_CIVETWEB_PORT": "9004"
+  }
+}
+
+
+
+

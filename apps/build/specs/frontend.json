@@ -1,0 +1,62 @@
+{
+ "id": "frontend",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/frontend:stable-1.1.2",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 443, "hostPort": 443, "protocol":"tcp"},
+             {"containerPort": 80, "hostPort": 80, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "DO_SCALE": "yes",
+    "TIME_SERIES_ENDPOINT_HOST": "time-series-query-service.marathon.mesos",
+    "TIME_SERIES_ENDPOINT_PORT": "9047",
+    "API_SERVER_HOST": "stream-processor.marathon.mesos",
+    "API_SERVER_PORT": "8888",
+    "USER_PERSISTENCE_HOST": "user-persistence.marathon.mesos",
+    "USER_PERSISTENCE_PORT": "8891",
+    "TOPOLOGY_SERVICE_HOST": "topology-service.marathon.mesos",
+    "TOPOLOGY_SERVICE_PORT": "9002",
+    "ALERTS_SERVICE_HOST": "alerts.marathon.mesos",
+    "ALERTS_SERVICE_PORT": "8881",
+    "ELASTICSEARCH_SERVER": "elasticsearch.marathon.mesos",
+    "ELASTICSEARCH_PORT": "9200",
+    "METADATA_HOST": "metadata.marathon.mesos",
+    "METADATA_PORT": "5444",
+    "LICENSE_MANAGER_SERVICE_HOST": "license-manager.marathon.mesos",
+    "LICENSE_MANAGER_SERVICE_PORT": "9009",
+    "REDIS_HOST": "redis.marathon.mesos",
+    "REDIS_PORT": "6379",
+    "BACKUPS_HOST": "backups.marathon.mesos",
+    "BACKUPS_PORT": "9090",
+    "NODEJS_ENV": "NODE_ENV=production",
+    "HTTPS_REMOTE_PORT": "443",
+    "HTTP_LOCAL_PORT": "80",
+    "WS_LOCAL_PORT": "81",
+    "PRODUCT_FLAVOR": "Pro"
+  }
+}
+

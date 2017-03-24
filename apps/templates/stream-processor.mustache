@@ -1,0 +1,60 @@
+{
+ "id": "{{ stream-processor.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+{{#stream-processor.production}}
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       },
+       {
+        "hostPath": "/",
+        "containerPath": "/outer_host",
+        "mode": "RW"
+       },
+       {
+        "hostPath": "/var/tmp",
+        "containerPath": "/var/tmp",
+        "mode": "RW"
+       }
+{{/stream-processor.production}}
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ stream-processor.uri_namespace }}/stream-processor:{{ stream-processor.netsil_service_tag }}",
+         "forcePullImage": false,
+         "privileged": true,
+         "portMappings": [
+             {"containerPort": {{ stream-processor.infra_stats_port }}, "hostPort": {{ stream-processor.infra_stats_port }}, "protocol":"tcp"},
+             {"containerPort": {{ stream-processor.traffic_stats_port }}, "hostPort": {{ stream-processor.traffic_stats_port }}, "protocol":"udp,tcp"},
+             {"containerPort": {{ stream-processor.api_server_port }}, "hostPort": {{ stream-processor.api_server_port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cmd": ". /root/stream-processor/exports.sh && /root/stream-processor/startup.sh && supervisord -c /opt/netsil/stream-processor/supervisor/stream-processor-supervisor-include.conf",
+  "cpus": {{ stream-processor.cpus }},
+  "mem": {{ stream-processor.mem }},
+  "instances": {{ stream-processor.instances }},
+  "acceptedResourceRoles": ["{{ stream-processor.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#stream-processor.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/stream-processor.private}}
+  "env": {
+    "DO_SCALE": "yes",
+    "PRODUCT_FLAVOR": "{{ stream-processor.product_flavor }}",
+    "DEPLOY_ENV": "{{ stream-processor.deploy_env }}",
+    "ZK_HOST": "{{ stream-processor.zk_host }}",
+    "ZK_PORT": "{{ stream-processor.zk_port }}",
+    "NETSIL_EVENTS_HOST": "{{ stream-processor.netsil_events_host }}",
+    "NETSIL_EVENTS_PORT": "{{ stream-processor.netsil_events_port }}"
+  }
+}

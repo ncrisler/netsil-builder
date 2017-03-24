@@ -1,0 +1,18 @@
+{
+  "kafka": {
+    "app_id": "kafka",
+    "port": "9092",
+    "hostname": "kafka.marathon.mesos",
+    "zk_connect": "leader.mesos:2181",
+    "start_timeout": "10",
+    "log_retention_bytes": "262144000",
+    "log_segment_bytes": "104857600",
+    "log_retention_hours": "2",
+    "log_dirs": "/opt/netsil/kafka/kafka-log-dir",
+    "num_partitions": "4",
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

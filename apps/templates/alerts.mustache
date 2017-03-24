@@ -1,0 +1,64 @@
+{
+ "id": "{{ alerts.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+{{#alerts.production}}
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+{{/alerts.production}}
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ alerts.uri_namespace }}/alerts:{{ alerts.netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ alerts.bosun_web_port }}, "hostPort": {{ alerts.bosun_web_port }}, "protocol":"tcp"},
+             {"containerPort": {{ alerts.alert_service_port }}, "hostPort": {{ alerts.alert_service_port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cmd": "/opt/netsil/alerts/scripts/startup.sh && supervisord -c /opt/netsil/alerts/supervisor/alerts-supervisor-include.conf",
+  "cpus": {{ alerts.cpus }},
+  "mem": {{ alerts.mem }},
+  "instances": {{ alerts.instances }},
+  "acceptedResourceRoles": ["{{ alerts.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#alerts.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/alerts.private}}
+  "env": {
+    "NODEJS_ENV": "{{ alerts.nodejs_env }}",
+    "USER_DB_HOST": "{{ alerts.user_db_host }}",
+    "USER_DB_PORT": "{{ alerts.user_db_port }}",
+    "NETSIL_EVENTS_HOST": "{{ alerts.netsil_events_host }}",
+    "NETSIL_EVENTS_PORT": "{{ alerts.netsil_events_port }}",
+    "USER_PERSISTENCE_HOST": "{{ alerts.user_persistence_host }}",
+    "USER_PERSISTENCE_PORT": "{{ alerts.user_persistence_port }}",
+    "TIME_SERIES_ENDPOINT_HOST": "{{ alerts.time_series_endpoint_host }}",
+    "TIME_SERIES_ENDPOINT_PORT": "{{ alerts.time_series_endpoint_port }}",
+    "REDIS_HOST": "{{ alerts.redis_host }}",
+    "REDIS_PORT": "{{ alerts.redis_port }}",
+    "BOSUN_CONF_FILE": "/opt/bosun.conf",
+    "BOSUN_START_SECS": "5",
+    "BOSUN_HOSTNAME": "localhost",
+    "BOSUN_PORT": "8070",
+    "PRODUCT_FLAVOR": "Pro",
+    "SUPERVISOR_CONF": "/opt/netsil/alerts/supervisor/alerts-supervisor-include.conf",
+    "BUILD_ENV": "{{ alerts.build_env }}",
+    "MYSQL_ROOT_PASSWORD": "epoch2391",
+    "MYSQL_DATABASE": "netsil",
+    "MYSQL_ALLOW_EMPTY_PASSWORD": "no",
+    "MYSQL_USER": "netsil",
+    "MYSQL_PASSWORD": "epoch2391"
+  }
+}

@@ -1,0 +1,71 @@
+{
+ "id": "ceph-osd",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+      {
+        "containerPath": "ceph-data",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      },
+      {
+        "containerPath": "/var/lib/ceph-data",
+        "hostPath": "ceph-data",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "osd",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      },
+      {
+        "containerPath": "/etc/ceph/osd",
+        "hostPath": "osd",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/var/log/netsil",
+        "hostPath": "/var/log/netsil",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/var/run/ceph",
+        "hostPath": "/var/run/ceph",
+        "mode": "RW"
+      }
+     ],
+     "docker": {
+         "network": "HOST",
+         "image": "netsil/ceph-osd:stable-1.1.2",
+         "forcePullImage": false,
+         "privileged": false
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "DO_SCALE": "yes",
+    "MON_IP": "ceph-monitor.marathon.mesos",
+    "MON_PORT": "9001",
+    "CEPH_CONF_DIR": "/etc/ceph/osd",
+    "CEPH_DAEMON": "osd",
+    "RESTAPI_IP": "ceph-monitor.marathon.mesos",
+    "RESTAPI_PORT": "9005",
+    "CEPH_DATA_DIR": "/var/lib/ceph-data",
+    "OSD_TYPE": "directory"
+  }
+}
+

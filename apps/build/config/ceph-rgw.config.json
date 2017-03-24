@@ -1,0 +1,29 @@
+{
+  "ceph-rgw": {
+    "app_id": "ceph-rgw",
+    "mon_ip": "ceph-monitor.marathon.mesos",
+    "mon_port": "9001",
+    "ceph_conf_dir": "/etc/ceph/rgw",
+    "ceph_daemon": "rgw",
+    "restapi_ip": "ceph-monitor.marathon.mesos",
+    "restapi_port": "9005",
+    "ceph_data_dir": "/var/lib/ceph-data",
+    "rgw_civetweb_port": "9004",
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.1.2",
+    "netsil_commit_hash": "298b19425",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.1.2",
+    "netsil_service_tag": "stable-1.1.2",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "product_flavor": "Pro",
+    "instances": 1
+
+  }
+}

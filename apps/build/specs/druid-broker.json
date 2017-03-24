@@ -1,0 +1,54 @@
+{
+ "id": "druid-broker",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/druid-broker:stable-1.1.2",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 31004, "hostPort": 31004, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "NODE_TYPE": "broker",
+    "PRODUCT_FLAVOR": "Pro",
+    "DEPLOY_ENV": "marathon",
+    "druid_service": "druid-broker",
+    "druid_port": "31004",
+    "druid_server_http_numThreads": "20"
+  },
+  "healthChecks": [
+    {
+      "protocol": "COMMAND",
+      "command": {
+        "value": "curl 'http://$HOST:$PORT0/druid/broker/v1/loadstatus'|grep true"
+      },
+      "gracePeriodSeconds": 120,
+      "intervalSeconds": 30,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 2,
+      "ignoreHttp1xx": false
+    }
+  ]
+}
+

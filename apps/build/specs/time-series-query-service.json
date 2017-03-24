@@ -1,0 +1,51 @@
+{
+ "id": "time-series-query-service",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+        {
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        },
+        {
+          "hostPath": "/var/tmp",
+          "containerPath": "/var/tmp",
+          "mode": "RW"
+        }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/time-series-query-service:stable-1.1.2",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 9047, "hostPort": 9047, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cmd": ". /root/netsil-proxy/exports.sh && /root/netsil-proxy/startup.sh && supervisord -c /opt/netsil/netsil-proxy/tools/netsil-proxy/supervisor/netsil-proxy-supervisor-include.conf",
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "PRODUCT_FLAVOR": "Pro",
+    "DRUID_HOST": "druid-broker.marathon.mesos",
+    "DRUID_PORT": "31004",
+    "SQL_HOST": "stream-processor.marathon.mesos",
+    "SQL_PORT": "8888",
+    "USER_PERSISTENCE_SERVER_HOST": "user-persistence.marathon.mesos",
+    "USER_PERSISTENCE_SERVER_PORT": "8891",
+    "ELASTICSEARCH_SERVER": "elasticsearch.marathon.mesos",
+    "ELASTICSEARCH_PORT" : "9200",
+    "BUILD_ENV": "production",
+    "PYTHON_SERVICE": "time_series_query_service"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "netsil-zookeeper": {
+    "app_id": "netsil-zookeeper",
+    "port": 12181,
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

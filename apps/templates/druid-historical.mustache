@@ -1,0 +1,58 @@
+{
+ "id": "{{ druid-historical.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+        {
+            "containerPath": "druid-historical-data",
+            "mode": "RW",
+            "persistent": {
+              "size": 100
+            }
+        },
+        {
+            "containerPath": "/var/tmp/druid/indexCache",
+            "hostPath": "druid-historical-data",
+            "mode": "RW"
+        },
+        {
+
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ druid-historical.uri_namespace }}/druid-historical:{{ druid-historical.netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ druid-historical.druid_port }}, "hostPort": {{ druid-historical.druid_port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": {{ druid-historical.cpus }},
+  "mem": {{ druid-historical.mem }},
+  "instances": {{ druid-historical.instances }},
+  "acceptedResourceRoles": ["{{ druid-historical.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#druid-historical.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/druid-historical.private}}
+  "env": {
+    "DO_SCALE": "yes",
+    "NODE_TYPE": "historical",
+    "PRODUCT_FLAVOR": "{{ druid-historical.product_flavor }}",
+    "DEPLOY_ENV": "marathon",
+    "druid_service": "{{ druid-historical.druid_service }}",
+    "druid_port": "{{ druid-historical.druid_port }}",
+    "druid_server_http_numThreads": "{{ druid-historical.druid_server_http_numThreads }}",
+    "druid_segmentCache_numLoadingThreads": "{{ druid-historical.druid_segmentCache_numLoadingThreads }}"
+  }
+}

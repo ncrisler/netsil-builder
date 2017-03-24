@@ -1,0 +1,42 @@
+{
+ "id": "ingestion-server",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/ingestion-server:stable-1.1.2",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 5000, "hostPort": 5000, "protocol":"tcp"}
+         ]
+     }
+ },
+ "cpus": 1.0,
+ "mem": 16384,
+ "instances": 1,
+ "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+ "env": {
+   "PRODUCT_FLAVOR": "Pro",
+   "KAFKA_SERVER": "kafka.marathon.mesos",
+   "KAFKA_PORT": "9092",
+   "PYTHONUNBUFFERED": "0",
+   "ELASTICSEARCH_SERVER": "elasticsearch.marathon.mesos",
+   "ELASTICSEARCH_PORT": "9200",
+   "VALID_INDEX_NAMES": "events,notifications"
+ }
+}
+

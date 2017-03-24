@@ -1,0 +1,59 @@
+{
+ "id": "{{ time-series-query-service.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+        {
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        },
+        {
+          "hostPath": "/var/tmp",
+          "containerPath": "/var/tmp",
+          "mode": "RW"
+        }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ time-series-query-service.uri_namespace }}/time-series-query-service:{{ time-series-query-service.netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ time-series-query-service.port }}, "hostPort": {{ time-series-query-service.port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cmd": ". /root/netsil-proxy/exports.sh && /root/netsil-proxy/startup.sh && supervisord -c /opt/netsil/netsil-proxy/tools/netsil-proxy/supervisor/netsil-proxy-supervisor-include.conf",
+  "cpus": {{ time-series-query-service.cpus }},
+  "mem": {{ time-series-query-service.mem }},
+  "instances": {{ time-series-query-service.instances }},
+  "acceptedResourceRoles": ["{{ time-series-query-service.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#time-series-query-service.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/time-series-query-service.private}}
+  "env": {
+    "PRODUCT_FLAVOR": "Pro",
+    "DRUID_HOST": "{{ time-series-query-service.druid_host }}",
+    "DRUID_PORT": "{{ time-series-query-service.druid_port }}",
+    "SQL_HOST": "{{ time-series-query-service.sql_host }}",
+    "SQL_PORT": "{{ time-series-query-service.sql_port }}",
+    "USER_PERSISTENCE_SERVER_HOST": "{{ time-series-query-service.user_persistence_server_host }}",
+    "USER_PERSISTENCE_SERVER_PORT": "{{ time-series-query-service.user_persistence_server_port }}",
+    "ELASTICSEARCH_SERVER": "{{ time-series-query-service.elasticsearch_server }}",
+    "ELASTICSEARCH_PORT" : "{{ time-series-query-service.elasticsearch_port }}",
+  {{#time-series-query-service.development}}
+    "BUILD_ENV": "development",
+  {{/time-series-query-service.development}}
+  {{#time-series-query-service.production}}
+    "BUILD_ENV": "production",
+  {{/time-series-query-service.production}}
+    "PYTHON_SERVICE": "time_series_query_service"
+  }
+}

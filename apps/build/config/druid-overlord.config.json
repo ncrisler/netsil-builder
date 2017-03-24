@@ -1,0 +1,37 @@
+{
+  "druid-overlord": {
+    "app_id": "druid-overlord",
+    "NODE_TYPE": "overlord",
+    "druid_service": "druid-overlord",
+    "druid_port": "31006",
+    "druid_indexer_logs_type": "s3",
+    "druid_indexer_logs_s3Prefix": "overlord-data",
+    "druid_indexer_logs_s3Bucket": "druid-deep-store",
+    "druid_indexer_runner_type": "local",
+    "druid_indexer_runner_startPort": "31011",
+    "druid_indexer_runner_javaOpts": "-server -Xmx1g -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager",
+    "druid_worker_ip": "druid-overlord.marathon.mesos",
+    "druid_indexer_task_baseTaskDir": "var/druid/task",
+    "druid_indexer_storage_type": "metadata",
+    "druid_indexer_queue_startDelay": "PT30S",
+    "druid_indexer_runner_startPort": "31011",
+    "druid_indexer_fork_property_druid_processing_numThreads": "4",
+    "druid_indexer_fork_property_druid_computation_buffer_size": "100000000",
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.1.2",
+    "netsil_commit_hash": "298b19425",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.1.2",
+    "netsil_service_tag": "stable-1.1.2",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "product_flavor": "Pro",
+    "instances": 1
+
+  }
+}

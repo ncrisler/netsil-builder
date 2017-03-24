@@ -1,0 +1,46 @@
+{
+ "id": "notifications",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/notifications:stable-1.1.2",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 8882, "hostPort": 8882, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "ALERTS_SERVICE_HOST": "alerts.marathon.mesos",
+    "ALERTS_SERVICE_PORT": "8881",
+    "NETSIL_EVENTS_HOST": "ingestion-server.marathon.mesos",
+    "NETSIL_EVENTS_PORT": "5000",
+    "TIME_SERIES_ENDPOINT_HOST": "time-series-query-service.marathon.mesos",
+    "TIME_SERIES_ENDPOINT_PORT": "9047",
+    "USER_PERSISTENCE_HOST": "user-persistence.marathon.mesos",
+    "USER_PERSISTENCE_PORT": "8891",
+    "REDIS_HOST": "redis.marathon.mesos",
+    "REDIS_PORT": "6379",
+    "NODEJS_ENV": "NODE_ENV=production"
+  }
+}
+

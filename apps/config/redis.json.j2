@@ -1,0 +1,10 @@
+{
+  "redis": {
+    "app_id": "redis",
+    "port": 6379,
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

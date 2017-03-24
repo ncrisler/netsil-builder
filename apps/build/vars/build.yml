@@ -1,0 +1,206 @@
+# TODO: Move "NETSIL_VERSION_NUMBER" to the toplevel, so it's more visible
+# "NETSIL_VERSION_NUMBER" is the parent version number, and represents the versions of:
+# - Pro
+# - Lite
+# - collectors
+# - upgrade-manager
+# - netsil/upgrade repo
+# This means that all the above services MUST be versioned together
+
+# "NETSIL_VERSION_NUMBER" must be passed to:
+# - sp-lb (TODO: we have to move version number functionality away from SP-LB env and to the metadata service)
+# - metadata
+
+# These encode the version numbers for our images
+images:
+    alerts:                     1.1.2
+    backups:                    1.1.2
+    ceph-monitor:               1.1.2
+    ceph-osd:                   1.1.2
+    ceph-rgw:                   1.1.2
+    druid-broker:               1.1.2
+    druid-coordinator:          1.1.2
+    druid-historical:           1.1.2
+    druid-overlord:             1.1.2
+    druid-realtime:             1.1.2
+    elasticsearch:              1.1.2
+    frontend:                   1.1.2
+    ingestion-server:           1.1.2
+    kafka:                      1.1.2
+    license-manager:            1.1.2
+    logstash:                   1.1.2
+    metadata:                   1.1.2
+    # TODO: Should we move the "netsil" image out of here and make this a list of pro-only images?
+    netsil:                     1.1.2
+    collectors:                 1.1.2
+    topology-service:           1.1.2
+    time-series-query-service:  1.1.2
+    sp-load-balancer:           1.1.2
+    notifications:              1.1.2
+    redis:                      1.1.2
+    stream-processor:           1.1.2
+    upgrade-manager:            1.1.2
+    user-db:                    1.1.2
+    user-persistence:           1.1.2
+
+envDefaults:
+    NETSIL_BUILD_BRANCH: master
+    NETSIL_VERSION_MAJOR: 0
+    NETSIL_VERSION_MINOR: 2
+    NETSIL_BUILD_NUMBER: 0
+    NETSIL_VERSION_NUMBER: 1.1.2
+    URI_NAMESPACE: netsil
+    BUILD_TYPE: release
+    PRODUCT_FLAVOR: Lite
+    BUILD_ENV: production
+    OMNIBUS_BRANCH: netsil/5.11.2
+    OMNIBUS_SOFTWARE_BRANCH: netsil/5.11.2
+    OMNIBUS_RUBY_BRANCH: datadog-5.5.0
+    DD_AGENT_BRANCH: netsil/5.11.2
+    TRACE_AGENT_BRANCH: 5.11.0
+    OMNIBUS_BUILD: ~/omnibus
+    OMNIBUS_PKG_DIR: ~/omnibus
+    # pro build variables
+    RESOURCE_ROLE: '*'
+    CLOUD_PLATFORM: none
+    IS_PRIVATE_REGISTRY: 'true'
+    FORCE_PULL_IMAGE: 'false'
+
+branches:
+    stable:
+        tagWithBuildMetadata: false
+    staging:
+        tagWithBuildMetadata: false
+
+flattenImages:
+    Lite:
+        - netsil
+
+    Pro:
+        - stream-processor
+        - topology-service
+        - time-series-query-service
+        - sp-load-balancer
+        - alerts
+        - backups
+
+flattenEquivalentImages:
+     Pro:
+       netsil-proxy:
+        - topology-service
+        - time-series-query-service
+        - sp-load-balancer
+
+# check for history and source files
+checkedImages:
+    Lite:
+        - netsil
+
+    Pro:
+        - stream-processor
+        - topology-service
+        - time-series-query-service
+        - sp-load-balancer
+        - alerts
+
+sources:
+    netsil:
+        base: /root/stream-processor
+        dirs:
+            - src
+
+    alerts:
+        base: /go
+        dirs:
+            - src
+            - pkg
+
+    sp-load-balancer:
+        base: /root/netsil-proxy
+        dirs:
+            - src
+
+    stream-processor:
+        base: /root/stream-processor
+        dirs:
+            - src
+
+    topology-service:
+        base: /root/netsil-proxy
+        dirs:
+            - src
+
+    time-series-query-service:
+        base: /root/netsil-proxy
+        dirs:
+            - src
+
+    license-manager:
+        base: /opt/netsil/license-manager
+        dirs:
+            - client
+
+pushImages:
+    Lite:
+        - netsil
+        - collectors
+        - upgrade-manager
+
+    Pro:
+        - alerts
+        - backups
+        - ceph-monitor
+        - ceph-osd
+        - ceph-rgw
+        - druid-broker
+        - druid-coordinator
+        - druid-historical
+        - druid-overlord
+        - druid-realtime
+        - elasticsearch
+        - frontend
+        - ingestion-server
+        - kafka
+        - license-manager
+        - logstash
+        - metadata
+        - notifications
+        - redis
+        - sp-load-balancer
+        - stream-processor
+        - time-series-query-service
+        - topology-service
+        - tutum-logrotate
+        - user-db
+        - user-persistence
+
+clean:
+    frontend:
+        path: tools/web-server/frontend
+        files:
+            - bin/install-netsil-collectors.sh
+            - public/*.deb
+            - public/*.rpm
+
+    collectors:
+        path: toos/collectors
+        files:
+            - '*.deb'
+            - '*.rpm'
+
+publishSpecs:
+    install:
+        template: lite/install.sh.mustache
+        ext:  sh
+
+    docker-compose:
+        template: lite/docker-compose.prod.yml.mustache
+        ext:  yml
+
+    netsil-dcos:
+        template: lite/netsil-dcos.json.mustache
+        ext: json
+
+    netsil-dcos-collectors:
+        template: tools/web-server/frontend/bin/netsil-collectors.json.mustache
+        ext: json

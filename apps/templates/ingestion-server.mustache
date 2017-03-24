@@ -1,0 +1,46 @@
+{
+ "id": "{{ ingestion-server.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+{{#ingestion-server.production}}
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+{{/ingestion-server.production}}
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ ingestion-server.uri_namespace }}/ingestion-server:{{ ingestion-server.netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ ingestion-server.port }}, "hostPort": {{ ingestion-server.port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+ "cpus": {{ ingestion-server.cpus }},
+ "mem": {{ ingestion-server.mem }},
+ "instances": {{ ingestion-server.instances }},
+ "acceptedResourceRoles": ["{{ ingestion-server.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#ingestion-server.private}}
+ "uris": ["file:///etc/docker.tar.gz"],
+{{/ingestion-server.private}}
+ "env": {
+   "PRODUCT_FLAVOR": "Pro",
+   "KAFKA_SERVER": "{{ ingestion-server.kafka_server }}",
+   "KAFKA_PORT": "{{ ingestion-server.kafka_port }}",
+   "PYTHONUNBUFFERED": "{{ ingestion-server.pythonunbuffered }}",
+   "ELASTICSEARCH_SERVER": "{{ ingestion-server.elasticsearch_server }}",
+   "ELASTICSEARCH_PORT": "{{ ingestion-server.elasticsearch_port }}",
+   "VALID_INDEX_NAMES": "{{ ingestion-server.valid_index_names }}"
+ }
+}

@@ -1,0 +1,50 @@
+{
+ "id": "user-db",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+       {
+         "containerPath": "mysqldata",
+         "mode": "RW",
+         "persistent": {
+           "size": 1000
+         }
+       },
+       {
+         "containerPath": "/var/lib/mysql",
+         "hostPath": "mysqldata",
+         "mode": "RW"
+       },
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/user-db:stable-1.1.2",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 3306, "hostPort": 3306, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "MYSQL_ALLOW_EMPTY_PASSWORD": "yes"
+  },
+  "residency": {
+    "taskLostBehavior": "WAIT_FOREVER"
+  }
+}

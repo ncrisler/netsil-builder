@@ -1,0 +1,17 @@
+{
+  "stream-processor": {
+    "app_id": "stream-processor",
+    "infra_stats_port": 2001,
+    "traffic_stats_port": 2003,
+    "api_server_port": 8888,
+    "deploy_env": "marathon",
+    "zk_host": "leader.mesos",
+    "zk_port": "2181",
+    "netsil_events_host": "ingestion-server.marathon.mesos",
+    "netsil_events_port": "5000",
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

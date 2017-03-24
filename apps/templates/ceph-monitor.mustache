@@ -1,0 +1,70 @@
+{
+ "id": "{{ ceph-monitor.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+      {
+        "containerPath": "ceph-data",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      },
+      {
+        "containerPath": "/var/lib/ceph-data",
+        "hostPath": "ceph-data",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "mon",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      },
+      {
+        "containerPath": "/etc/ceph/mon",
+        "hostPath": "mon",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/var/log/netsil",
+        "hostPath": "/var/log/netsil",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/var/run/ceph",
+        "hostPath": "/var/run/ceph",
+        "mode": "RW"
+      }
+     ],
+     "docker": {
+         "network": "HOST",
+         "image": "{{ ceph-monitor.uri_namespace }}/ceph-monitor:{{ ceph-monitor.netsil_service_tag }}",
+         "forcePullImage": false,
+         "privileged": false
+     }
+ },
+  "cpus": {{ ceph-monitor.cpus }},
+  "mem": {{ ceph-monitor.mem }},
+  "instances": {{ ceph-monitor.instances }},
+  "acceptedResourceRoles": ["{{ ceph-monitor.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#ceph-monitor.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/ceph-monitor.private}}
+  "env": {
+    "MON_PORT": "{{ ceph-monitor.mon_port }}",
+    "CEPH_CONF_DIR": "{{ ceph-monitor.ceph_conf_dir }}",
+    "CEPH_DAEMON": "{{ ceph-monitor.ceph_daemon }}",
+    "RESTAPI_PORT": "{{ ceph-monitor.restapi_port }}",
+    "CEPH_DATA_DIR": "{{ ceph-monitor.ceph_data_dir }}",
+    "PRODUCT_FLAVOR": "Pro"
+  }
+}

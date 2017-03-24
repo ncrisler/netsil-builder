@@ -1,0 +1,26 @@
+{
+  "backups": {
+    "app_id": "backups",
+    "build_env": "production",
+    "port": 9090,
+    "mysql_host": "user-db.marathon.mesos",
+    "mysql_port": "3306",
+    "user_persistence_host": "user-persistence.marathon.mesos",
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.1.2",
+    "netsil_commit_hash": "298b19425",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.1.2",
+    "netsil_service_tag": "stable-1.1.2",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "product_flavor": "Pro",
+    "instances": 1
+
+  }
+}

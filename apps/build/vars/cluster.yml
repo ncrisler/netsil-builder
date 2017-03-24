@@ -1,0 +1,6 @@
+cluster_vars:
+  build_env: production
+  force_pull_image: 'false'
+  is_private_registry: 'false'
+  resource_role: '*'
+  uri_namespace: netsil

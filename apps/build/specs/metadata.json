@@ -1,0 +1,43 @@
+{
+  "id": "metadata",
+  "container": {
+      "type": "DOCKER",
+      "volumes": [
+        {
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        }
+      ],
+      "docker": {
+          "network": "BRIDGE",
+          "image": "netsil/metadata:stable-1.1.2",
+          "forcePullImage": false,
+          "portMappings": [
+              {"containerPort": 5444, "hostPort": 5444, "protocol":"tcp"}
+          ]
+      }
+  },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "DO_SCALE": "yes",
+    "URI_NAMESPACE": "netsil",
+    "NETSIL_BUILD_BRANCH": "stable",
+    "NETSIL_VERSION_NUMBER": "1.1.2",
+    "NETSIL_COMMIT_HASH": "298b19425",
+    "NETSIL_BUILD_NUMBER": "0",
+    "NETSIL_SERVICE_TAG": "stable-1.1.2",
+    "NETSIL_VERSION_TAG": "stable-1.1.2",
+    "BUILD_ENV": "production"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "{{ backups.app_id }}",
+  "container": {
+      "type": "DOCKER",
+      "volumes": [
+        {
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        }
+      ],
+      "docker": {
+          "network": "BRIDGE",
+          "image": "{{ backups.uri_namespace }}/backups:{{ backups.netsil_service_tag }}",
+          "forcePullImage": false,
+          "portMappings": [
+              {"containerPort": {{ backups.port }}, "hostPort": {{ backups.port }}, "protocol":"tcp"}
+          ]
+      }
+  },
+  "cmd": "supervisord -c /opt/netsil/backups/supervisor/backups-supervisor-include.conf",
+  "cpus": {{ backups.cpus }},
+  "mem": {{ backups.mem }},
+  "instances": {{ backups.instances }},
+  "acceptedResourceRoles": ["{{ backups.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#backups.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/backups.private}}
+  "env": {
+    "NETSIL_BUILD_BRANCH": "{{ backups.netsil_build_branch }}",
+    "NETSIL_VERSION_NUMBER": "{{ backups.netsil_version_number }}",
+    "NETSIL_COMMIT_HASH": "{{ backups.netsil_commit_hash }}",
+    "NETSIL_BUILD_NUMBER": "{{ backups.netsil_build_number }}",
+    "NETSIL_SERVICE_TAG": "{{ backups.netsil_service_tag }}",
+    "NETSIL_VERSION_TAG": "{{ backups.netsil_version_tag }}",
+    "PRODUCT_FLAVOR": "{{ backups.product_flavor }}",
+    "MYSQL_HOST": "{{ backups.mysql_host }}",
+    "MYSQL_PORT": "{{ backups.mysql_port }}",
+    "USER_PERSISTENCE_HOST": "{{ backups.user_persistence_host }}",
+    "BUILD_ENV": "{{ backups.build_env }}"
+  }
+}

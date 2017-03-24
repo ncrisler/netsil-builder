@@ -1,0 +1,30 @@
+{
+  "kafka": {
+    "app_id": "kafka",
+    "port": "9092",
+    "hostname": "kafka.marathon.mesos",
+    "zk_connect": "leader.mesos:2181",
+    "start_timeout": "10",
+    "log_retention_bytes": "262144000",
+    "log_segment_bytes": "104857600",
+    "log_retention_hours": "2",
+    "log_dirs": "/opt/netsil/kafka/kafka-log-dir",
+    "num_partitions": "4",
+        "uri_namespace": "netsil",
+    "netsil_build_branch": "stable",
+    "netsil_version_number": "1.1.2",
+    "netsil_commit_hash": "298b19425",
+    "netsil_build_number": "0",
+    "netsil_version_tag": "stable-1.1.2",
+    "netsil_service_tag": "stable-1.1.2",
+    "private": false,
+    "role": "*",
+    "forcePullImage": false,
+    "production": "true",
+    "cpus": 1.0,
+    "mem": 16384,
+    "product_flavor": "Pro",
+    "instances": 1
+
+  }
+}

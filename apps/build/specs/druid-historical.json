@@ -1,0 +1,56 @@
+{
+ "id": "druid-historical",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+        {
+            "containerPath": "druid-historical-data",
+            "mode": "RW",
+            "persistent": {
+              "size": 100
+            }
+        },
+        {
+            "containerPath": "/var/tmp/druid/indexCache",
+            "hostPath": "druid-historical-data",
+            "mode": "RW"
+        },
+        {
+
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/druid-historical:stable-1.1.2",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 31005, "hostPort": 31005, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "DO_SCALE": "yes",
+    "NODE_TYPE": "historical",
+    "PRODUCT_FLAVOR": "Pro",
+    "DEPLOY_ENV": "marathon",
+    "druid_service": "druid-historical",
+    "druid_port": "31005",
+    "druid_server_http_numThreads": "20",
+    "druid_segmentCache_numLoadingThreads": "8"
+  }
+}
+

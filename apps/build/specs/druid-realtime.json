@@ -1,0 +1,70 @@
+{
+ "id": "druid-realtime",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+        {
+          "containerPath": "realtime-segments",
+          "mode": "RW",
+          "persistent": {
+            "size": 5000
+          }
+        },
+        {
+          "containerPath": "/opt/netsil/druid/realtime-segments",
+          "hostPath": "realtime-segments",
+          "mode": "RW"
+        },
+        {
+          "containerPath": "localStorage",
+          "mode": "RW",   
+          "persistent": {
+            "size": 20000
+          }
+        },
+        {
+          "containerPath": "/tmp/druid/localStorage",
+          "hostPath": "localStorage",
+          "mode": "RW"
+        },
+        {
+          "hostPath": "/var/log/netsil",
+          "containerPath": "/var/log/netsil",
+          "mode": "RW"
+        }
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsil/druid-realtime:stable-1.1.2",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": 31000, "hostPort": 31000, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+  "env": {
+    "DO_SCALE": "yes",
+    "PRODUCT_FLAVOR": "Pro",
+    "DEPLOY_ENV": "marathon",
+    "NODE_TYPE": "realtime",
+    "druid_service": "druid-realtime",
+    "druid_port": "31000",
+    "druid_realtime_specFile": "/opt/netsil/druid/druid_build/realtime.spec",
+    "druid_server_http_numThreads": "20"
+  },
+  "residency": {
+    "taskLostBehavior": "WAIT_FOREVER"
+  }
+}
+

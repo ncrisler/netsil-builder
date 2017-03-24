@@ -1,0 +1,46 @@
+{
+ "id": "{{ logstash.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+{{#logstash.production}}
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+{{/logstash.production}}
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ logstash.uri_namespace }}/logstash:{{ logstash.netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ logstash.beats_port }}, "hostPort": {{ logstash.beats_port }}, "protocol":"tcp"},
+             {"containerPort": {{ logstash.input_port }}, "hostPort": {{ logstash.input_port }}, "protocol":"udp,tcp"}
+         ]
+     }
+ },
+ "cpus": {{ logstash.cpus }},
+ "mem": {{ logstash.mem }},
+ "instances": {{ logstash.instances }},
+ "acceptedResourceRoles": ["{{ logstash.role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#logstash.private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/logstash.private}}
+ "env": {
+    "ELASTICSEARCH_HOSTNAME": "{{ logstash.elasticsearch_hostname }}",
+    "ELASTICSEARCH_HTTP_PORT": "{{ logstash.elasticsearch_http_port }}",
+    "ZK_HOST": "{{ logstash.zk_host }}",
+    "ZK_PORT": "{{ logstash.zk_port }}",
+    "KAFKA_SERVER": "{{ logstash.kafka_server }}",
+    "KAFKA_PORT": "{{ logstash.kafka_port }}"
+ }
+}
