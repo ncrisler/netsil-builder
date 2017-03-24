@@ -1,5 +1,5 @@
 {
-  "id": "license-manager",
+  "id": "backups",
   "container": {
       "type": "DOCKER",
       "volumes": [
@@ -7,29 +7,18 @@
           "hostPath": "/var/log/netsil",
           "containerPath": "/var/log/netsil",
           "mode": "RW"
-        },
-        {
-          "containerPath": "licenses",
-          "mode": "RW",
-          "persistent": {
-            "size": 1
-          }
-        },
-        {
-          "containerPath": "/opt/netsil/license-manager/licenses",
-          "hostPath": "licenses",
-          "mode": "RW"
         }
       ],
       "docker": {
           "network": "BRIDGE",
-          "image": "netsil/license-manager:stable-1.1.2",
+          "image": "netsil/backups:stable-1.1.2",
           "forcePullImage": false,
           "portMappings": [
-              {"containerPort": 9009, "hostPort": 9009, "protocol":"tcp"}
+              {"containerPort": 9090, "hostPort": 9090, "protocol":"tcp"}
           ]
       }
   },
+  "cmd": "supervisord -c /opt/netsil/backups/supervisor/backups-supervisor-include.conf",
   "cpus": 1.0,
   "mem": 16384,
   "instances": 1,
@@ -42,22 +31,17 @@
       "maximumOverCapacity" : 0
   },
   "env": {
-    "LICENSE_MANAGER_API_ENDPOINT": "https://lm.netsil.com",
-    "LICENSE_MANAGER_SERVICE_PORT": "9009",
-    "REDIS_HOST": "redis.marathon.mesos",
-    "REDIS_PORT": "6379",
-    "NETSIL_SP_HOST": "sp-load-balancer.marathon.mesos",
-    "NETSIL_SP_PORT": "5005",
-    "URI_NAMESPACE": "netsil",
     "NETSIL_BUILD_BRANCH": "stable",
     "NETSIL_VERSION_NUMBER": "1.1.2",
     "NETSIL_COMMIT_HASH": "298b19425",
     "NETSIL_BUILD_NUMBER": "0",
     "NETSIL_SERVICE_TAG": "stable-1.1.2",
     "NETSIL_VERSION_TAG": "stable-1.1.2",
+    "PRODUCT_FLAVOR": "Pro",
+    "MYSQL_HOST": "user-db.marathon.mesos",
+    "MYSQL_PORT": "3306",
+    "USER_PERSISTENCE_HOST": "user-persistence.marathon.mesos",
     "BUILD_ENV": "production"
-  },
-  "residency": {
-    "taskLostBehavior": "WAIT_FOREVER"
   }
 }
+

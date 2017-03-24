@@ -21,7 +21,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/stream-processor:stable-1.0.9",
+         "image": "netsil/stream-processor:stable-1.1.2",
          "forcePullImage": false,
          "privileged": true,
          "portMappings": [

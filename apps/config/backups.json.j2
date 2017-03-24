@@ -1,0 +1,14 @@
+{
+  "backups": {
+    "app_id": "backups",
+    "build_env": "{{ build_env }}",
+    "port": 9090,
+    "mysql_host": "user-db.marathon.mesos",
+    "mysql_port": "3306",
+    "user_persistence_host": "user-persistence.marathon.mesos",
+{% extends "common.json.j2" %}
+{% block common_params %}
+    {{ super() }}
+  }
+}
+{% endblock %}

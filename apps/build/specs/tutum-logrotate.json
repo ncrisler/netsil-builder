@@ -1,7 +1,5 @@
 {
  "id": "tutum-logrotate",
-  "cpus": 0.2,
-  "mem": 128,
   "cpus": 1.0,
   "mem": 16384,
   "instances": 1,

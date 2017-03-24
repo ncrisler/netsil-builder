@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/frontend:stable-1.0.9",
+         "image": "netsil/frontend:stable-1.1.2",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 443, "hostPort": 443, "protocol":"tcp"},
@@ -46,13 +46,16 @@
     "ELASTICSEARCH_PORT": "9200",
     "METADATA_HOST": "metadata.marathon.mesos",
     "METADATA_PORT": "5444",
-    "LICENSE_MANAGER_HOST": "license-manager.marathon.mesos",
-    "LICENSE_MANAGER_PORT": "9009",
+    "LICENSE_MANAGER_SERVICE_HOST": "license-manager.marathon.mesos",
+    "LICENSE_MANAGER_SERVICE_PORT": "9009",
     "REDIS_HOST": "redis.marathon.mesos",
     "REDIS_PORT": "6379",
+    "BACKUPS_HOST": "backups.marathon.mesos",
+    "BACKUPS_PORT": "9090",
     "NODEJS_ENV": "NODE_ENV=production",
     "HTTPS_REMOTE_PORT": "443",
     "HTTP_LOCAL_PORT": "80",
+    "WS_LOCAL_PORT": "81",
     "PRODUCT_FLAVOR": "Pro"
   }
 }

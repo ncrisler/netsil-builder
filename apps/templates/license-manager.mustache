@@ -45,7 +45,12 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/license-manager.private}}
   "env": {
+    "LICENSE_MANAGER_API_ENDPOINT": "{{ license-manager.endpoint }}",
     "LICENSE_MANAGER_SERVICE_PORT": "{{ license-manager.port }}",
+    "REDIS_HOST": "{{ license-manager.redis_host }}",
+    "REDIS_PORT": "{{ license-manager.redis_port }}",
+    "NETSIL_SP_HOST": "{{ license-manager.splb_host }}",
+    "NETSIL_SP_PORT": "{{ license-manager.splb_port }}",
     "URI_NAMESPACE": "{{ license-manager.uri_namespace }}",
     "NETSIL_BUILD_BRANCH": "{{ license-manager.netsil_build_branch }}",
     "NETSIL_VERSION_NUMBER": "{{ license-manager.netsil_version_number }}",
