@@ -47,6 +47,7 @@
     - configure-dcos-node
     - configure-dns
     - reset-master-ips
+    - inject-credentials
     - template-marathon-apps
     - pull-binaries
     - install-startup-scripts
