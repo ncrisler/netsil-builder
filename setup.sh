@@ -19,6 +19,7 @@ function deploy_aoc() {
         docker run --rm --privileged -${INTERACTIVE} \
             -v ${APPS_DIR}:/apps \
             -v ${SSH_PRIVATE_KEY}:/credentials/id_rsa \
+            -v ${CREDENTIALS_PATH}:/opt/credentials \
             -e HOST=$HOST \
             netsil/netsil-builder \
             /opt/builder/scripts/deploy.sh
@@ -97,6 +98,7 @@ SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY:-~/.ssh/id_rsa}
 SSH_PRIVATE_KEY=$(abs_path $SSH_PRIVATE_KEY)
 APPS_DIR=${APPS_DIR:-$DIR/apps}
 APPS_DIR=$(abs_path $APPS_DIR)
+CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 
 ### Start: Docker-specific env vars ###
 INTERACTIVE=${INTERACTIVE:-"yes"}
