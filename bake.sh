@@ -5,7 +5,7 @@ BUILD_TYPE=${BUILD_TYPE:-""}
 BUILD_OUTPUT=${BUILD_OUTPUT:-"base-dcos"}
 INTERACTIVE=${INTERACTIVE:-"yes"}
 IMAGE_PATH=${IMAGE_PATH:-~/images}
-SECRETS_PATH=${SECRETS_PATH:-~/secrets}
+CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 AWS_PROFILE=${AWS_PROFILE:-"default"}
 # TODO: Reuse this env var for base dcos image/vhd for googlecompute and azure. We'll have to create some sort of associative array in the packer vars
 BASE_DCOS_IMAGE=${BASE_DCOS_IMAGE:-"ami-57f25337"}
@@ -72,9 +72,9 @@ build_base_dcos() {
         -e IMAGE_NAME=base-dcos \
         -e BUILD_TYPE=${BUILD_TYPE} \
         -e BUILD_OUTPUT=base-dcos \
-        -v ${SECRETS_PATH}:/opt/secrets \
-        -e SSH_PUBLIC_KEY=/opt/secrets/id_rsa.pub \
-        -e SSH_PRIVATE_KEY=/opt/secrets/id_rsa \
+        -v ${CREDENTIALS_PATH}:/opt/credentials \
+        -e SSH_PUBLIC_KEY=/opt/credentials/id_rsa.pub \
+        -e SSH_PRIVATE_KEY=/opt/credentials/id_rsa \
         -e AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID} \
         -e AWS_SECRET_KEY=${AWS_SECRET_ACCESS_KEY} \
         netsil/netsil-builder
@@ -93,9 +93,9 @@ build_netsil_aoc() {
         -e BUILD_TYPE=${BUILD_TYPE} \
         -e BUILD_OUTPUT=netsil-aoc \
         -e VERSION_INFO=${NETSIL_VERSION_TAG} \
-        -v ${SECRETS_PATH}:/opt/secrets \
-        -e SSH_PUBLIC_KEY=/opt/secrets/id_rsa.pub \
-        -e SSH_PRIVATE_KEY=/opt/secrets/id_rsa \
+        -v ${CREDENTIALS_PATH}:/opt/credentials \
+        -e SSH_PUBLIC_KEY=/opt/credentials/id_rsa.pub \
+        -e SSH_PRIVATE_KEY=/opt/credentials/id_rsa \
         -e AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID} \
         -e AWS_SECRET_KEY=${AWS_SECRET_ACCESS_KEY} \
         netsil/netsil-builder

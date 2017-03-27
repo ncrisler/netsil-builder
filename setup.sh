@@ -18,7 +18,7 @@ function deploy_aoc() {
     if [ $? -eq 0 ]; then
         docker run --rm --privileged -${INTERACTIVE} \
             -v ${APPS_DIR}:/apps \
-            -v ${SSH_PRIVATE_KEY}:/secrets/id_rsa \
+            -v ${SSH_PRIVATE_KEY}:/credentials/id_rsa \
             -e HOST=$HOST \
             netsil/netsil-builder \
             /opt/builder/scripts/deploy.sh

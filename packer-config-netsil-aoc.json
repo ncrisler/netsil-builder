@@ -41,7 +41,7 @@
     },
     {
       "type": "googlecompute",
-      "account_file": "/opt/secrets/account.json",
+      "account_file": "/opt/credentials/account.json",
       "project_id": "netsil-dev",
       "source_image": "base-dcos-1485391386",
       "machine_type": "n1-standard-4",

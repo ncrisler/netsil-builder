@@ -27,7 +27,7 @@
     },
     {
       "type": "googlecompute",
-      "account_file": "/opt/secrets/account.json",
+      "account_file": "/opt/credentials/account.json",
       "project_id": "netsil-dev",
       "source_image": "coreos-stable-1068-9-0-v20160809",
       "ssh_username": "{{user `ssh_user`}}",

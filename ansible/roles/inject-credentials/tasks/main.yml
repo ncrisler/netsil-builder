@@ -5,7 +5,7 @@
   when: uri_namespace != "netsil"
 
 - name: Copy JSON auth token
-  copy: src=/opt/secrets/netsil-dev-docker-auth.json dest=/root/.docker/config.json
+  copy: src=/opt/credentials/netsil-dev-docker-auth.json dest=/root/.docker/config.json
   when: uri_namespace != "netsil"
 
 - name: Generate /etc/docker.tar.gz
