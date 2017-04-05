@@ -58,6 +58,22 @@
 - name: Start/enable docker-cleanup.timer
   shell: "systemctl start docker-cleanup.timer && systemctl enable docker-cleanup.timer"
 
+# Install logrotate
+- name: Ensure conf directory exists
+  file: path=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }}/etc state=directory mode=0755
+
+- name: Install docker-logrotate conf
+  copy: src=docker-logrotate.conf dest=/opt/netsil/latest/etc/docker-logrotate.conf
+
+- name: Install docker-logrotate.service 
+  copy: src=docker-logrotate.service dest=/etc/systemd/system/docker-logrotate.service
+
+- name: Install docker-logrotate.timer 
+  copy: src=docker-logrotate.timer dest=/etc/systemd/system/docker-logrotate.timer
+
+- name: Start/enable docker-logrotate.timer
+  shell: "systemctl start docker-logrotate.timer && systemctl enable docker-logrotate.timer"
+
 # Disable updates and reboot
 # TODO: We need only do these for coreos
 - name: Disable reboot
