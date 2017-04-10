@@ -3,3 +3,6 @@ Description=Rotate and Compress Docker container stdout Logs
 
 [Service]
 ExecStart=/usr/sbin/logrotate /opt/netsil/conf/logrotate/logrotate.conf
+
+[Install]
+WantedBy=multi-user.target

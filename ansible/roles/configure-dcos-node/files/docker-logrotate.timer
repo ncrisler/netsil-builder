@@ -5,3 +5,6 @@ Description=Log rotation for logs in /var/lib/docker/containers
 # Every ten minutes
 OnCalendar=*:0/10
 Persistent=true
+
+[Install]
+WantedBy=multi-user.target
