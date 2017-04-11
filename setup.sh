@@ -2,13 +2,15 @@
 set -xe
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname [-k key_path] [-a apps_dir] [-u username]
+    echo "Usage: ./setup.sh -h hostname [-k key_path] [-a apps_dir] [-u username] [-d dcos_path]
+
 
 Parameters:
   -h, --host         Server hostname of IP address
   -k, --ssh-key      Private SSH key path (default: ~/.ssh/id_ra)
   -a, --apps-dir     The apps directory (default: ./apps)
   -u, --user         SSH user for deployment (default: $USER)
+  -d, --dcos-path    Path to the DCOS release package
 "
     exit 1
 }
@@ -18,6 +20,7 @@ function deploy_aoc() {
 
     if [ $? -eq 0 ]; then
         sudo docker run --rm --privileged -${INTERACTIVE} \
+            $DCOS_VOLUME_ARG \
             -v ${APPS_DIR}:/apps \
             -v ${SSH_PRIVATE_KEY}:/credentials/id_rsa \
             -v ${CREDENTIALS_PATH}:/opt/credentials \
@@ -100,6 +103,10 @@ while [ $# -gt 0 ]; do
             USER="$2"
             shift 2
             ;;
+        -d|--dcos-path)
+            DCOS_PATH="$2"
+            shift 2
+            ;;
         *)
             echo "Unknown parameter \"$1\"" 1>&2
             display_usage
@@ -118,6 +125,16 @@ APPS_DIR=${APPS_DIR:-$DIR/apps}
 APPS_DIR=$(abs_path $APPS_DIR)
 CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
+
+############################################################
+### If DCOS_PATH is defined:                             ###
+###  * Replace with relative path with an absolute path. ###
+###  * Set Docker volume mount argument.                 ###
+############################################################
+if [ -n "$DCOS_PATH" ]; then
+    DCOS_PATH=$(abs_path $DCOS_PATH)
+    DCOS_VOLUME_ARG="-v $DCOS_PATH:/data/dcos_generate_config.sh"
+fi
 
 ### Start: Docker-specific env vars ###
 INTERACTIVE=${INTERACTIVE:-"yes"}

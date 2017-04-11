@@ -56,7 +56,6 @@
   copy: src=docker-cleanup.timer dest=/etc/systemd/system/docker-cleanup.timer
 
 - name: Start/enable docker-cleanup.timer
-  # shell: "systemctl start docker-cleanup.timer && systemctl enable docker-cleanup.timer"
   service: name=docker-cleanup.timer state=started enabled=yes
 
 # Install logrotate
@@ -74,20 +73,6 @@
 
 - name: Start/enable docker-logrotate.timer
   shell: "systemctl start docker-logrotate.timer && systemctl enable docker-logrotate.timer"
-
-# Disable updates and reboot
-# TODO: We need only do these for coreos
-- name: Disable reboot
-  copy: src=update.conf dest=/etc/coreos/update.conf
-
-- name: Stop and disable updates
-  service: name={{ item }} state=stopped enabled=no
-  with_items:
-    - update-engine
-    - locksmithd
-
-- name: Must mask updates as well. The 'masked' param is not supported in the 'service' module.
-  shell: "systemctl mask update-engine && systemctl mask locksmithd"
 
 - name: Disable cosmos and minuteman
   service: name={{ item }} enabled=no

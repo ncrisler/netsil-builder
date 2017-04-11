@@ -12,7 +12,11 @@ fi
 export ANSIBLE_HOST_KEY_CHECKING=0
 export ANSIBLE_SCP_IF_SSH=1
 export ANSIBLE_SUDO_FLAGS="-H -S"
-export ANSIBLE_SSH_ARGS="-o ControlMaster=no"
+
+# Workaround for CoreOS bug
+if [ "$DISTRIB" == "coreos" ]; then
+    export ANSIBLE_SSH_ARGS="-o ControlMaster=no"
+fi
 
 # Workaround for CoreOS bug
 if [ "$DISTRIB" == "coreos" ]; then

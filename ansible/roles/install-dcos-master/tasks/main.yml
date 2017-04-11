@@ -1,17 +1,34 @@
 ---
-- name: Check for dcos master install
+- name: Check for DCOS master install
   stat: path=/etc/systemd/system/dcos-mesos-master.service
   register: dcos_master_install
 
-- name: Check for dcos download
+# Check if package already exists so we don't have to download/copy it again.
+- name: Check for remote DCOS package
   stat: path=dcos_generate_config.sh
-  register: dcos_download
+  register: remote_dcos_package
 
-- name: Retrieve dcos_generate_config
+# Allow offline deployment by using a local package if present.
+- name: Check for local DCOS package
+  local_action: stat path=/data/dcos_generate_config.sh
+  register: local_dcos_package
+  when:
+    - dcos_master_install.stat.exists == false
+    - remote_dcos_package.stat.exists == false
+
+- name: Copy over local DCOS package
+  copy: src=/data/dcos_generate_config.sh dest=./dcos_generate_config.sh
+  when:
+    - dcos_master_install.stat.exists == false
+    - remote_dcos_package.stat.exists == false
+    - local_dcos_package.stat.exists == true
+
+- name: Download DCOS package
   command: curl -O https://downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/dcos_generate_config.sh
   when:
     - dcos_master_install.stat.exists == false
-    - dcos_download.stat.exists == false
+    - remote_dcos_package.stat.exists == false
+    - local_dcos_package.stat.exists == false
 
 - name: Create genconf directory
   file: path=genconf state=directory
@@ -19,19 +36,16 @@
 - name: Copy over ip-detect script
   template: src=ip-detect.j2 dest=genconf/ip-detect mode=744
 
-- name: Generate dcos config
+- name: Generate DCOS config
   template: src="config.yaml.j2" dest="genconf/config.yaml"
-
-  # Generates a CA certificate error
-  # get_url: url=https://downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/dcos_generate_config.sh dest=dcos_generate_config.sh
 
 - name: Execute dcos_generate_config
   command: bash dcos_generate_config.sh
   when: dcos_master_install.stat.exists == false
 
-- name: Disable docker restart during dcos install
+- name: Disable docker restart during DCOS install
   replace: dest=genconf/serve/dcos_install.sh regexp="systemctl restart docker" replace=""
 
-- name: Install dcos master
+- name: Install DCOS master
   command: bash genconf/serve/dcos_install.sh master --disable-preflight
   when: dcos_master_install.stat.exists == false

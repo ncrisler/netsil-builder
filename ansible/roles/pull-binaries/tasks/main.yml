@@ -9,7 +9,7 @@
   file: path=/opt/netsil/latest/assets state=directory
 
 - name: Copy over pull-binaries script
-  copy: src=pull-binaries.sh dest=/opt/netsil/latest/bin/pull-binaries.sh mode=744
+  template: src=pull-binaries.sh.j2 dest=/opt/netsil/latest/bin/pull-binaries.sh mode=744
 
 # TODO: Make sure jq is installed on the host operating system
 - name: Pull binaries for all services
