@@ -1,0 +1,14 @@
+---
+- name: Check for SELinux
+  stat: path=/etc/selinux/config
+  register: selinux_config
+
+- name: Disable SELinux on boot
+  replace: dest=/etc/selinux/config regexp="SELINUX=enforcing" replace="SELINUX=permissive"
+  when: selinux_config.stat.exists == true
+
+- name: Disable SELinux for current session
+  command: setenforce 0
+
+- name: Add required nogroup
+  group: name=nogroup state=present

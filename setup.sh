@@ -1,26 +1,29 @@
 #!/bin/bash
-# set -xe
+set -xe
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname [-k key_path] [-a apps_dir] 
+    echo "Usage: ./setup.sh -h hostname [-k key_path] [-a apps_dir] [-u username]
 
 Parameters:
   -h, --host         Server hostname of IP address
   -k, --ssh-key      Private SSH key path (default: ~/.ssh/id_ra)
   -a, --apps-dir     The apps directory (default: ./apps)
+  -u, --user         SSH user for deployment (default: $USER)
 "
     exit 1
 }
 
 function deploy_aoc() {
-    docker build -q -t netsil/netsil-builder ${DIR}
+    sudo docker build -q -t netsil/netsil-builder ${DIR}
 
     if [ $? -eq 0 ]; then
-        docker run --rm --privileged -${INTERACTIVE} \
+        sudo docker run --rm --privileged -${INTERACTIVE} \
             -v ${APPS_DIR}:/apps \
             -v ${SSH_PRIVATE_KEY}:/credentials/id_rsa \
             -v ${CREDENTIALS_PATH}:/opt/credentials \
+            -e DISTRIB=$DISTRIB \
             -e HOST=$HOST \
+            -e ANSIBLE_USER=$ANSIBLE_USER \
             netsil/netsil-builder \
             /opt/builder/scripts/deploy.sh
     fi
@@ -41,25 +44,36 @@ function check_docker() {
         exit 1
     fi 
 
-    docker info > /dev/null 2>&1
+    sudo docker info > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
         echo "Docker does not appear to be running locally."
         exit 1
     fi
 }
 
+###########################################################
+### Check SSH key authentication and Linux distribution ###
+###########################################################
 function check_ssh_auth() {
-    ssh -i $SSH_PRIVATE_KEY \
+    DISTRIB=$(ssh -i $SSH_PRIVATE_KEY \
         -o StrictHostKeyChecking=no \
         -o BatchMode=yes \
-        core@${HOST} uname
+        ${ANSIBLE_USER}@${HOST} "sed -n 's/^ID=//p' /etc/os-release")
+
     if [ "$?" -ne 0 ]; then
         echo "There appears to be a problem with SSH public/private key authentication."
         exit 1
     fi
 }
 
+###############################################################################
+### Generate SSH keys and configure key authentication for local deployment ###
+###############################################################################
 function setup_ssh_auth() {
+    if [ ! -d "~/.ssh" ]; then
+        mkdir ~/.ssh && chmod 700 ~/.ssh
+    fi
+
     ssh-keygen -q -b 2048 -t rsa -N '' -f $DIR/netsil_rsa
     cat $DIR/netsil_rsa.pub >> ~/.ssh/authorized_keys
     SSH_PRIVATE_KEY=$DIR/netsil_rsa
@@ -82,6 +96,10 @@ while [ $# -gt 0 ]; do
             APPS_DIR="$2"
             shift 2
             ;;
+        -u|--user)
+            USER="$2"
+            shift 2
+            ;;
         *)
             echo "Unknown parameter \"$1\"" 1>&2
             display_usage
@@ -99,6 +117,7 @@ SSH_PRIVATE_KEY=$(abs_path $SSH_PRIVATE_KEY)
 APPS_DIR=${APPS_DIR:-$DIR/apps}
 APPS_DIR=$(abs_path $APPS_DIR)
 CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
+ANSIBLE_USER=$USER
 
 ### Start: Docker-specific env vars ###
 INTERACTIVE=${INTERACTIVE:-"yes"}

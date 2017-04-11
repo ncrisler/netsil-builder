@@ -4,7 +4,10 @@
     build_specs_dir: /opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }}/apps/build/specs
 
 - name: Create build directories
-  local_action: shell mkdir -p /apps/build/config && mkdir -p /apps/build/specs
+  local_action: file path={{ item }} state=directory
+  with_items:
+    - /apps/build/config
+    - /apps/build/specs
 
 # TODO: We have to do this because variables aren't being passed to local_action tasks for some reason...
 - name: Template services config

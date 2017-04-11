@@ -1,5 +1,9 @@
 # TODO: Reorganize this ansible role later
 ---
+- name: Include CoreOS tasks
+  include: configure-coreos.yml
+  when: ansible_os_family == "CoreOS"
+
 # Configure version number
 # TODO: We have this "latest symlink exists" job elsewhere. Maybe it could be refactored into an "initial setup" role or "configure paths" role?
 - name: Ensure /opt/netsil version directory exists
@@ -41,10 +45,6 @@
 - name: Set max client connections to 500 in start exhibitor
   lineinfile: dest=/opt/mesosphere/active/exhibitor/usr/exhibitor/start_exhibitor.py regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=5&autopurge.purgeInterval\=6"
 
-# Disabling systemd coredumps
-- name: Stop and disable coredump service
-  shell: "systemctl stop systemd-coredump.socket && systemctl disable systemd-coredump.socket"
-
 - name: Further disable by setting the conf file
   copy: src=coredump.conf dest=/etc/systemd/coredump.conf
 
@@ -56,7 +56,8 @@
   copy: src=docker-cleanup.timer dest=/etc/systemd/system/docker-cleanup.timer
 
 - name: Start/enable docker-cleanup.timer
-  shell: "systemctl start docker-cleanup.timer && systemctl enable docker-cleanup.timer"
+  # shell: "systemctl start docker-cleanup.timer && systemctl enable docker-cleanup.timer"
+  service: name=docker-cleanup.timer state=started enabled=yes
 
 # Install logrotate
 - name: Ensure conf directory exists

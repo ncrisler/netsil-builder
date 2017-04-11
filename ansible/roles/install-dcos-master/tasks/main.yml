@@ -33,5 +33,5 @@
   replace: dest=genconf/serve/dcos_install.sh regexp="systemctl restart docker" replace=""
 
 - name: Install dcos master
-  command: bash genconf/serve/dcos_install.sh master
+  command: bash genconf/serve/dcos_install.sh master --disable-preflight
   when: dcos_master_install.stat.exists == false

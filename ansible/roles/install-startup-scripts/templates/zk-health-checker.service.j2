@@ -1,0 +1,14 @@
+[Unit]
+Description=Zookeeper Health checker
+After=dcos-exhibitor.service
+
+[Service]
+Type=simple
+Environment="PYTHONUNBUFFERED=1"
+ExecStart={{ ansible_python_interpreter }} /opt/netsil/latest/bin/zk-health-checker.py
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -5,11 +5,11 @@
   become_user: root
 
   vars:
-    ansible_user: core
+    ansible_user: "{{ lookup('env', 'ANSIBLE_USER') or 'core' }}"
     ansible_python_interpreter: /opt/bin/python
 
   roles:
-    - coreos-bootstrap
+    - { role: coreos-bootstrap, when: distrib == 'coreos' }
 
 - hosts: all
 
@@ -32,8 +32,8 @@
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
     mesos_master_ip_list: "127.0.0.1"
     ### Start: ansible-specific vars ###
-    ansible_user: core
-    ansible_python_interpreter: /opt/bin/python
+    ansible_user: "{{ lookup('env', 'ANSIBLE_USER') or 'core' }}"
+    ansible_python_interpreter: /usr/bin/python
     ### End: ansible-specific vars ###
 
   gather_facts: True
@@ -41,6 +41,7 @@
   become_user: root
 
   roles:
+    - prepare-dcos-master
     - install-dcos-master
     - install-dcos-slave
     - configure-dcos-ui

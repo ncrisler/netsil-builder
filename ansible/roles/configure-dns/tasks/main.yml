@@ -1,17 +1,27 @@
 ---
 # TODO: Only do this on certain OSes that have systemd-resolved
+- name: Check if systemd-resolved exists
+  stat: path=/usr/lib64/systemd/system/systemd-resolved.service
+  register: systemd_resolved
+
 - name: Stop systemd-resolved
   service: name=systemd-resolved enabled=no state=stopped
+  when: systemd_resolved.stat.exists
 
 - name: Mask systemd-resolved
   shell: "systemctl mask systemd-resolved"
+  when: systemd_resolved.stat.exists
 
-# We must use rm and touch here because the file module can't set it to absent and then to a file
+# We must use rm and touch here because the file module can't set it to absent
+# and then to a file.
+#
+# Added /bin/true to workaround an issue with CentOS on AWS where operations
+# are not permitted on the resolve.conf. Further investigation required.
 - name: Remove /etc/resolv.conf symlink
-  shell: "rm -rf /etc/resolv.conf"
+  shell: "rm -rf /etc/resolv.conf || /bin/true"
 
 - name: Create /etc/resolv.conf
-  shell: "touch /etc/resolv.conf"
+  shell: "touch /etc/resolv.conf || /bin/true"
 
 - name: Set facts based on machine image build type
   set_fact:

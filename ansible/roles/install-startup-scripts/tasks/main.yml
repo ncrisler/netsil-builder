@@ -1,3 +1,9 @@
+---
+- name: Override ansible_python_interpreter for CoreOS
+  set_fact:
+    ansible_python_interpreter: "/opt/bin/python"
+  when: ansible_os_family == "CoreOS"
+
 # This will install a startup script that will install all the marathon apps
 # Run it only when the dcos-marathon service is up and running
 # TODO: Of course, these startup scripts will only work if systemd is installed...But we have a dependency chain of DCOS --> systemd --> CoreOS, where A implies B is installed if "A --> B", so I think it's safe to say that systemd will be installed.
@@ -47,7 +53,7 @@
   copy: src=zk-health-checker.py dest=/opt/netsil/latest/bin/zk-health-checker.py mode=744
 
 - name: Install zk-health-checker service
-  copy: src=zk-health-checker.service dest=/etc/systemd/system/zk-health-checker.service
+  template: src=zk-health-checker.service.j2 dest=/etc/systemd/system/zk-health-checker.service
 
 - name: Enable zk-health-checker service
   service: name=zk-health-checker enabled=yes

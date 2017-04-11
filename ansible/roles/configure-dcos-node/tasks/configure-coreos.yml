@@ -1,0 +1,18 @@
+# Disabling systemd coredumps
+- name: Stop and disable coredump service
+  # shell: "systemctl stop systemd-coredump.socket && systemctl disable systemd-coredump.socket"
+  service: name=systemd-coredump.socket state=stopped enabled=no
+
+# Disable updates and reboot
+# TODO: We need only do these for coreos
+- name: Disable CoreOS reboot
+  copy: src=update.conf dest=/etc/coreos/update.conf
+
+- name: Stop and disable CoreOS updates
+  service: name={{ item }} state=stopped enabled=no
+  with_items:
+    - update-engine
+    - locksmithd
+
+- name: Must mask updates as well. The 'masked' param is not supported in the 'service' module.
+  shell: "systemctl mask update-engine && systemctl mask locksmithd"
