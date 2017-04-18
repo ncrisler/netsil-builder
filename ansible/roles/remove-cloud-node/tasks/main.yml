@@ -1,0 +1,25 @@
+---
+- name: Build CoreOS on AWS
+  include: provider/aws.yml
+  when:
+    - provider == 'aws'
+
+- name: Delete node record
+  local_action:
+    module: uri
+    url: "{{ netsil_api_url }}/organizations/{{ org_id }}/clusters/{{ cluster_id }}/nodes/{{ instance_id }}"
+    method: DELETE
+    validate_certs: "{{ validate_certs }}"
+    headers:
+      Authorization: "{{ netsil_api_token }}"
+    status_code: 200
+  register: remove_node_record
+  until:
+    - remove_node_record|success
+    - remove_node_record.status == 200
+  retries: 6
+  delay: 5
+
+- name: API remove node response
+  debug:
+    msg: "{{ remove_node_record }}"

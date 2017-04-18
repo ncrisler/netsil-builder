@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  become: False
+  become_user: root
+
+  vars_files:
+    - group_vars/cloud.yml
+
+  roles:
+    - remove-cloud-node

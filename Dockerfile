@@ -7,11 +7,23 @@ WORKDIR /opt/builder
 # Update and install required system packages.
 RUN apt-get -qq update && \
     apt-get -qq install -y --no-install-recommends \
-    ansible ca-certificates curl qemu qemu-utils ssh-client unzip vim python-pip python-setuptools
+      ca-certificates \
+      curl \
+      python-pip \
+      python-setuptools \
+      qemu \
+      qemu-utils \
+      software-properties-common \
+      ssh-client \
+      sudo \
+      unzip \
+      vim && \
+    apt-add-repository -y ppa:ansible/ansible && \
+    apt-get update && \
+    apt-get -qq install -y --no-install-recommends ansible
 
 ## Start: TODO: We have these two lines because we run ansible locally for the templating tasks...we should do away with that and run it remotely
-RUN apt-get update && apt-get install -y sudo && \
-    pip install pystache && \
+RUN pip install pystache boto && \
     mkdir -p /opt/bin && \
     ln -s /usr/bin/python /opt/bin/python
 ### End
