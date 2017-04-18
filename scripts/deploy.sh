@@ -12,16 +12,7 @@ fi
 export ANSIBLE_HOST_KEY_CHECKING=0
 export ANSIBLE_SCP_IF_SSH=1
 export ANSIBLE_SUDO_FLAGS="-H -S"
-
-# Workaround for CoreOS bug
-if [ "$DISTRIB" == "coreos" ]; then
-    export ANSIBLE_SSH_ARGS="-o ControlMaster=no"
-fi
-
-# Workaround for CoreOS bug
-if [ "$DISTRIB" == "coreos" ]; then
-    export ANSIBLE_SSH_ARGS="-o ControlMaster=no"
-fi
+export ANSIBLE_SSH_ARGS="-o ControlMaster=auto -o ControlPersist=60s -o ControlPath=/opt/ansible.netsil"
 
 ###################################
 ### Install DCOS and Netsil AOC ###
