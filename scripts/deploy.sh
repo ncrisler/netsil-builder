@@ -17,4 +17,4 @@ export ANSIBLE_SSH_ARGS="-o ControlMaster=auto -o ControlPersist=60s -o ControlP
 ###################################
 ### Install DCOS and Netsil AOC ###
 ###################################
-ansible-playbook --extra-vars "distrib=${DISTRIB} build_type=deploy" -i ${HOST}, --private-key /credentials/id_rsa ansible/full-deployment.yml
+ansible-playbook --extra-vars "distrib=${DISTRIB} registry=${REGISTRY} build_type=deploy" -i ${HOST}, --private-key /credentials/id_rsa ansible/full-deployment.yml

@@ -12,8 +12,13 @@ do
             echo "Pulling local image ${image} from filesystem"
             docker load < "{{ ansible_env.PWD }}/images/$image_filename"
         else
-            echo "Putlling remote image ${image} from Docker Hub"
-            docker pull ${image}
+            {% if registry %}
+                echo "Pulling image ${image} from {{ registry }}"
+                docker pull "{{ registry }}/"${image}
+            {% else %}
+                echo "Pulling image ${image} from Dockerhub"
+                docker pull ${image}
+            {% endif %}
             if [[ $? != 0 ]] ; then
                 echo "Docker pull failed. Exiting build."
                 exit 1

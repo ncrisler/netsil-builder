@@ -4,7 +4,8 @@ Description=Install netsil apps in marathon
 [Service]
 Type=oneshot
 # manage-netsil-apps.sh has proper restart logic
-ExecStart=/opt/netsil/latest/bin/manage-netsil-apps.sh install
+# ExecStart=/opt/netsil/latest/bin/manage-netsil-apps.sh install
+ExecStart=/opt/bin/python /opt/netsil/latest/bin/install-netsil-apps.py
 
 [Install]
 WantedBy=multi-user.target

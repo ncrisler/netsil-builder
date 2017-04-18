@@ -1,0 +1,54 @@
+import httplib
+import json
+import time
+
+# TODO: env -- MARATHON_HOST, MARATHON_PORT, APPS_DIR
+
+conn = httplib.HTTPConnection('http://' + MARATHON_HOST + ':' + MARATHON_PORT)
+
+def wait_for_marathon():
+    timeout=1800
+    count=0
+    step=5
+    while true:
+        conn.request('GET', '/v2/apps')
+        resp = conn.getresponse()
+        status = resp.status
+        if status == 200:
+            print "Marathon is initialized. Proceeding to install apps!"
+            break
+        print "Waiting for marathon to initialize..."
+        time.sleep(step)
+        count += step
+        if count > timeout:
+            print "Timeout exceeded! Exiting installation process"
+            exit(1)
+
+def install_netsil_apps():
+    for app in os.listdir(APPS_DIR):
+        with open(apps_dir + '/' + app, 'rb') as app_file:
+            app_json = json.load(app_file)
+            if 'id' in app_json:
+                app_id = app_json['id']
+            else:
+                print "Error! No app id in json file."
+                exit(1)
+
+            conn.request('POST', '/v2/apps')
+            resp = conn.getresponse()
+            status = resp.status
+            if status == 200:
+                print "Installed app: " + str(app_id)
+            elif status == 409:
+                print "Warning! App with ID " + str(app_id) + " already exists!"
+            else:
+                print "Error: Return code " + str(status) + " not recognized."
+                exit(1)
+
+def main():
+    wait_for_marathon()
+    install_netsil_apps()
+
+
+if __name__ == '__main__':
+    main()

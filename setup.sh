@@ -11,6 +11,7 @@ Parameters:
   -a, --apps-dir     The apps directory (default: ./apps)
   -u, --user         SSH user for deployment (default: $USER)
   -d, --dcos-path    Path to the DCOS release package
+  -r, --registry     Path to third party registry. Defaults to Dockerhub.
 "
     exit 1
 }
@@ -27,6 +28,7 @@ function deploy_aoc() {
             -e DISTRIB=$DISTRIB \
             -e HOST=$HOST \
             -e ANSIBLE_USER=$ANSIBLE_USER \
+            -e REGISTRY=$REGISTRY \
             netsil/netsil-builder \
             /opt/builder/scripts/deploy.sh
     fi
@@ -107,6 +109,10 @@ while [ $# -gt 0 ]; do
             DCOS_PATH="$2"
             shift 2
             ;;
+        -r|--registry)
+            REGISTRY_PATH="$2"
+            shift 2
+            ;;
         *)
             echo "Unknown parameter \"$1\"" 1>&2
             display_usage
@@ -125,7 +131,7 @@ APPS_DIR=${APPS_DIR:-$DIR/apps}
 APPS_DIR=$(abs_path $APPS_DIR)
 CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
-
+REGISTRY=${REGISTRY:-""}
 ############################################################
 ### If DCOS_PATH is defined:                             ###
 ###  * Replace with relative path with an absolute path. ###
