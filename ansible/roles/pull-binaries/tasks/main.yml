@@ -16,4 +16,8 @@
 
 - name: Pull binaries for all services
   shell: "/opt/bin/python /opt/netsil/latest/bin/pull-binaries.py"
+  environment:
+    REGISTRY: "{{ registry }}"
+    PWD: "{{ ansible_env.PWD }}"
+    APPS_DIR: "/opt/netsil/latest/apps/build/specs"
 #  shell: "/opt/netsil/latest/bin/pull-binaries.sh"

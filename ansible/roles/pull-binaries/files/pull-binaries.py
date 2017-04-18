@@ -1,26 +1,26 @@
+import json
+import os
+import subprocess
 
-cd /opt/netsil/latest/apps/build/specs
-for app in *.json
-do
-    # Pull docker images
-    image=$(jq --raw-output < ${app} 'select(.container.docker.image != null) .container.docker.image')
-    if [[ -n ${image} ]] ; then
-        image_filename=$(echo $image | cut -d\/ -f2).tar.gz
-        if [ -f "{{ ansible_env.PWD }}/images/$image_filename" ]; then
-            echo "Pulling local image ${image} from filesystem"
-            docker load < "{{ ansible_env.PWD }}/images/$image_filename"
-        else
-            {% if registry %}
-                echo "Pulling image ${image} from {{ registry }}"
-                docker pull "{{ registry }}/"${image}
-            {% else %}
-                echo "Pulling image ${image} from Dockerhub"
-                docker pull ${image}
-            {% endif %}
-            if [[ $? != 0 ]] ; then
-                echo "Docker pull failed. Exiting build."
-                exit 1
-            fi
-        fi
-    fi
-done
+PWD = os.environ.get('PWD', failobj='/root')
+APPS_DIR = os.environ.get('APPS_DIR', failobj='/opt/netsil/latest/apps/build/specs')
+REGISTRY= os.environ.get('REGISTRY', failobj='')
+
+for app in os.listdir(APPS_DIR):
+    with open(apps_dir + '/' + app, 'rb') as app_file:
+        app_json = json.load(app_file)
+        try:
+            image = app_json['container']['docker']['image']
+        except Exception as e:
+            print "Error getting image from " + str(app_file) + ": " + str(e)
+        offline_image = image.split('/')[-1] + ".tar.gz"
+        if os.path.isfile(PWD + '/image/' + offline_image):
+            print "Pulling local image " + image + " from filesystem"
+            cmd = "docker load < "  + PWD + "/images/" + offline_image
+            subprocess.Popen(cmd, shell=True, executable='/bin/bash')
+        else:
+            registry_prefix = REGISTRY + '/' if REGISTRY else ""
+            print "Pulling image " + registry_prefix + image + " from registry "
+            cmd = "docker pull "  + registry_prefix + image
+            subprocess.Popen(cmd, shell=True, executable='/bin/bash')
+

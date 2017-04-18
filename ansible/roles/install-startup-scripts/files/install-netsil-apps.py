@@ -1,8 +1,11 @@
 import httplib
 import json
 import time
+import os
 
-# TODO: env -- MARATHON_HOST, MARATHON_PORT, APPS_DIR
+MARATHON_HOST = os.environ.get('MARATHON_HOST', failobj='marathon.mesos')
+MARATHON_PORT = os.environ.get('MARATHON_PORT', failobj='8080')
+APPS_DIR = os.environ.get('APPS_DIR', failobj='/opt/netsil/latest/apps/build/specs')
 
 conn = httplib.HTTPConnection('http://' + MARATHON_HOST + ':' + MARATHON_PORT)
 
