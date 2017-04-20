@@ -13,11 +13,14 @@
 - name: Ensure netsil bin directory exists
   file: path=/opt/netsil/latest/bin state=directory
 
-- name: Install install-netsil-apps.sh for installing netsil apps in marathon
-  copy: src=manage-netsil-apps.sh dest=/opt/netsil/latest/bin/manage-netsil-apps.sh mode=744
-
 - name: Install setup-node.sh for joining workers
   copy: src=setup-node.sh dest=/opt/netsil/latest/bin/setup-node.sh mode=744
+
+#- name: Install install-netsil-apps.sh for installing netsil apps in marathon
+#  copy: src=manage-netsil-apps.sh dest=/opt/netsil/latest/bin/manage-netsil-apps.sh mode=744
+
+- name: Install install-netsil-apps.py for installing netsil apps in marathon
+  copy: src=install-netsil-apps.py dest=/opt/netsil/latest/bin/install-netsil-apps.py mode=744
 
 # TODO: We should do like mesosphere and put this netsil-startup.service file inside /opt/netsil/latest and symlink to it from /etc/systemd/system
 # TODO: In fact, go through and look for any .service files. Symlink them the same way.

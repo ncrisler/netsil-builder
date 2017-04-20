@@ -7,7 +7,7 @@ APPS_DIR = os.environ.get('APPS_DIR', failobj='/opt/netsil/latest/apps/build/spe
 REGISTRY= os.environ.get('REGISTRY', failobj='')
 
 for app in os.listdir(APPS_DIR):
-    with open(apps_dir + '/' + app, 'rb') as app_file:
+    with open(APPS_DIR + '/' + app, 'rb') as app_file:
         app_json = json.load(app_file)
         try:
             image = app_json['container']['docker']['image']

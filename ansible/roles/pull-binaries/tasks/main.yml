@@ -15,7 +15,7 @@
   template: src=pull-binaries.py dest=/opt/netsil/latest/bin/pull-binaries.py mode=744
 
 - name: Pull binaries for all services
-  shell: "/opt/bin/python /opt/netsil/latest/bin/pull-binaries.py"
+  shell: "{{ ansible_python_interpreter }} /opt/netsil/latest/bin/pull-binaries.py"
   environment:
     REGISTRY: "{{ registry }}"
     PWD: "{{ ansible_env.PWD }}"

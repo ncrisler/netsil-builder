@@ -7,13 +7,13 @@ MARATHON_HOST = os.environ.get('MARATHON_HOST', failobj='marathon.mesos')
 MARATHON_PORT = os.environ.get('MARATHON_PORT', failobj='8080')
 APPS_DIR = os.environ.get('APPS_DIR', failobj='/opt/netsil/latest/apps/build/specs')
 
-conn = httplib.HTTPConnection('http://' + MARATHON_HOST + ':' + MARATHON_PORT)
 
 def wait_for_marathon():
     timeout=1800
     count=0
     step=5
     while True:
+        conn = httplib.HTTPConnection(MARATHON_HOST + ':' + MARATHON_PORT)
         conn.request('GET', '/v2/apps')
         resp = conn.getresponse()
         status = resp.status
@@ -29,15 +29,15 @@ def wait_for_marathon():
 
 def install_netsil_apps():
     for app in os.listdir(APPS_DIR):
-        with open(apps_dir + '/' + app, 'rb') as app_file:
+        with open(APPS_DIR + '/' + app, 'rb') as app_file:
             app_json = json.load(app_file)
             if 'id' in app_json:
                 app_id = app_json['id']
             else:
                 print "Error! No app id in json file."
                 exit(1)
-
-            conn.request('POST', '/v2/apps')
+            conn = httplib.HTTPConnection(MARATHON_HOST + ':' + MARATHON_PORT)
+            conn.request('POST', '/v2/apps', json.dumps(app_json), {"Content-type": "application/json"})
             resp = conn.getresponse()
             status = resp.status
             if status == 200:
@@ -46,6 +46,7 @@ def install_netsil_apps():
                 print "Warning! App with ID " + str(app_id) + " already exists!"
             else:
                 print "Error: Return code " + str(status) + " not recognized."
+                print "Error: " + str(resp.read())
                 exit(1)
 
 def main():
