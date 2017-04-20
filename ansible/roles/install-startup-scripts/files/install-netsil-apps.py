@@ -13,7 +13,7 @@ def wait_for_marathon():
     timeout=1800
     count=0
     step=5
-    while true:
+    while True:
         conn.request('GET', '/v2/apps')
         resp = conn.getresponse()
         status = resp.status
