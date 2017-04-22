@@ -23,7 +23,7 @@ fi
 ### Install DCOS and Netsil AOC ###
 ###################################
 if [ "${REGISTRY}" != "dockerhub" ] ; then
-    export URI_NAMESPACE="${registry}/netsil"
+    export URI_NAMESPACE="${REGISTRY}/netsil"
 fi
 
 ansible-playbook --extra-vars "distrib=${DISTRIB} build_type=deploy" -i ${HOST}, --private-key /credentials/id_rsa ansible/full-deployment.yml
