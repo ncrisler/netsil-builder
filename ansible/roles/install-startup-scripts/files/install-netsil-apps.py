@@ -40,7 +40,7 @@ def install_netsil_apps():
             conn.request('POST', '/v2/apps', json.dumps(app_json), {"Content-type": "application/json"})
             resp = conn.getresponse()
             status = resp.status
-            if status == 200:
+            if status == 201:
                 print "Installed app: " + str(app_id)
             elif status == 409:
                 print "Warning! App with ID " + str(app_id) + " already exists!"
