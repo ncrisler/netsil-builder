@@ -12,7 +12,7 @@
 #  template: src=pull-binaries.sh.j2 dest=/opt/netsil/latest/bin/pull-binaries.sh mode=744
 
 - name: Copy over pull-binaries script
-  template: src=pull-binaries.py dest=/opt/netsil/latest/bin/pull-binaries.py mode=744
+  copy: src=pull-binaries.py dest=/opt/netsil/latest/bin/pull-binaries.py mode=744
 
 - name: Pull binaries for all services
   shell: "{{ ansible_python_interpreter }} /opt/netsil/latest/bin/pull-binaries.py"
