@@ -110,7 +110,7 @@ while [ $# -gt 0 ]; do
             shift 2
             ;;
         -r|--registry)
-            REGISTRY_PATH="$2"
+            REGISTRY="$2"
             shift 2
             ;;
         *)
@@ -131,7 +131,7 @@ APPS_DIR=${APPS_DIR:-$DIR/apps}
 APPS_DIR=$(abs_path $APPS_DIR)
 CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
-REGISTRY=${REGISTRY:-""}
+REGISTRY=${REGISTRY:-"dockerhub"}
 ############################################################
 ### If DCOS_PATH is defined:                             ###
 ###  * Replace with relative path with an absolute path. ###
