@@ -22,10 +22,12 @@ for app in os.listdir(APPS_DIR):
             p = subprocess.Popen(cmd, shell=True, executable='/bin/bash')
             processes.append(p)
         else:
+            print "Pulling image " + image
             cmd = "docker pull "  + image
-            p = subprocess.Popen(cmd, shell=True, executable='/bin/bash')
+            p = subprocess.Popen(cmd.split(),
+                                 shell=False,
+                                 preexec_fn=os.setpgrp)
             processes.append(p)
-
 
 # Wait for processes to finish
 for p in processes:
