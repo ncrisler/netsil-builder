@@ -11,13 +11,22 @@ Parameters:
   -a, --apps-dir     The apps directory (default: ./apps)
   -u, --user         SSH user for deployment (default: $USER)
   -d, --dcos-path    Path to the DCOS release package
-  -r, --registry     Path to third party registry. Defaults to Dockerhub.
+  -r, --registry     For use with third party registries. Defaults to Dockerhub.
+                     You should pass the repository prefix of the 'netsil/<image>' images.
+                     For instance, if we were using 'gcr.io/netsil-images/netsil/<image>', 
+                     we would pass 'gcr.io/netsil-images' for this parameter.
+  -o, --offline      Are we deploying offline? Choose 'Yes' or 'No'. Defaults to No.
 "
     exit 1
 }
 
 function deploy_aoc() {
-    sudo docker build -q -t netsil/netsil-builder ${DIR}
+    builder_image=netsil/netsil-builder
+    if [ "${OFFLINE}" = "No" ]; then
+        sudo docker build -q -t ${builder_image} ${DIR}
+    else 
+        builder_image=${REGISTRY}/netsil/netsil-builder 
+    fi
 
     if [ $? -eq 0 ]; then
         sudo docker run --rm --privileged -${INTERACTIVE} \
@@ -29,7 +38,7 @@ function deploy_aoc() {
             -e HOST=$HOST \
             -e ANSIBLE_USER=$ANSIBLE_USER \
             -e REGISTRY=$REGISTRY \
-            netsil/netsil-builder \
+            ${builder_image} \
             /opt/builder/scripts/deploy.sh
     fi
 }
@@ -113,6 +122,10 @@ while [ $# -gt 0 ]; do
             REGISTRY="$2"
             shift 2
             ;;
+        -o|--offline)
+            OFFLINE="$2"
+            shift 2
+            ;;
         *)
             echo "Unknown parameter \"$1\"" 1>&2
             display_usage
@@ -132,6 +145,7 @@ APPS_DIR=$(abs_path $APPS_DIR)
 CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
 REGISTRY=${REGISTRY:-"dockerhub"}
+OFFLINE=${OFFLINE:-"No"}
 ############################################################
 ### If DCOS_PATH is defined:                             ###
 ###  * Replace with relative path with an absolute path. ###
