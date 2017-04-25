@@ -48,17 +48,22 @@ In this parameter, you must specify the locally sourced path to the DC/OS binary
 You may download this binary [here](https://downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/dcos_generate_config.sh).
 
 `-r, --registry`
+
 By default, the container images that Netsil uses are sourced from Dockerhub. Thus, the image names are of the format `netsil/<image>`.
 You may wish to pull these images into your own docker registry and source the installation from that registry instead of Dockerhub.
 In that case, you would need to specify that registry prefix with this parameter.
 
-For instance, if we were using `gcr.io/netsil-images/netsil/<image>`, we would pass 'gcr.io/netsil-images' for this parameter.
-Please make sure that your docker daemon is also authenticated to pull from your third party repo.
+For instance, if we were using `gcr.io/netsil-images/netsil/<image>`, we would pass `gcr.io/netsil-images` for this parameter.
+Please make sure that your docker daemon is also authenticated to pull from your third party registry.
 
-If you wish to download the set of Netsil images necessary for installation, you can do so with the command `./scripts/download-images.py`
-If you only wish to print those images, you can do so with the command `./scripts/download-images.py list`
+If you wish to download the set of Netsil images necessary for installation, you can do so with the command 
+`python ./scripts/download-images.py`
+
+If you only wish to print those images, you can do so with the command `python ./scripts/download-images.py list`
 
 ## Misc
 The `setup.sh` script first builds a `netsil-builder` docker image and runs the AOC deployment from that image.
+
 For the offline case, you may pull the `netsil/netsil-builder` and move it onto the machine where you are running these deploy scripts.
+
 If you specified a `registry` parameter, we then assume that the image resides in `${registry}/netsil/netsil-builder`, where `${registry}` is your third party registry path.
