@@ -2,7 +2,7 @@
 set -e
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname [-k key_path] [-a apps_dir] [-u username] [-d dcos_path]
+    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline] 
 
 
 Parameters:
@@ -11,9 +11,9 @@ Parameters:
   -a, --apps-dir     The apps directory (default: ./apps)
   -u, --user         SSH user for deployment (default: $USER)
   -d, --dcos-path    Path to the DCOS release package
-  -r, --registry     For use with third party registries. Defaults to Dockerhub.
+  -r, --registry     For use with third party registries (default: dockerhub)
                      You should pass the repository prefix of the 'netsil/<image>' images.
-  -o, --offline      Are we deploying offline? Choose 'Yes' or 'No'. Defaults to No.
+  -o, --offline      Are we deploying offline? Choose 'Yes' or 'No' (default: No)
 "
     exit 1
 }
