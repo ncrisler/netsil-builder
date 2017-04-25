@@ -1,4 +1,5 @@
 import os
+import errno
 import json
 import subprocess
 import argparse
@@ -40,9 +41,6 @@ def main(apps_dir, images_dir, action):
             print image
         exit(0)
 
-    # Create directories if not found
-    mkdir_p(images_dir)
-
     # Pull images
     pull_processes = list()
     for image in images:
@@ -58,6 +56,9 @@ def main(apps_dir, images_dir, action):
 
     # Save images (optional)
     if action == 'save':
+        # Create directories if not found
+        mkdir_p(images_dir)
+
         save_processes = list()
         for image in images:
             print "Saving image " + image
@@ -77,4 +78,4 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--images-dir', default=PWD + '/images', dest='images_dir', type=str, nargs='?')
     parser.add_argument('action', nargs='?')
     args, leftovers = parser.parse_known_args()
-    main(args.apps_dir, args.images_dir, args.opt)
+    main(args.apps_dir, args.images_dir, args.action)
