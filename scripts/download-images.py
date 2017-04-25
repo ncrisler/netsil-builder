@@ -17,7 +17,7 @@ def mkdir_p(path):
         else:
             raise
 
-def main(apps_dir, images_dir, do_print, do_save):
+def main(apps_dir, images_dir, action):
     # Get list of images
     specs_dir = apps_dir + '/build/specs'
     if os.path.isdir(specs_dir):
@@ -35,7 +35,7 @@ def main(apps_dir, images_dir, do_print, do_save):
         exit(1)
 
     # Print and exit, if directed.
-    if do_print:
+    if action == 'print':
         for image in images:
             print image
         exit(0)
@@ -57,7 +57,7 @@ def main(apps_dir, images_dir, do_print, do_save):
         p.wait()
 
     # Save images (optional)
-    if do_save:
+    if action == 'save':
         save_processes = list()
         for image in images:
             print "Saving image " + image
@@ -75,7 +75,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='For downloading images')
     parser.add_argument('-a', '--apps-dir', default=PWD + '/apps', dest='apps_dir', type=str, nargs='?')
     parser.add_argument('-i', '--images-dir', default=PWD + '/images', dest='images_dir', type=str, nargs='?')
-    parser.add_argument('list', nargs='?')
-    parser.add_argument('save', nargs='?')
+    parser.add_argument('action', nargs='?')
     args, leftovers = parser.parse_known_args()
-    main(args.apps_dir, args.images_dir, args.list, args.save)
+    main(args.apps_dir, args.images_dir, args.opt)

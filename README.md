@@ -63,7 +63,7 @@ python ./scripts/download-images.py
 
 If you only wish to print those images, you can do so with the command 
 ```
-python ./scripts/download-images.py list
+python ./scripts/download-images.py print
 ```
 
 ## Misc
