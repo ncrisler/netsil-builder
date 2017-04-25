@@ -1,9 +1,9 @@
 ## Introduction
-This *netsil-builder* repository provides scripts to install and deploy Netsil AOC.
+This repository provides scripts to install and deploy Netsil AOC.
 
 Currently, these scripts support CoreOS and CentOS. They have been tested on CoreOS 1068.9.0, CoreOS 1268.6.0, and CentOS 7, though it should work on other versions of those Linux distributions.
 
-Support for other Linux distributions is planned for future releases.
+Support for more Linux distributions is planned for future releases.
 
 ## Prerequisites 
 ### Resource Requirements
@@ -37,14 +37,17 @@ Running this script without arguments will print a short help section.
 Here, we will elaborate on some of the parameters of `setup.sh`
 
 `-d, --dcos-path`
+
 Pass
 
 `-r, --registry`
+
 Pass
 For instance, if we were using 'gcr.io/netsil-images/netsil/<image>', 
 we would pass 'gcr.io/netsil-images' for this parameter.
 
 `-o, --offline`
+
 Pass
 
 ## Misc
