@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xe
+set -e
 
 function display_usage() {
     echo "Usage: ./setup.sh -h hostname [-k key_path] [-a apps_dir] [-u username] [-d dcos_path]
