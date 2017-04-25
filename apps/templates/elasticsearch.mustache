@@ -3,7 +3,7 @@
   "container": {
      "type": "DOCKER",
      "volumes": [
-{{#elasticsearch.production}}
+{{#production}}
        {
          "containerPath": "es_data",
          "mode": "RW",
@@ -21,11 +21,11 @@
         "containerPath": "/var/log/netsil",
         "mode": "RW"
        }
-{{/elasticsearch.production}}
+{{/production}}
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ elasticsearch.uri_namespace }}/elasticsearch:{{ elasticsearch.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/elasticsearch:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ elasticsearch.http_port }}, "hostPort": {{ elasticsearch.http_port }}, "protocol":"tcp"},
@@ -33,9 +33,9 @@
          ]
      }
  },
-  "cpus": {{ elasticsearch.cpus }},
-  "mem": {{ elasticsearch.mem }},
-  "acceptedResourceRoles": ["{{ elasticsearch.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -43,10 +43,10 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#elasticsearch.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/elasticsearch.private}}
-  "instances": {{ elasticsearch.instances }},
+{{/private}}
+  "instances": {{ instances }},
   "residency": {
     "taskLostBehavior": "WAIT_FOREVER"
   }

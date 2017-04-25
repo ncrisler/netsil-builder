@@ -11,7 +11,7 @@
       ],
       "docker": {
           "network": "BRIDGE",
-          "image": "netsil/backups:stable-1.1.2",
+          "image": "netsil/backups:stable-1.2.3",
           "forcePullImage": false,
           "portMappings": [
               {"containerPort": 9090, "hostPort": 9090, "protocol":"tcp"}
@@ -32,11 +32,11 @@
   },
   "env": {
     "NETSIL_BUILD_BRANCH": "stable",
-    "NETSIL_VERSION_NUMBER": "1.1.2",
-    "NETSIL_COMMIT_HASH": "298b19425",
+    "NETSIL_VERSION_NUMBER": "1.2.3",
+    "NETSIL_COMMIT_HASH": "5f7c731fd",
     "NETSIL_BUILD_NUMBER": "0",
-    "NETSIL_SERVICE_TAG": "stable-1.1.2",
-    "NETSIL_VERSION_TAG": "stable-1.1.2",
+    "NETSIL_SERVICE_TAG": "stable-1.2.3",
+    "NETSIL_VERSION_TAG": "stable-1.2.3",
     "PRODUCT_FLAVOR": "Pro",
     "MYSQL_HOST": "user-db.marathon.mesos",
     "MYSQL_PORT": "3306",

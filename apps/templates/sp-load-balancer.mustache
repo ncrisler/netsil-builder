@@ -16,7 +16,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ sp-load-balancer.uri_namespace }}/sp-load-balancer:{{ sp-load-balancer.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/sp-load-balancer:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ sp-load-balancer.port }}, "hostPort": {{ sp-load-balancer.port }}, "protocol":"tcp"}
@@ -24,18 +24,17 @@
      }
  },
   "cmd": ". /root/netsil-proxy/exports.sh && /root/netsil-proxy/startup.sh && supervisord -c /opt/netsil/netsil-proxy/tools/netsil-proxy/supervisor/netsil-proxy-supervisor-include.conf",
-  "cpus": {{ sp-load-balancer.cpus }},
-  "mem": {{ sp-load-balancer.mem }},
-  "instances": {{ sp-load-balancer.instances }},
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
   "upgradeStrategy" : {
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#sp-load-balancer.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/sp-load-balancer.private}}
+{{/private}}
   "env": {
-    "DO_SCALE": "yes",
     "PRODUCT_FLAVOR": "Pro",
     "DRUID_HOST": "{{ sp-load-balancer.druid_host }}",
     "DRUID_PORT": "{{ sp-load-balancer.druid_port }}",
@@ -43,12 +42,12 @@
     "SQL_PORT": "{{ sp-load-balancer.sql_port }}",
     "USER_PERSISTENCE_SERVER_HOST": "{{ sp-load-balancer.user_persistence_server_host }}",
     "USER_PERSISTENCE_SERVER_PORT": "{{ sp-load-balancer.user_persistence_server_port }}",
-  {{#sp-load-balancer.development}}
+  {{#development}}
     "BUILD_ENV": "development",
-  {{/sp-load-balancer.development}}
-  {{#sp-load-balancer.production}}
+  {{/development}}
+  {{#production}}
     "BUILD_ENV": "production",
-  {{/sp-load-balancer.production}}
+  {{/production}}
     "PYTHON_SERVICE": "sp_load_balancer_service"
   }
 }

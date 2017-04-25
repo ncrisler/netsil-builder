@@ -40,15 +40,19 @@
      ],
      "docker": {
          "network": "HOST",
-         "image": "{{ ceph-rgw.uri_namespace }}/ceph-rgw:{{ ceph-rgw.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/ceph-rgw:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "privileged": false
      }
- },
-  "cpus": {{ ceph-rgw.cpus }},
-  "mem": {{ ceph-rgw.mem }},
-  "instances": {{ ceph-rgw.instances }},
-  "acceptedResourceRoles": ["{{ ceph-rgw.role }}"],
+  },
+  "ports": [
+     {{ ceph-rgw.rgw_civetweb_port }}
+  ],
+  "requirePorts" : true,
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -56,9 +60,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#ceph-rgw.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/ceph-rgw.private}}
+{{/private}}
   "env": {
     "MON_IP": "{{ ceph-rgw.mon_ip }}",
     "MON_PORT": "{{ ceph-rgw.mon_port }}",

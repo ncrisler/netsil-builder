@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/logstash:stable-1.1.2",
+         "image": "netsil/logstash:stable-1.2.3",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 5044, "hostPort": 5044, "protocol":"tcp"},
@@ -39,3 +39,4 @@
     "KAFKA_PORT": "9092"
  }
 }
+

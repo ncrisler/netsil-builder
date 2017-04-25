@@ -2,17 +2,19 @@
   "ceph-monitor": {
     "app_id": "ceph-monitor",
     "mon_port": "9001",
+    "default_port": "6789",
     "ceph_conf_dir": "/etc/ceph/mon",
     "ceph_daemon": "mon",
     "restapi_port": "9005",
-    "ceph_data_dir": "/var/lib/ceph-data",
-        "uri_namespace": "netsil",
+    "ceph_data_dir": "/var/lib/ceph-data"
+  },
+    "uri_namespace": "netsil",
     "netsil_build_branch": "stable",
-    "netsil_version_number": "1.1.2",
-    "netsil_commit_hash": "298b19425",
+    "netsil_version_number": "1.2.3",
+    "netsil_commit_hash": "5f7c731fd",
     "netsil_build_number": "0",
-    "netsil_version_tag": "stable-1.1.2",
-    "netsil_service_tag": "stable-1.1.2",
+    "netsil_version_tag": "stable-1.2.3",
+    "netsil_service_tag": "stable-1.2.3",
     "private": false,
     "role": "*",
     "forcePullImage": false,
@@ -20,7 +22,8 @@
     "cpus": 1.0,
     "mem": 16384,
     "product_flavor": "Pro",
-    "instances": 1
+    "instances": 1,
+    "user_persistence_server_host": "user-persistence.marathon.mesos",
+    "user_persistence_server_port": "8891"
 
-  }
 }

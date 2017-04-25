@@ -16,7 +16,7 @@
       ],
       "docker": {
           "network": "BRIDGE",
-          "image": "netsil/topology-service:stable-1.1.2",
+          "image": "netsil/topology-service:stable-1.2.3",
           "forcePullImage": false,
           "portMappings": [
               {"containerPort": 9002, "hostPort": 9002, "protocol":"tcp"}
@@ -36,6 +36,7 @@
       "maximumOverCapacity" : 0
   },
   "env": {
+    "PRODUCT_FLAVOR": "Pro",
     "TIME_SERIES_ENDPOINT_HOST": "time-series-query-service.marathon.mesos",
     "TIME_SERIES_ENDPOINT_PORT": "9047",
     "USER_PERSISTENCE_SERVER_HOST": "user-persistence.marathon.mesos",
@@ -44,3 +45,4 @@
     "PYTHON_SERVICE": "topology_service"
   }
 }
+

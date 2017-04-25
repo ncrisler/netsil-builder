@@ -1,5 +1,6 @@
 cluster_vars:
   build_env: production
+  dcos_version: '1.7'
   force_pull_image: 'false'
   is_private_registry: 'false'
   resource_role: '*'

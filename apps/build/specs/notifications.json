@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/notifications:stable-1.1.2",
+         "image": "netsil/notifications:stable-1.2.3",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 8882, "hostPort": 8882, "protocol":"tcp"}
@@ -40,7 +40,8 @@
     "USER_PERSISTENCE_PORT": "8891",
     "REDIS_HOST": "redis.marathon.mesos",
     "REDIS_PORT": "6379",
-    "NODEJS_ENV": "NODE_ENV=production"
+    "NODEJS_ENV": "NODE_ENV=production",
+    "TEST_API_PORT": "9988"
   }
 }
 

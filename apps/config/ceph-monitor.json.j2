@@ -2,13 +2,14 @@
   "ceph-monitor": {
     "app_id": "ceph-monitor",
     "mon_port": "9001",
+    "default_port": "6789",
     "ceph_conf_dir": "/etc/ceph/mon",
     "ceph_daemon": "mon",
     "restapi_port": "9005",
-    "ceph_data_dir": "/var/lib/ceph-data",
+    "ceph_data_dir": "/var/lib/ceph-data"
+  },
 {% extends "common.json.j2" %}
 {% block common_params %}
-    {{ super() }}
-  }
+{{ super() }}
 }
 {% endblock %}

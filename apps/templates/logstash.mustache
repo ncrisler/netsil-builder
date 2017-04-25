@@ -3,17 +3,17 @@
  "container": {
      "type": "DOCKER",
      "volumes": [
-{{#logstash.production}}
+{{#production}}
        {
         "hostPath": "/var/log/netsil",
         "containerPath": "/var/log/netsil",
         "mode": "RW"
        }
-{{/logstash.production}}
+{{/production}}
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ logstash.uri_namespace }}/logstash:{{ logstash.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/logstash:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ logstash.beats_port }}, "hostPort": {{ logstash.beats_port }}, "protocol":"tcp"},
@@ -21,10 +21,10 @@
          ]
      }
  },
- "cpus": {{ logstash.cpus }},
- "mem": {{ logstash.mem }},
- "instances": {{ logstash.instances }},
- "acceptedResourceRoles": ["{{ logstash.role }}"],
+ "cpus": {{ cpus }},
+ "mem": {{ mem }},
+ "instances": {{ instances }},
+ "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -32,9 +32,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#logstash.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/logstash.private}}
+{{/private}}
  "env": {
     "ELASTICSEARCH_HOSTNAME": "{{ logstash.elasticsearch_hostname }}",
     "ELASTICSEARCH_HTTP_PORT": "{{ logstash.elasticsearch_http_port }}",

@@ -24,7 +24,8 @@
     netsil_commit_hash: "{{ services_vars['netsil_commit_hash'] }}"
     netsil_build_number: "{{ services_vars['netsil_build_number'] }}"
     netsil_version_tag: "{{ services_vars['netsil_version_tag'] }}"
-    uri_namespace: "{{ cluster_vars['uri_namespace'] }}"
+    # So we can support 3rd party docker repos
+    uri_namespace: "{{ lookup('env', 'URI_NAMESPACE') or cluster_vars['uri_namespace'] }}"
     is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
     resource_role: "{{ cluster_vars['resource_role'] }}"
     build_env: "{{ cluster_vars['build_env'] }}"
@@ -48,7 +49,6 @@
     - configure-dcos-node
     - configure-dns
     - reset-master-ips
-    - inject-credentials
     - template-marathon-apps
     - pull-binaries
     - install-startup-scripts

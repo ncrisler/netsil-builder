@@ -3,27 +3,27 @@
  "container": {
      "type": "DOCKER",
      "volumes": [
-{{#user-persistence.production}}
+{{#production}}
        {
         "hostPath": "/var/log/netsil",
         "containerPath": "/var/log/netsil",
         "mode": "RW"
        }
-{{/user-persistence.production}}
+{{/production}}
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ user-persistence.uri_namespace }}/user-persistence:{{ user-persistence.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/user-persistence:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ user-persistence.port }}, "hostPort": {{ user-persistence.port }}, "protocol":"tcp"}
          ]
      }
  },
-  "cpus": {{ user-persistence.cpus }},
-  "mem": {{ user-persistence.mem }},
-  "instances": {{ user-persistence.instances }},
-  "acceptedResourceRoles": ["{{ user-persistence.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -31,11 +31,11 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#user-persistence.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/user-persistence.private}}
+{{/private}}
   "env": {
-    "PRODUCT_FLAVOR": "{{ user-persistence.product_flavor }}",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "REDIS_HOST": "{{ user-persistence.redis_host }}",
     "REDIS_PORT": "{{ user-persistence.redis_port }}",
     "NODEJS_ENV": "{{ user-persistence.nodejs_env }}",

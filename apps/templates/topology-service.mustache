@@ -16,7 +16,7 @@
       ],
       "docker": {
           "network": "BRIDGE",
-          "image": "{{ topology-service.uri_namespace }}/topology-service:{{ topology-service.netsil_service_tag }}",
+          "image": "{{ uri_namespace }}/topology-service:{{ netsil_service_tag }}",
           "forcePullImage": false,
           "portMappings": [
               {"containerPort": {{ topology-service.port }}, "hostPort": {{ topology-service.port }}, "protocol":"tcp"}
@@ -24,10 +24,10 @@
       }
   },
   "cmd": ". /root/netsil-proxy/exports.sh && /root/netsil-proxy/startup.sh && supervisord -c /opt/netsil/netsil-proxy/tools/netsil-proxy/supervisor/netsil-proxy-supervisor-include.conf",
-  "cpus": {{ topology-service.cpus }},
-  "mem": {{ topology-service.mem }},
-  "instances": {{ topology-service.instances }},
-  "acceptedResourceRoles": ["{{ topology-service.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -35,20 +35,21 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#topology-service.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/topology-service.private}}
+{{/private}}
   "env": {
+    "PRODUCT_FLAVOR": "Pro",
     "TIME_SERIES_ENDPOINT_HOST": "{{ topology-service.time_series_endpoint_host }}",
     "TIME_SERIES_ENDPOINT_PORT": "{{ topology-service.time_series_endpoint_port }}",
     "USER_PERSISTENCE_SERVER_HOST": "{{ topology-service.user_persistence_server_host }}",
     "USER_PERSISTENCE_SERVER_PORT": "{{ topology-service.user_persistence_server_port }}",
-  {{#topology-service.development}}
+  {{#development}}
     "BUILD_ENV": "development",
-  {{/topology-service.development}}
-  {{#topology-service.production}}
+  {{/development}}
+  {{#production}}
     "BUILD_ENV": "production",
-  {{/topology-service.production}}
+  {{/production}}
     "PYTHON_SERVICE": "topology_service"
   }
 }

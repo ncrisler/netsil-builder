@@ -23,7 +23,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/user-db:stable-1.1.2",
+         "image": "netsil/user-db:stable-1.2.3",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 3306, "hostPort": 3306, "protocol":"tcp"}
@@ -48,3 +48,4 @@
     "taskLostBehavior": "WAIT_FOREVER"
   }
 }
+

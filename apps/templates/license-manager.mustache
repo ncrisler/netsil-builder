@@ -23,17 +23,17 @@
       ],
       "docker": {
           "network": "BRIDGE",
-          "image": "{{ license-manager.uri_namespace }}/license-manager:{{ license-manager.netsil_service_tag }}",
+          "image": "{{ uri_namespace }}/license-manager:{{ netsil_service_tag }}",
           "forcePullImage": false,
           "portMappings": [
               {"containerPort": {{ license-manager.port }}, "hostPort": {{ license-manager.port }}, "protocol":"tcp"}
           ]
       }
   },
-  "cpus": {{ license-manager.cpus }},
-  "mem": {{ license-manager.mem }},
-  "instances": {{ license-manager.instances }},
-  "acceptedResourceRoles": ["{{ license-manager.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -41,24 +41,27 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#license-manager.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/license-manager.private}}
+{{/private}}
   "env": {
+    "PRODUCT_FLAVOR": "Pro",
     "LICENSE_MANAGER_API_ENDPOINT": "{{ license-manager.endpoint }}",
     "LICENSE_MANAGER_SERVICE_PORT": "{{ license-manager.port }}",
     "REDIS_HOST": "{{ license-manager.redis_host }}",
     "REDIS_PORT": "{{ license-manager.redis_port }}",
-    "NETSIL_SP_HOST": "{{ license-manager.splb_host }}",
-    "NETSIL_SP_PORT": "{{ license-manager.splb_port }}",
-    "URI_NAMESPACE": "{{ license-manager.uri_namespace }}",
-    "NETSIL_BUILD_BRANCH": "{{ license-manager.netsil_build_branch }}",
-    "NETSIL_VERSION_NUMBER": "{{ license-manager.netsil_version_number }}",
-    "NETSIL_COMMIT_HASH": "{{ license-manager.netsil_commit_hash }}",
-    "NETSIL_BUILD_NUMBER": "{{ license-manager.netsil_build_number }}",
-    "NETSIL_SERVICE_TAG": "{{ license-manager.netsil_service_tag }}",
-    "NETSIL_VERSION_TAG": "{{ license-manager.netsil_version_tag }}",
-    "BUILD_ENV": "{{ license-manager.build_env }}"
+    "NETSIL_SPLB_HOST": "{{ license-manager.splb_host }}",
+    "NETSIL_SPLB_PORT": "{{ license-manager.splb_port }}",
+    "URI_NAMESPACE": "{{ uri_namespace }}",
+    "NETSIL_BUILD_BRANCH": "{{ netsil_build_branch }}",
+    "NETSIL_VERSION_NUMBER": "{{ netsil_version_number }}",
+    "NETSIL_COMMIT_HASH": "{{ netsil_commit_hash }}",
+    "NETSIL_BUILD_NUMBER": "{{ netsil_build_number }}",
+    "NETSIL_SERVICE_TAG": "{{ netsil_service_tag }}",
+    "NETSIL_VERSION_TAG": "{{ netsil_version_tag }}",
+    "BUILD_ENV": "{{ license-manager.build_env }}",
+    "USER_PERSISTENCE_SERVER_HOST": "{{ user_persistence_server_host }}",
+    "USER_PERSISTENCE_SERVER_PORT": "{{ user_persistence_server_port }}"
   },
   "residency": {
     "taskLostBehavior": "WAIT_FOREVER"

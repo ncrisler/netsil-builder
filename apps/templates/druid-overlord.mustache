@@ -5,7 +5,7 @@
     ],
     "docker": {
       "network": "BRIDGE",
-      "image": "{{ druid-overlord.uri_namespace }}/druid-overlord:{{ druid-overlord.netsil_service_tag }}",
+      "image": "{{ uri_namespace }}/druid-overlord:{{ netsil_service_tag }}",
       "forcePullImage": false,
       "portMappings": [
         {"containerPort": {{ druid-overlord.druid_port }}, "hostPort": {{ druid-overlord.druid_port }}},
@@ -30,10 +30,10 @@
       }
     ]
   },
-  "cpus": {{ druid-overlord.cpus }},
-  "mem": {{ druid-overlord.mem }},
-  "instances": {{ druid-overlord.instances }},
-  "acceptedResourceRoles": ["{{ druid-overlord.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -41,12 +41,12 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#druid-overlord.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/druid-overlord.private}}
+{{/private}}
   "env": {
     "NODE_TYPE": "overlord",
-    "PRODUCT_FLAVOR": "{{ druid-overlord.product_flavor }}",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
     "druid_service": "{{ druid-overlord.druid_service }}",
     "druid_port": "{{ druid-overlord.druid_port }}",

@@ -4,10 +4,10 @@
     "druid_service": "druid-historical",
     "druid_port": "31005",
     "druid_server_http_numThreads": "20",
-    "druid_segmentCache_numLoadingThreads": "8",
+    "druid_segmentCache_numLoadingThreads": "8"
+  },
 {% extends "common.json.j2" %}
 {% block common_params %}
-    {{ super() }}
-  }
+{{ super() }}
 }
 {% endblock %}

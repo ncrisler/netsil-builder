@@ -3,17 +3,17 @@
  "container": {
      "type": "DOCKER",
      "volumes": [
-{{#alerts.production}}
+{{#production}}
        {
         "hostPath": "/var/log/netsil",
         "containerPath": "/var/log/netsil",
         "mode": "RW"
        }
-{{/alerts.production}}
+{{/production}}
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ alerts.uri_namespace }}/alerts:{{ alerts.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/alerts:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ alerts.bosun_web_port }}, "hostPort": {{ alerts.bosun_web_port }}, "protocol":"tcp"},
@@ -22,10 +22,10 @@
      }
  },
   "cmd": "/opt/netsil/alerts/scripts/startup.sh && supervisord -c /opt/netsil/alerts/supervisor/alerts-supervisor-include.conf",
-  "cpus": {{ alerts.cpus }},
-  "mem": {{ alerts.mem }},
-  "instances": {{ alerts.instances }},
-  "acceptedResourceRoles": ["{{ alerts.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -33,9 +33,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#alerts.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/alerts.private}}
+{{/private}}
   "env": {
     "NODEJS_ENV": "{{ alerts.nodejs_env }}",
     "USER_DB_HOST": "{{ alerts.user_db_host }}",

@@ -8,10 +8,10 @@
     "restapi_ip": "ceph-monitor.marathon.mesos",
     "restapi_port": "9005",
     "ceph_data_dir": "/var/lib/ceph-data",
-    "rgw_civetweb_port": "9004",
+    "rgw_civetweb_port": "9004"
+  },
 {% extends "common.json.j2" %}
 {% block common_params %}
-    {{ super() }}
-  }
+{{ super() }}
 }
 {% endblock %}

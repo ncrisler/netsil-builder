@@ -1,8 +1,8 @@
 #!/bin/bash
-set -xe
+set -e
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname [-k key_path] [-a apps_dir] [-u username] [-d dcos_path]
+    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline] 
 
 
 Parameters:
@@ -11,12 +11,22 @@ Parameters:
   -a, --apps-dir     The apps directory (default: ./apps)
   -u, --user         SSH user for deployment (default: $USER)
   -d, --dcos-path    Path to the DCOS release package
+  -r, --registry     For use with third party registries (default: dockerhub)
+                     You should pass the repository prefix of the 'netsil/<image>' images.
+  -o, --offline      Are we deploying offline? Choose 'Yes' or 'No' (default: No)
 "
     exit 1
 }
 
 function deploy_aoc() {
-    sudo docker build -q -t netsil/netsil-builder ${DIR}
+    builder_image=netsil/netsil-builder
+    if [ "${OFFLINE}" = "No" ]; then
+        sudo docker build -q -t ${builder_image} ${DIR}
+    else
+        if [ "${REGISTRY}" != "dockerhub" ] ; then
+            builder_image=${REGISTRY}/netsil/netsil-builder
+        fi
+    fi
 
     if [ $? -eq 0 ]; then
         sudo docker run --rm --privileged -${INTERACTIVE} \
@@ -27,7 +37,8 @@ function deploy_aoc() {
             -e DISTRIB=$DISTRIB \
             -e HOST=$HOST \
             -e ANSIBLE_USER=$ANSIBLE_USER \
-            netsil/netsil-builder \
+            -e REGISTRY=$REGISTRY \
+            ${builder_image} \
             /opt/builder/scripts/deploy.sh
     fi
 }
@@ -107,6 +118,14 @@ while [ $# -gt 0 ]; do
             DCOS_PATH="$2"
             shift 2
             ;;
+        -r|--registry)
+            REGISTRY="$2"
+            shift 2
+            ;;
+        -o|--offline)
+            OFFLINE="$2"
+            shift 2
+            ;;
         *)
             echo "Unknown parameter \"$1\"" 1>&2
             display_usage
@@ -125,7 +144,8 @@ APPS_DIR=${APPS_DIR:-$DIR/apps}
 APPS_DIR=$(abs_path $APPS_DIR)
 CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
-
+REGISTRY=${REGISTRY:-"dockerhub"}
+OFFLINE=${OFFLINE:-"No"}
 ############################################################
 ### If DCOS_PATH is defined:                             ###
 ###  * Replace with relative path with an absolute path. ###

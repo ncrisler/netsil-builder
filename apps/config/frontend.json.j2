@@ -13,10 +13,14 @@
     "alerts_service_port": 8881,
     "elasticsearch_server": "elasticsearch.marathon.mesos",
     "elasticsearch_port": 9200,
+    "notifications_service_host": "notifications.marathon.mesos",
+    "notifications_service_port": 9988,
     "metadata_service_host": "metadata.marathon.mesos",
     "metadata_service_port": 5444,
     "license_manager_service_host": "license-manager.marathon.mesos",
     "license_manager_service_port": 9009,
+    "sp_load_balancer_host": "sp-load-balancer.marathon.mesos",
+    "sp_load_balancer_port": 5005,
     "redis_host": "redis.marathon.mesos",
     "redis_port": 6379,
     "backups_host": "backups.marathon.mesos",
@@ -24,10 +28,10 @@
     "https_remote_port": 443,
     "http_local_port": 80,
     "ws_local_port": 81,
-    "nodejs_env": "NODE_ENV={{ build_env }}",
+    "nodejs_env": "NODE_ENV={{ build_env }}"
+  },
 {% extends "common.json.j2" %}
 {% block common_params %}
-    {{ super() }}
-  }
+{{ super() }}
 }
 {% endblock %}

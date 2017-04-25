@@ -23,17 +23,17 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ kafka.uri_namespace }}/kafka:{{ kafka.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/kafka:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ kafka.port }}, "hostPort": {{ kafka.port }}, "protocol":"tcp"}
          ]
      }
  },
-  "cpus": {{ kafka.cpus }},
-  "mem": {{ kafka.mem }},
-  "instances": {{ kafka.instances }},
-  "acceptedResourceRoles": ["{{ kafka.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -41,9 +41,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#kafka.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/kafka.private}}
+{{/private}}
   "env": {
     "DEPLOY_ENV": "marathon",
     "START_TIMEOUT": "{{ kafka.start_timeout }}",
