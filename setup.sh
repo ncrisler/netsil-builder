@@ -13,8 +13,6 @@ Parameters:
   -d, --dcos-path    Path to the DCOS release package
   -r, --registry     For use with third party registries. Defaults to Dockerhub.
                      You should pass the repository prefix of the 'netsil/<image>' images.
-                     For instance, if we were using 'gcr.io/netsil-images/netsil/<image>', 
-                     we would pass 'gcr.io/netsil-images' for this parameter.
   -o, --offline      Are we deploying offline? Choose 'Yes' or 'No'. Defaults to No.
 "
     exit 1
