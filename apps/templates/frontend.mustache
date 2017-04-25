@@ -3,17 +3,17 @@
  "container": {
      "type": "DOCKER",
      "volumes": [
-{{#frontend.production}}
+{{#production}}
        {
         "hostPath": "/var/log/netsil",
         "containerPath": "/var/log/netsil",
         "mode": "RW"
        }
-{{/frontend.production}}
+{{/production}}
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ frontend.uri_namespace }}/frontend:{{ frontend.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/frontend:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ frontend.https_remote_port }}, "hostPort": {{ frontend.https_remote_port }}, "protocol":"tcp"},
@@ -21,10 +21,10 @@
          ]
      }
  },
-  "cpus": {{ frontend.cpus }},
-  "mem": {{ frontend.mem }},
-  "instances": {{ frontend.instances }},
-  "acceptedResourceRoles": ["{{ frontend.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -32,10 +32,14 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#frontend.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/frontend.private}}
+{{/private}}
   "env": {
+    "NETSIL_BUILD_BRANCH": "{{ netsil_build_branch }}",
+    "NETSIL_VERSION_NUMBER": "{{ netsil_version_number }}",
+    "NETSIL_COMMIT_HASH": "{{ netsil_commit_hash }}",
+    "NETSIL_BUILD_NUMBER": "{{ netsil_build_number }}",
     "DO_SCALE": "yes",
     "TIME_SERIES_ENDPOINT_HOST": "{{ frontend.time_series_endpoint_host }}",
     "TIME_SERIES_ENDPOINT_PORT": "{{ frontend.time_series_endpoint_port }}",
@@ -53,6 +57,8 @@
     "METADATA_PORT": "{{ frontend.metadata_service_port }}",
     "LICENSE_MANAGER_SERVICE_HOST": "{{ frontend.license_manager_service_host }}",
     "LICENSE_MANAGER_SERVICE_PORT": "{{ frontend.license_manager_service_port }}",
+    "NETSIL_SP_LOAD_BALANCER_HOST": "{{ frontend.sp_load_balancer_host }}",
+    "NETSIL_SP_LOAD_BALANCER_PORT": "{{ frontend.sp_load_balancer_port }}",
     "REDIS_HOST": "{{ frontend.redis_host }}",
     "REDIS_PORT": "{{ frontend.redis_port }}",
     "BACKUPS_HOST": "{{ frontend.backups_host }}",
@@ -61,6 +67,6 @@
     "HTTPS_REMOTE_PORT": "{{ frontend.https_remote_port }}",
     "HTTP_LOCAL_PORT": "{{ frontend.http_local_port }}",
     "WS_LOCAL_PORT": "{{ frontend.ws_local_port }}",
-    "PRODUCT_FLAVOR": "{{ frontend.product_flavor }}"
+    "PRODUCT_FLAVOR": "{{ product_flavor }}"
   }
 }

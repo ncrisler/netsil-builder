@@ -7,14 +7,15 @@
     "redis_host": "redis.marathon.mesos",
     "redis_port": 6379,
     "splb_host": "sp-load-balancer.marathon.mesos",
-    "splb_port": 5005,
-        "uri_namespace": "netsil",
+    "splb_port": 5005
+  },
+    "uri_namespace": "netsil",
     "netsil_build_branch": "stable",
-    "netsil_version_number": "1.1.2",
-    "netsil_commit_hash": "298b19425",
+    "netsil_version_number": "1.2.2",
+    "netsil_commit_hash": "2386b5182",
     "netsil_build_number": "0",
-    "netsil_version_tag": "stable-1.1.2",
-    "netsil_service_tag": "stable-1.1.2",
+    "netsil_version_tag": "stable-1.2.2",
+    "netsil_service_tag": "stable-1.2.2",
     "private": false,
     "role": "*",
     "forcePullImage": false,
@@ -22,7 +23,8 @@
     "cpus": 1.0,
     "mem": 16384,
     "product_flavor": "Pro",
-    "instances": 1
+    "instances": 1,
+    "user_persistence_server_host": "user-persistence.marathon.mesos",
+    "user_persistence_server_port": "8891"
 
-  }
 }

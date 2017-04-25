@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/ingestion-server:stable-1.1.2",
+         "image": "netsil/ingestion-server:stable-1.2.2",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 5000, "hostPort": 5000, "protocol":"tcp"}
@@ -36,7 +36,10 @@
    "PYTHONUNBUFFERED": "0",
    "ELASTICSEARCH_SERVER": "elasticsearch.marathon.mesos",
    "ELASTICSEARCH_PORT": "9200",
-   "VALID_INDEX_NAMES": "events,notifications"
+   "BUILD_ENV": "production",
+   "VALID_INDEX_NAMES": "events,notifications",
+   "USER_PERSISTENCE_SERVER_HOST": "user-persistence.marathon.mesos",
+   "USER_PERSISTENCE_SERVER_PORT": "8891"
  }
 }
 

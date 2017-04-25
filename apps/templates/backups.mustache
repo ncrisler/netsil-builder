@@ -11,7 +11,7 @@
       ],
       "docker": {
           "network": "BRIDGE",
-          "image": "{{ backups.uri_namespace }}/backups:{{ backups.netsil_service_tag }}",
+          "image": "{{ uri_namespace }}/backups:{{ netsil_service_tag }}",
           "forcePullImage": false,
           "portMappings": [
               {"containerPort": {{ backups.port }}, "hostPort": {{ backups.port }}, "protocol":"tcp"}
@@ -19,10 +19,10 @@
       }
   },
   "cmd": "supervisord -c /opt/netsil/backups/supervisor/backups-supervisor-include.conf",
-  "cpus": {{ backups.cpus }},
-  "mem": {{ backups.mem }},
-  "instances": {{ backups.instances }},
-  "acceptedResourceRoles": ["{{ backups.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -30,17 +30,17 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#backups.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/backups.private}}
+{{/private}}
   "env": {
-    "NETSIL_BUILD_BRANCH": "{{ backups.netsil_build_branch }}",
-    "NETSIL_VERSION_NUMBER": "{{ backups.netsil_version_number }}",
-    "NETSIL_COMMIT_HASH": "{{ backups.netsil_commit_hash }}",
-    "NETSIL_BUILD_NUMBER": "{{ backups.netsil_build_number }}",
-    "NETSIL_SERVICE_TAG": "{{ backups.netsil_service_tag }}",
-    "NETSIL_VERSION_TAG": "{{ backups.netsil_version_tag }}",
-    "PRODUCT_FLAVOR": "{{ backups.product_flavor }}",
+    "NETSIL_BUILD_BRANCH": "{{ netsil_build_branch }}",
+    "NETSIL_VERSION_NUMBER": "{{ netsil_version_number }}",
+    "NETSIL_COMMIT_HASH": "{{ netsil_commit_hash }}",
+    "NETSIL_BUILD_NUMBER": "{{ netsil_build_number }}",
+    "NETSIL_SERVICE_TAG": "{{ netsil_service_tag }}",
+    "NETSIL_VERSION_TAG": "{{ netsil_version_tag }}",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "MYSQL_HOST": "{{ backups.mysql_host }}",
     "MYSQL_PORT": "{{ backups.mysql_port }}",
     "USER_PERSISTENCE_HOST": "{{ backups.user_persistence_host }}",

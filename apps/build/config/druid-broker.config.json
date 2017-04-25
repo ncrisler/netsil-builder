@@ -3,14 +3,15 @@
     "app_id": "druid-broker",
     "druid_service": "druid-broker",
     "druid_port": "31004",
-    "druid_server_http_numThreads": "20",
-        "uri_namespace": "netsil",
+    "druid_server_http_numThreads": "20"
+  },
+    "uri_namespace": "netsil",
     "netsil_build_branch": "stable",
-    "netsil_version_number": "1.1.2",
-    "netsil_commit_hash": "298b19425",
+    "netsil_version_number": "1.2.2",
+    "netsil_commit_hash": "2386b5182",
     "netsil_build_number": "0",
-    "netsil_version_tag": "stable-1.1.2",
-    "netsil_service_tag": "stable-1.1.2",
+    "netsil_version_tag": "stable-1.2.2",
+    "netsil_service_tag": "stable-1.2.2",
     "private": false,
     "role": "*",
     "forcePullImage": false,
@@ -18,7 +19,8 @@
     "cpus": 1.0,
     "mem": 16384,
     "product_flavor": "Pro",
-    "instances": 1
+    "instances": 1,
+    "user_persistence_server_host": "user-persistence.marathon.mesos",
+    "user_persistence_server_port": "8891"
 
-  }
 }

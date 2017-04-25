@@ -35,17 +35,17 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ druid-realtime.uri_namespace }}/druid-realtime:{{ druid-realtime.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/druid-realtime:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ druid-realtime.druid_port }}, "hostPort": {{ druid-realtime.druid_port }}, "protocol":"tcp"}
          ]
      }
  },
-  "cpus": {{ druid-realtime.cpus }},
-  "mem": {{ druid-realtime.mem }},
-  "instances": {{ druid-realtime.instances }},
-  "acceptedResourceRoles": ["{{ druid-realtime.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -53,12 +53,12 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#druid-realtime.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/druid-realtime.private}}
+{{/private}}
   "env": {
     "DO_SCALE": "yes",
-    "PRODUCT_FLAVOR": "{{ druid-realtime.product_flavor }}",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
     "NODE_TYPE": "realtime",
     "druid_service": "{{ druid-realtime.druid_service }}",

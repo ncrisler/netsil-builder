@@ -24,17 +24,17 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ druid-historical.uri_namespace }}/druid-historical:{{ druid-historical.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/druid-historical:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ druid-historical.druid_port }}, "hostPort": {{ druid-historical.druid_port }}, "protocol":"tcp"}
          ]
      }
  },
-  "cpus": {{ druid-historical.cpus }},
-  "mem": {{ druid-historical.mem }},
-  "instances": {{ druid-historical.instances }},
-  "acceptedResourceRoles": ["{{ druid-historical.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -42,13 +42,13 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#druid-historical.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/druid-historical.private}}
+{{/private}}
   "env": {
     "DO_SCALE": "yes",
     "NODE_TYPE": "historical",
-    "PRODUCT_FLAVOR": "{{ druid-historical.product_flavor }}",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
     "druid_service": "{{ druid-historical.druid_service }}",
     "druid_port": "{{ druid-historical.druid_port }}",

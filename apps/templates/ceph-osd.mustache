@@ -40,15 +40,19 @@
      ],
      "docker": {
          "network": "HOST",
-         "image": "{{ ceph-osd.uri_namespace }}/ceph-osd:{{ ceph-osd.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/ceph-osd:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "privileged": false
      }
- },
-  "cpus": {{ ceph-osd.cpus }},
-  "mem": {{ ceph-osd.mem }},
-  "instances": {{ ceph-osd.instances }},
-  "acceptedResourceRoles": ["{{ ceph-osd.role }}"],
+  },
+  "ports": [
+     {{ ceph-osd.dummy_port }}
+  ],
+  "requirePorts" : true,
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -56,9 +60,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#ceph-osd.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/ceph-osd.private}}
+{{/private}}
   "env": {
     "DO_SCALE": "yes",
     "MON_IP": "{{ ceph-osd.mon_ip }}",

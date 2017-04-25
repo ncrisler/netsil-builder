@@ -3,27 +3,27 @@
  "container": {
      "type": "DOCKER",
      "volumes": [
-{{#notifications.production}}
+{{#production}}
        {
         "hostPath": "/var/log/netsil",
         "containerPath": "/var/log/netsil",
         "mode": "RW"
        }
-{{/notifications.production}}
+{{/production}}
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ notifications.uri_namespace }}/notifications:{{ notifications.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/notifications:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ notifications.port }}, "hostPort": {{ notifications.port }}, "protocol":"tcp"}
          ]
      }
  },
-  "cpus": {{ notifications.cpus }},
-  "mem": {{ notifications.mem }},
-  "instances": {{ notifications.instances }},
-  "acceptedResourceRoles": ["{{ notifications.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -31,9 +31,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#notifications.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/notifications.private}}
+{{/private}}
   "env": {
     "ALERTS_SERVICE_HOST": "{{ notifications.alerts_service_host }}",
     "ALERTS_SERVICE_PORT": "{{ notifications.alerts_service_port }}",

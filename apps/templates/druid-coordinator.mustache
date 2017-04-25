@@ -11,17 +11,17 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ druid-coordinator.uri_namespace }}/druid-coordinator:{{ druid-coordinator.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/druid-coordinator:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ druid-coordinator.druid_port }}, "hostPort": {{ druid-coordinator.druid_port }}, "protocol":"tcp"}
          ]
      }
  },
-  "cpus": {{ druid-coordinator.cpus }},
-  "mem": {{ druid-coordinator.mem }},
-  "instances": {{ druid-coordinator.instances }},
-  "acceptedResourceRoles": ["{{ druid-coordinator.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -29,12 +29,12 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#druid-coordinator.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/druid-coordinator.private}}
+{{/private}}
   "env": {
     "NODE_TYPE": "coordinator",
-    "PRODUCT_FLAVOR": "{{ druid-coordinator.product_flavor }}",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
     "druid_service": "{{ druid-coordinator.druid_service }}",
     "druid_port": "{{ druid-coordinator.druid_port }}",

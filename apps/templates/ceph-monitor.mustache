@@ -40,15 +40,19 @@
      ],
      "docker": {
          "network": "HOST",
-         "image": "{{ ceph-monitor.uri_namespace }}/ceph-monitor:{{ ceph-monitor.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/ceph-monitor:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "privileged": false
      }
- },
-  "cpus": {{ ceph-monitor.cpus }},
-  "mem": {{ ceph-monitor.mem }},
-  "instances": {{ ceph-monitor.instances }},
-  "acceptedResourceRoles": ["{{ ceph-monitor.role }}"],
+  },
+  "ports": [
+     {{ ceph-monitor.restapi_port }}, {{ ceph-monitor.default_port }}
+  ],
+  "requirePorts" : true,
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -56,9 +60,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#ceph-monitor.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/ceph-monitor.private}}
+{{/private}}
   "env": {
     "MON_PORT": "{{ ceph-monitor.mon_port }}",
     "CEPH_CONF_DIR": "{{ ceph-monitor.ceph_conf_dir }}",

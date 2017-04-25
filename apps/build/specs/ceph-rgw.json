@@ -40,11 +40,15 @@
      ],
      "docker": {
          "network": "HOST",
-         "image": "netsil/ceph-rgw:stable-1.1.2",
+         "image": "netsil/ceph-rgw:stable-1.2.2",
          "forcePullImage": false,
          "privileged": false
      }
- },
+  },
+  "ports": [
+     9004
+  ],
+  "requirePorts" : true,
   "cpus": 1.0,
   "mem": 16384,
   "instances": 1,

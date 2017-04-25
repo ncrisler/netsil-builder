@@ -16,14 +16,15 @@
     "druid_indexer_queue_startDelay": "PT30S",
     "druid_indexer_runner_startPort": "31011",
     "druid_indexer_fork_property_druid_processing_numThreads": "4",
-    "druid_indexer_fork_property_druid_computation_buffer_size": "100000000",
-        "uri_namespace": "netsil",
+    "druid_indexer_fork_property_druid_computation_buffer_size": "100000000"
+  },
+    "uri_namespace": "netsil",
     "netsil_build_branch": "stable",
-    "netsil_version_number": "1.1.2",
-    "netsil_commit_hash": "298b19425",
+    "netsil_version_number": "1.2.2",
+    "netsil_commit_hash": "2386b5182",
     "netsil_build_number": "0",
-    "netsil_version_tag": "stable-1.1.2",
-    "netsil_service_tag": "stable-1.1.2",
+    "netsil_version_tag": "stable-1.2.2",
+    "netsil_service_tag": "stable-1.2.2",
     "private": false,
     "role": "*",
     "forcePullImage": false,
@@ -31,7 +32,8 @@
     "cpus": 1.0,
     "mem": 16384,
     "product_flavor": "Pro",
-    "instances": 1
+    "instances": 1,
+    "user_persistence_server_host": "user-persistence.marathon.mesos",
+    "user_persistence_server_port": "8891"
 
-  }
 }

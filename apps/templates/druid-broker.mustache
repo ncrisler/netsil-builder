@@ -11,17 +11,17 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ druid-broker.uri_namespace }}/druid-broker:{{ druid-broker.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/druid-broker:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ druid-broker.druid_port }}, "hostPort": {{ druid-broker.druid_port }}, "protocol":"tcp"}
          ]
      }
  },
-  "cpus": {{ druid-broker.cpus }},
-  "mem": {{ druid-broker.mem }},
-  "instances": {{ druid-broker.instances }},
-  "acceptedResourceRoles": ["{{ druid-broker.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -29,12 +29,12 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#druid-broker.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/druid-broker.private}}
+{{/private}}
   "env": {
     "NODE_TYPE": "broker",
-    "PRODUCT_FLAVOR": "{{ druid-broker.product_flavor }}",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
     "druid_service": "{{ druid-broker.druid_service }}",
     "druid_port": "{{ druid-broker.druid_port }}",

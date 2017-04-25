@@ -3,7 +3,7 @@
  "container": {
      "type": "DOCKER",
      "volumes": [
-{{#stream-processor.production}}
+{{#production}}
        {
         "hostPath": "/var/log/netsil",
         "containerPath": "/var/log/netsil",
@@ -19,11 +19,11 @@
         "containerPath": "/var/tmp",
         "mode": "RW"
        }
-{{/stream-processor.production}}
+{{/production}}
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ stream-processor.uri_namespace }}/stream-processor:{{ stream-processor.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/stream-processor:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "privileged": true,
          "portMappings": [
@@ -34,10 +34,10 @@
      }
  },
   "cmd": ". /root/stream-processor/exports.sh && /root/stream-processor/startup.sh && supervisord -c /opt/netsil/stream-processor/supervisor/stream-processor-supervisor-include.conf",
-  "cpus": {{ stream-processor.cpus }},
-  "mem": {{ stream-processor.mem }},
-  "instances": {{ stream-processor.instances }},
-  "acceptedResourceRoles": ["{{ stream-processor.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -45,16 +45,24 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#stream-processor.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/stream-processor.private}}
+{{/private}}
   "env": {
     "DO_SCALE": "yes",
-    "PRODUCT_FLAVOR": "{{ stream-processor.product_flavor }}",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "{{ stream-processor.deploy_env }}",
     "ZK_HOST": "{{ stream-processor.zk_host }}",
     "ZK_PORT": "{{ stream-processor.zk_port }}",
     "NETSIL_EVENTS_HOST": "{{ stream-processor.netsil_events_host }}",
-    "NETSIL_EVENTS_PORT": "{{ stream-processor.netsil_events_port }}"
+    "NETSIL_EVENTS_PORT": "{{ stream-processor.netsil_events_port }}",
+  {{#development}}
+    "BUILD_ENV": "development",
+  {{/development}}
+  {{#production}}
+    "BUILD_ENV": "production",
+  {{/production}}
+    "USER_PERSISTENCE_SERVER_HOST": "{{ user_persistence_server_host }}",
+    "USER_PERSISTENCE_SERVER_PORT": "{{ user_persistence_server_port }}"
   }
 }

@@ -3,27 +3,27 @@
  "container": {
      "type": "DOCKER",
      "volumes": [
-{{#ingestion-server.production}}
+{{#production}}
        {
         "hostPath": "/var/log/netsil",
         "containerPath": "/var/log/netsil",
         "mode": "RW"
        }
-{{/ingestion-server.production}}
+{{/production}}
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ ingestion-server.uri_namespace }}/ingestion-server:{{ ingestion-server.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/ingestion-server:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ ingestion-server.port }}, "hostPort": {{ ingestion-server.port }}, "protocol":"tcp"}
          ]
      }
  },
- "cpus": {{ ingestion-server.cpus }},
- "mem": {{ ingestion-server.mem }},
- "instances": {{ ingestion-server.instances }},
- "acceptedResourceRoles": ["{{ ingestion-server.role }}"],
+ "cpus": {{ cpus }},
+ "mem": {{ mem }},
+ "instances": {{ instances }},
+ "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -31,9 +31,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#ingestion-server.private}}
+{{#private}}
  "uris": ["file:///etc/docker.tar.gz"],
-{{/ingestion-server.private}}
+{{/private}}
  "env": {
    "PRODUCT_FLAVOR": "Pro",
    "KAFKA_SERVER": "{{ ingestion-server.kafka_server }}",
@@ -41,6 +41,14 @@
    "PYTHONUNBUFFERED": "{{ ingestion-server.pythonunbuffered }}",
    "ELASTICSEARCH_SERVER": "{{ ingestion-server.elasticsearch_server }}",
    "ELASTICSEARCH_PORT": "{{ ingestion-server.elasticsearch_port }}",
-   "VALID_INDEX_NAMES": "{{ ingestion-server.valid_index_names }}"
+ {{#development}}
+   "BUILD_ENV": "development",
+ {{/development}}
+ {{#production}}
+   "BUILD_ENV": "production",
+ {{/production}}
+   "VALID_INDEX_NAMES": "{{ ingestion-server.valid_index_names }}",
+   "USER_PERSISTENCE_SERVER_HOST": "{{ user_persistence_server_host }}",
+   "USER_PERSISTENCE_SERVER_PORT": "{{ user_persistence_server_port }}"
  }
 }

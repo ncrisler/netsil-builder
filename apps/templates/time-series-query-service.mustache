@@ -16,7 +16,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ time-series-query-service.uri_namespace }}/time-series-query-service:{{ time-series-query-service.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/time-series-query-service:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ time-series-query-service.port }}, "hostPort": {{ time-series-query-service.port }}, "protocol":"tcp"}
@@ -24,10 +24,10 @@
      }
  },
   "cmd": ". /root/netsil-proxy/exports.sh && /root/netsil-proxy/startup.sh && supervisord -c /opt/netsil/netsil-proxy/tools/netsil-proxy/supervisor/netsil-proxy-supervisor-include.conf",
-  "cpus": {{ time-series-query-service.cpus }},
-  "mem": {{ time-series-query-service.mem }},
-  "instances": {{ time-series-query-service.instances }},
-  "acceptedResourceRoles": ["{{ time-series-query-service.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -35,9 +35,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#time-series-query-service.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/time-series-query-service.private}}
+{{/private}}
   "env": {
     "PRODUCT_FLAVOR": "Pro",
     "DRUID_HOST": "{{ time-series-query-service.druid_host }}",
@@ -48,12 +48,12 @@
     "USER_PERSISTENCE_SERVER_PORT": "{{ time-series-query-service.user_persistence_server_port }}",
     "ELASTICSEARCH_SERVER": "{{ time-series-query-service.elasticsearch_server }}",
     "ELASTICSEARCH_PORT" : "{{ time-series-query-service.elasticsearch_port }}",
-  {{#time-series-query-service.development}}
+  {{#development}}
     "BUILD_ENV": "development",
-  {{/time-series-query-service.development}}
-  {{#time-series-query-service.production}}
+  {{/development}}
+  {{#production}}
     "BUILD_ENV": "production",
-  {{/time-series-query-service.production}}
+  {{/production}}
     "PYTHON_SERVICE": "time_series_query_service"
   }
 }

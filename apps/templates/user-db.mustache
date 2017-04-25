@@ -23,17 +23,17 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "{{ user-db.uri_namespace }}/user-db:{{ user-db.netsil_service_tag }}",
+         "image": "{{ uri_namespace }}/user-db:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ user-db.port }}, "hostPort": {{ user-db.port }}, "protocol":"tcp"}
          ]
      }
  },
-  "cpus": {{ user-db.cpus }},
-  "mem": {{ user-db.mem }},
-  "instances": {{ user-db.instances }},
-  "acceptedResourceRoles": ["{{ user-db.role }}"],
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
@@ -41,9 +41,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-{{#user-db.private}}
+{{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
-{{/user-db.private}}
+{{/private}}
   "env": {
     "MYSQL_ALLOW_EMPTY_PASSWORD": "yes"
   },
