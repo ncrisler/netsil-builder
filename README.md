@@ -1,9 +1,15 @@
+## About
+Netsil Application Operations Center (AOC) is a next-gen observability and analytics tool for modern cloud applications. The Netsil AOC helps SREs and DevOps improve the reliability and performance of API and microservices-driven production applications.
+
 ## Introduction
 This repository provides scripts to install and deploy Netsil AOC.
 
 Currently, these scripts support CoreOS and CentOS. They have been tested on CoreOS 1068.9.0, CoreOS 1268.6.0, and CentOS 7, though it should work on other versions of those Linux distributions.
 
 Support for more Linux distributions is planned for future releases.
+
+## Documentation
+You can browse through our [full documentation](https://netsil.github.io/docs), which provides API documentation, user guides, and more.
 
 ## Prerequisites 
 ### Resource Requirements
@@ -67,6 +73,9 @@ If you only wish to print the names of those images, you can do so with the comm
 ```
 python ./scripts/download-images.py print
 ```
+
+## Support
+For help please join our public [slack channel](https://netsil-users.slack.com) or email support@netsil.com
 
 ## Misc
 The `setup.sh` script first builds a `netsil/netsil-builder` docker image and runs the AOC deployment from that image.
