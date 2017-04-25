@@ -35,7 +35,7 @@ If deploying on a CentOS machine, ensure that:
 To use the deploy script, run the `setup.sh` script.
 
 Running this script without arguments will print a short help section.
-Here, we will elaborate on some of the parameters of `setup.sh`
+Here, we will elaborate on some of the parameters of `setup.sh`:
 
 `-o, --offline`
 
@@ -57,13 +57,18 @@ For instance, if we were using `gcr.io/netsil-images/netsil/<image>`, we would p
 Please make sure that your docker daemon is also authenticated to pull from your third party registry.
 
 If you wish to download the set of Netsil images necessary for installation, you can do so with the command 
-`python ./scripts/download-images.py`
+```
+python ./scripts/download-images.py
+```
 
-If you only wish to print those images, you can do so with the command `python ./scripts/download-images.py list`
+If you only wish to print those images, you can do so with the command 
+```
+python ./scripts/download-images.py list
+```
 
 ## Misc
-The `setup.sh` script first builds a `netsil-builder` docker image and runs the AOC deployment from that image.
+The `setup.sh` script first builds a `netsil/netsil-builder` docker image and runs the AOC deployment from that image.
 
-For the offline case, you may pull the `netsil/netsil-builder` and move it onto the machine where you are running these deploy scripts.
+For the offline case, you may pull the `netsil/netsil-builder` from Dockerhub and move it onto the machine where you are running these deploy scripts.
 
 If you specified a `registry` parameter, we then assume that the image resides in `${registry}/netsil/netsil-builder`, where `${registry}` is your third party registry path.
