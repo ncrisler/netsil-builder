@@ -28,26 +28,33 @@ Thus, ensure that you can reach `lm.netsil.com` on port 443 from where you are r
 
 ### CentOS
 If deploying on a CentOS machine, ensure that:
-* Docker (preferably v.1.10.0 or above) is installed and configured correctly
-* Python 2 is installed and available at `/usr/bin/python`
+* Docker (preferably v.1.10.0 or above) is installed and configured correctly.
+* Python 2 is installed and available at `/usr/bin/python`.
 
 ## Usage
 To use the deploy script run the `setup.sh` script.
 Running this script without arguments will print a short help section.
 Here, we will elaborate on some of the parameters of `setup.sh`
 
-`-d, --dcos-path`
+`-o, --offline`
+This parameter must be set to `Yes` if you are running these deploy scripts "offline", or without access to the public Internet.
 
-Pass
+`-d, --dcos-path`
+Specifying the dcos path will likely be necessary if you are running the deploy scripts offline.
+In this parameter, you must specify the locally sourced path to the DC/OS binary. 
+You may download this binary [here](https://downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/dcos_generate_config.sh).
 
 `-r, --registry`
-
-Pass
-For instance, if we were using 'gcr.io/netsil-images/netsil/<image>', 
-we would pass 'gcr.io/netsil-images' for this parameter.
-
-`-o, --offline`
-
-Pass
+By default, the container images that Netsil uses are sourced from Dockerhub. Thus, the image names are of the format `netsil/<image>`.
+You may wish to pull these images into your own docker registry and source the installation from that registry instead of Dockerhub.
+In that case, you would need to specify that registry prefix with this parameter.
+For instance, if we were using 'gcr.io/netsil-images/netsil/<image>', we would pass 'gcr.io/netsil-images' for this parameter.
+Please make sure that your docker daemon is also authenticated to pull from your third party repo.
+If you wish to download the set of Netsil images necessary for installation, you can do so with the command `./scripts/download-images.py`
+If you only wish to print those images, you can do so with the command `./scripts/download-images.py list`
 
 ## Misc
+The `setup.sh` script first builds a `netsil-builder` docker image and runs the AOC deployment from that image.
+In order to build this image, however, you will need access to the public Internet.
+For the offline case, you may pull `netsil/netsil-builder` from our public Dockerhub and move it onto the machine where you are running these deploy scripts.
+If you specified a `registry` parameter, we then assume that the image resides in `${registry}/netsil/netsil-builder`, where `${registry}` is your third party registry path.

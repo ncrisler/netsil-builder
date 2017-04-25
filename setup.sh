@@ -22,8 +22,10 @@ function deploy_aoc() {
     builder_image=netsil/netsil-builder
     if [ "${OFFLINE}" = "No" ]; then
         sudo docker build -q -t ${builder_image} ${DIR}
-    else 
-        builder_image=${REGISTRY}/netsil/netsil-builder 
+    else
+        if [ "${REGISTRY}" != "dockerhub" ] ; then
+            builder_image=${REGISTRY}/netsil/netsil-builder
+        fi
     fi
 
     if [ $? -eq 0 ]; then
