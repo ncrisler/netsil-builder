@@ -16,7 +16,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/sp-load-balancer:stable-1.2.2",
+         "image": "netsil/sp-load-balancer:stable-1.2.3",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 5005, "hostPort": 5005, "protocol":"tcp"}
