@@ -27,6 +27,7 @@
     # So we can support 3rd party docker repos
     uri_namespace: "{{ lookup('env', 'URI_NAMESPACE') or cluster_vars['uri_namespace'] }}"
     is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
+    dcos_version: "{{ cluster_vars['dcos_version'] }}"
     resource_role: "{{ cluster_vars['resource_role'] }}"
     build_env: "{{ cluster_vars['build_env'] }}"
     build_type: "{{ build_type }}"

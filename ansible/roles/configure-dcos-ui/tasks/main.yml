@@ -1,6 +1,20 @@
 ---
-- name: Reconfigure the HTTP port of the DCOS-UI
+- name: Reconfigure the HTTP port of the DCOS-UI (DCOS 1.7)
   lineinfile: dest=/opt/mesosphere/active/adminrouter/nginx/conf/nginx.conf regexp='^\\s*listen 80 default_server;' line="listen 8081 default_server;" backrefs=yes
+  when:
+    - dcos_version == '1.7'
 
-- name: Reconfigure the HTTPS port of the DCOS-UI
+- name: Reconfigure the HTTPS port of the DCOS-UI (DCOS 1.7)
   lineinfile: dest=/opt/mesosphere/active/adminrouter/nginx/conf/nginx.conf regexp='^\\s*listen 443 ssl spdy default_server;' line="listen 4443 ssl spdy default_server;" backrefs=yes
+  when:
+    - dcos_version == '1.7'
+
+- name: Reconfigure the HTTP port of the DCOS-UI (DCOS 1.9)
+  lineinfile: dest=/opt/mesosphere/etc/adminrouter-listen-open.conf regexp='^\\s*listen 80 default_server;' line="listen 8081 default_server;" backrefs=yes
+  when:
+    - dcos_version == '1.9'
+
+- name: Reconfigure the HTTPS port of the DCOS-UI (DCOS 1.9)
+  lineinfile: dest=/opt/mesosphere/etc/adminrouter-listen-open.conf regexp='^\\s*listen 443 ssl default_server;' line="listen 4443 ssl default_server;" backrefs=yes
+  when:
+    - dcos_version == '1.9'

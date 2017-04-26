@@ -6,6 +6,7 @@
     - /apps/build/vars/cluster.yml
     - /apps/build/vars/build.yml
 
+    # TODO: Factor this out as a vars folder?
   vars:
     netsil_build_branch: "{{ services_vars['netsil_build_branch'] }}"
     netsil_version_number: "{{ services_vars['netsil_version_number'] }}"
@@ -14,6 +15,7 @@
     netsil_version_tag: "{{ services_vars['netsil_version_tag'] }}"
     uri_namespace: "{{ cluster_vars['uri_namespace'] }}"
     is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
+    dcos_version: "{{ cluster_vars['dcos_version'] }}"
     resource_role: "{{ cluster_vars['resource_role'] }}"
     build_env: "{{ cluster_vars['build_env'] }}"
     build_type: "{{ build_type }}"
