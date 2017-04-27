@@ -18,6 +18,7 @@
   vars:
     ansible_user: core
     ansible_python_interpreter: /opt/bin/python
+    dcos_version: "{{ cluster_vars['dcos_version'] }}"
     build_type: "{{ lookup('env', 'BUILD_TYPE') }}"
 
   roles:

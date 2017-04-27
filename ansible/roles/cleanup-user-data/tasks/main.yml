@@ -28,5 +28,6 @@
   file: path=/home/core/.ssh/authorized_keys.d state=absent
   when: build_type != "deploy"
 
-- name: Clean up genconf
-  shell: "rm -rf /home/core/*.tar genconf"
+- name: Clean up genconf tar
+  shell: "rm -rf /home/core/*.tar"
+  when: build_
