@@ -15,6 +15,9 @@
   become: yes
   become_user: root
 
+  vars_files:
+    - /apps/build/vars/cluster.yml
+
   vars:
     ansible_user: core
     ansible_python_interpreter: /opt/bin/python
