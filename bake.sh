@@ -67,6 +67,7 @@ build_base_dcos() {
     docker build -t netsil/netsil-builder ${DIR}
 
     docker run --privileged -${INTERACTIVE} \
+        -v ${APPS_DIR}:/apps \
         -v ${IMAGE_PATH}:/opt/images \
         -e IMAGE_PATH=/opt/images \
         -e IMAGE_NAME=base-dcos \
