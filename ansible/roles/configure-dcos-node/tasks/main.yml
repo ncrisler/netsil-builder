@@ -71,8 +71,12 @@
 - name: Install docker-logrotate.timer 
   copy: src=docker-logrotate.timer dest=/etc/systemd/system/docker-logrotate.timer
 
-- name: Start/enable docker-logrotate.timer
-  shell: "systemctl start docker-logrotate.timer && systemctl enable docker-logrotate.timer"
+- name: Enable docker-logrotate.timer
+  shell: "systemctl enable docker-logrotate.timer"
+
+- name: Start docker-logrotate.timer if deploying
+  shell: "systemctl start docker-logrotate.timer"
+  when: build_type == "deploy"
 
 - name: Disable cosmos and minuteman
   service: name={{ item }} enabled=no
