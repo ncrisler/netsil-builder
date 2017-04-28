@@ -27,4 +27,5 @@
   roles:
     - install-dcos-master
     - install-dcos-slave
+    - configure-dns
     - cleanup-dcos-install
