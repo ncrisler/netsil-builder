@@ -30,4 +30,3 @@
 
 - name: Clean up genconf tar
   shell: "rm -rf /home/core/*.tar"
-  when: build_
