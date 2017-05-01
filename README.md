@@ -75,7 +75,7 @@ python ./scripts/download-images.py print
 ```
 
 ## Support
-For help please join our public [slack channel](https://netsil-users.slack.com) or email support@netsil.com
+For help please join our public [slack channel](http://slack.netsil.com) or email support@netsil.com
 
 ## Misc
 The `setup.sh` script first builds a `netsil/netsil-builder` docker image and runs the AOC deployment from that image.
