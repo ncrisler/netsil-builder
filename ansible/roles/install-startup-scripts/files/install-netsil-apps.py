@@ -7,25 +7,56 @@ MARATHON_HOST = os.environ.get('MARATHON_HOST', failobj='marathon.mesos')
 MARATHON_PORT = os.environ.get('MARATHON_PORT', failobj='8080')
 APPS_DIR = os.environ.get('APPS_DIR', failobj='/opt/netsil/latest/apps/build/specs')
 
+def wait(count, step, timeout):
+    time.sleep(step)
+    count += step
+    if count > timeout:
+        print "Timeout exceeded! exiting installation process"
+        exit(1)
+    else:
+        print "Waiting for " + str(count) + " of " + str(timeout) + " seconds. Timeout not yet reached."
+    return count
 
 def wait_for_marathon():
     timeout=1800
     count=0
-    step=5
+    step=10
     while True:
-        conn = httplib.HTTPConnection(MARATHON_HOST + ':' + MARATHON_PORT)
-        conn.request('GET', '/v2/apps')
-        resp = conn.getresponse()
-        status = resp.status
-        if status == 200:
-            print "Marathon is initialized. Proceeding to install apps!"
-            break
-        print "Waiting for marathon to initialize..."
-        time.sleep(step)
-        count += step
-        if count > timeout:
-            print "Timeout exceeded! Exiting installation process"
-            exit(1)
+        try:
+            conn = httplib.HTTPConnection(MARATHON_HOST + ':' + MARATHON_PORT)
+            conn.request('GET', '/v2/apps')
+            resp = conn.getresponse()
+            status = resp.status
+            if status == 200:
+                print "Marathon is initialized. Proceeding to install apps!"
+                break
+            else:
+                print "Waiting for marathon to initialize..."
+                count = wait(count, step, timeout)
+        except:
+            print "Could not connect to marathon..."
+            count = wait(count, step, timeout)
+
+# Solely to get past the wait-time
+def restart_app(app_id):
+    timeout=1800
+    count=0
+    step=10
+    while True:
+        try:
+            conn = httplib.HTTPConnection(MARATHON_HOST + ':' + MARATHON_PORT)
+            conn.request('POST', '/v2/apps/' + str(app_id) + '/restart')
+            resp = conn.getresponse()
+            status = resp.status
+            if status == 200:
+                print "Restarted app!"
+                break
+            else:
+                print "Waiting for marathon to initialize..."
+                count = wait(count, step, timeout)
+        except:
+            print "Could not connect to marathon..."
+            count = wait(count, step, timeout)
 
 def install_netsil_apps():
     for app in os.listdir(APPS_DIR):
@@ -44,6 +75,7 @@ def install_netsil_apps():
                 print "Installed app: " + str(app_id)
             elif status == 409:
                 print "Warning! App with ID " + str(app_id) + " already exists!"
+                # restart_app(app_id)
             else:
                 print "Error: Return code " + str(status) + " not recognized."
                 print "Error: " + str(resp.read())
