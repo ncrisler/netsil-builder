@@ -9,6 +9,11 @@
         "mode": "RW"
        },
        {
+        "hostPath": "/etc/netsil/conf",
+        "containerPath": "/etc/netsil/conf",
+        "mode": "RW"
+       },
+       {
         "hostPath": "/",
         "containerPath": "/outer_host",
         "mode": "RW"
@@ -21,12 +26,13 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/stream-processor:stable-1.2.3",
+         "image": "netsil/stream-processor:stable-1.3.1",
          "forcePullImage": false,
          "privileged": true,
          "portMappings": [
              {"containerPort": 2001, "hostPort": 2001, "protocol":"tcp"},
              {"containerPort": 2003, "hostPort": 2003, "protocol":"udp,tcp"},
+             {"containerPort": 3003, "hostPort": 3003, "protocol":"tcp"},
              {"containerPort": 8888, "hostPort": 8888, "protocol":"tcp"}
          ]
      }

@@ -13,42 +13,42 @@
 
 # These encode the version numbers for our images
 images:
-    alerts:                     1.2.3
-    backups:                    1.2.3
-    ceph-monitor:               1.2.3
-    ceph-osd:                   1.2.3
-    ceph-rgw:                   1.2.3
-    druid-broker:               1.2.3
-    druid-coordinator:          1.2.3
-    druid-historical:           1.2.3
-    druid-overlord:             1.2.3
-    druid-realtime:             1.2.3
-    elasticsearch:              1.2.3
-    frontend:                   1.2.3
-    ingestion-server:           1.2.3
-    kafka:                      1.2.3
-    license-manager:            1.2.3
-    logstash:                   1.2.3
-    metadata:                   1.2.3
+    alerts:                     1.3.1
+    backups:                    1.3.1
+    ceph-monitor:               1.3.1
+    ceph-osd:                   1.3.1
+    ceph-rgw:                   1.3.1
+    druid-broker:               1.3.1
+    druid-coordinator:          1.3.1
+    druid-historical:           1.3.1
+    druid-overlord:             1.3.1
+    druid-realtime:             1.3.1
+    elasticsearch:              1.3.1
+    frontend:                   1.3.1
+    ingestion-server:           1.3.1
+    kafka:                      1.3.1
+    license-manager:            1.3.1
+    logstash:                   1.3.1
+    metadata:                   1.3.1
     # TODO: Should we move the "netsil" image out of here and make this a list of pro-only images?
-    netsil:                     1.2.3
-    collectors:                 1.2.3
-    topology-service:           1.2.3
-    time-series-query-service:  1.2.3
-    sp-load-balancer:           1.2.3
-    notifications:              1.2.3
-    redis:                      1.2.3
-    stream-processor:           1.2.3
-    upgrade-manager:            1.2.3
-    user-db:                    1.2.3
-    user-persistence:           1.2.3
+    netsil:                     1.3.1
+    collectors:                 1.3.1
+    topology-service:           1.3.1
+    time-series-query-service:  1.3.1
+    sp-load-balancer:           1.3.1
+    notifications:              1.3.1
+    redis:                      1.3.1
+    stream-processor:           1.3.1
+    upgrade-manager:            1.3.1
+    user-db:                    1.3.1
+    user-persistence:           1.3.1
 
 envDefaults:
     NETSIL_BUILD_BRANCH: master
     NETSIL_VERSION_MAJOR: 0
     NETSIL_VERSION_MINOR: 2
     NETSIL_BUILD_NUMBER: 0
-    NETSIL_VERSION_NUMBER: 1.2.3
+    NETSIL_VERSION_NUMBER: 1.3.1
     URI_NAMESPACE: netsil
     BUILD_TYPE: release
     PRODUCT_FLAVOR: Lite
@@ -61,7 +61,7 @@ envDefaults:
     OMNIBUS_BUILD: ~/omnibus
     OMNIBUS_PKG_DIR: ~/omnibus
     # pro build variables
-    DCOS_VERSION: '1.7'
+    DCOS_VERSION: '1.9'
     RESOURCE_ROLE: '*'
     CLOUD_PLATFORM: none
     IS_PRIVATE_REGISTRY: 'true'
