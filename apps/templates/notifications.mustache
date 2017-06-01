@@ -16,7 +16,8 @@
          "image": "{{ uri_namespace }}/notifications:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
-             {"containerPort": {{ notifications.port }}, "hostPort": {{ notifications.port }}, "protocol":"tcp"}
+             {"containerPort": {{ notifications.port }}, "hostPort": {{ notifications.port }}, "protocol":"tcp"},
+             {"containerPort": {{ notifications.test_api_port }}, "hostPort": {{ notifications.test_api_port }}, "protocol":"tcp"}
          ]
      }
  },
