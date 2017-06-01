@@ -10,6 +10,11 @@
         "mode": "RW"
        },
        {
+        "hostPath": "/etc/netsil/conf",
+        "containerPath": "/etc/netsil/conf",
+        "mode": "RW"
+       },
+       {
         "hostPath": "/",
         "containerPath": "/outer_host",
         "mode": "RW"
@@ -29,6 +34,7 @@
          "portMappings": [
              {"containerPort": {{ stream-processor.infra_stats_port }}, "hostPort": {{ stream-processor.infra_stats_port }}, "protocol":"tcp"},
              {"containerPort": {{ stream-processor.traffic_stats_port }}, "hostPort": {{ stream-processor.traffic_stats_port }}, "protocol":"udp,tcp"},
+             {"containerPort": {{ stream-processor.traffic_stats_port_alt }}, "hostPort": {{ stream-processor.traffic_stats_port_alt }}, "protocol":"tcp"},
              {"containerPort": {{ stream-processor.api_server_port }}, "hostPort": {{ stream-processor.api_server_port }}, "protocol":"tcp"}
          ]
      }
