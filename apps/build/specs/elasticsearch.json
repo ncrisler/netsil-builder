@@ -23,7 +23,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/elasticsearch:stable-1.4.0",
+         "image": "netsil/elasticsearch:stable-1.4.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 9200, "hostPort": 9200, "protocol":"tcp"},

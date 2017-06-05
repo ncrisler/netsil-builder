@@ -5,7 +5,7 @@
     ],
     "docker": {
       "network": "BRIDGE",
-      "image": "netsil/druid-overlord:stable-1.4.0",
+      "image": "netsil/druid-overlord:stable-1.4.1",
       "forcePullImage": false,
       "portMappings": [
         {"containerPort": 31006, "hostPort": 31006},

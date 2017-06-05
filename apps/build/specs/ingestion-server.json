@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/ingestion-server:stable-1.4.0",
+         "image": "netsil/ingestion-server:stable-1.4.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 5000, "hostPort": 5000, "protocol":"tcp"}
