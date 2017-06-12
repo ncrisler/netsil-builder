@@ -1,0 +1,15 @@
+---
+- name: Terminate GCE instance
+  gce:
+    project_id: "{{ gce_project_id }}"
+    service_account_email: "{{ gce_service_account_email }}"
+    credentials_file: "{{ gce_credentials_file }}"
+    instance_names: "{{ instance_id }}"
+    zone: "{{ zone }}"
+    state: absent
+    wait: True
+  register: result
+
+- name: Terminate GCE instance result
+  debug:
+    msg: "{{ result }}"

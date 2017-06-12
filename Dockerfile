@@ -23,7 +23,7 @@ RUN apt-get -qq update && \
     apt-get -qq install -y --no-install-recommends ansible
 
 ## Start: TODO: We have these two lines because we run ansible locally for the templating tasks...we should do away with that and run it remotely
-RUN pip install pystache boto && \
+RUN pip install pystache boto apache-libcloud && \
     mkdir -p /opt/bin && \
     ln -s /usr/bin/python /opt/bin/python
 ### End

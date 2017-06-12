@@ -1,4 +1,5 @@
-- name: Terminate instance
+---
+- name: Terminate AWS instance
   ec2:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
@@ -7,8 +8,8 @@
     wait: True
     instance_ids: 
       - "{{ instance_id }}"
-  register: ec2_removal
+  register: result
 
-- name: Debug instance termination
+- name: Terminate AWS instance result
   debug:
-    msg: "{{ ec2_removal }}"
+    msg: "{{ result }}"

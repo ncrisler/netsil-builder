@@ -28,3 +28,8 @@ aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
 zone: "{{ lookup('env', 'ZONE') | default( lookup('env','REGION'), True)}}"
 aws_vpc_id: "{{ lookup('env', 'NETWORK_ID') | default( '__new__', True)}}"
 aws_subnet_id: "{{ lookup('env', 'SUBNET_ID') | default( '__new__', True)}}"
+
+### GCE specific variables ###
+gce_project_id: "{{ lookup('env', 'GCE_PROJECT_ID') }}"
+gce_service_account_email: "{{ lookup('env', 'GCE_SERVICE_ACCOUNT_EMAIL') }}"
+gce_credentials_file: "{{ lookup('env','GCE_CREDENTIALS_FILE_B64') | b64decode | default( lookup('env','GCE_CREDENTIALS_FILE'), True) }}"
