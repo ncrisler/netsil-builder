@@ -40,7 +40,7 @@
      ],
      "docker": {
          "network": "HOST",
-         "image": "netsil/ceph-rgw:stable-1.4.1",
+         "image": "netsil/ceph-rgw:stable-1.4.5",
          "forcePullImage": false,
          "privileged": false
      }

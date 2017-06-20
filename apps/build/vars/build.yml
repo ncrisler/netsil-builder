@@ -13,42 +13,42 @@
 
 # These encode the version numbers for our images
 images:
-    alerts:                     1.4.1
-    backups:                    1.4.1
-    ceph-monitor:               1.4.1
-    ceph-osd:                   1.4.1
-    ceph-rgw:                   1.4.1
-    druid-broker:               1.4.1
-    druid-coordinator:          1.4.1
-    druid-historical:           1.4.1
-    druid-overlord:             1.4.1
-    druid-realtime:             1.4.1
-    elasticsearch:              1.4.1
-    frontend:                   1.4.1
-    ingestion-server:           1.4.1
-    kafka:                      1.4.1
-    license-manager:            1.4.1
-    logstash:                   1.4.1
-    metadata:                   1.4.1
+    alerts:                     1.4.5
+    backups:                    1.4.5
+    ceph-monitor:               1.4.5
+    ceph-osd:                   1.4.5
+    ceph-rgw:                   1.4.5
+    druid-broker:               1.4.5
+    druid-coordinator:          1.4.5
+    druid-historical:           1.4.5
+    druid-overlord:             1.4.5
+    druid-realtime:             1.4.5
+    elasticsearch:              1.4.5
+    frontend:                   1.4.5
+    ingestion-server:           1.4.5
+    kafka:                      1.4.5
+    license-manager:            1.4.5
+    logstash:                   1.4.5
+    metadata:                   1.4.5
     # TODO: Should we move the "netsil" image out of here and make this a list of pro-only images?
-    netsil:                     1.4.1
-    collectors:                 1.4.1
-    topology-service:           1.4.1
-    time-series-query-service:  1.4.1
-    sp-load-balancer:           1.4.1
-    notifications:              1.4.1
-    redis:                      1.4.1
-    stream-processor:           1.4.1
-    upgrade-manager:            1.4.1
-    user-db:                    1.4.1
-    user-persistence:           1.4.1
+    netsil:                     1.4.5
+    collectors:                 1.4.5
+    topology-service:           1.4.5
+    time-series-query-service:  1.4.5
+    sp-load-balancer:           1.4.5
+    notifications:              1.4.5
+    redis:                      1.4.5
+    stream-processor:           1.4.5
+    upgrade-manager:            1.4.5
+    user-db:                    1.4.5
+    user-persistence:           1.4.5
 
 envDefaults:
     NETSIL_BUILD_BRANCH: master
     NETSIL_VERSION_MAJOR: 0
     NETSIL_VERSION_MINOR: 2
     NETSIL_BUILD_NUMBER: 0
-    NETSIL_VERSION_NUMBER: 1.4.1
+    NETSIL_VERSION_NUMBER: 1.4.5
     URI_NAMESPACE: netsil
     BUILD_TYPE: release
     PRODUCT_FLAVOR: Lite
