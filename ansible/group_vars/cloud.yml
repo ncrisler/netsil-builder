@@ -16,7 +16,7 @@ ssh_public_key: "{{  lookup('env','SSH_PUBLIC_KEY_B64') | b64decode | default( l
 ### Provider specific variables ###
 region: "{{ lookup('env', 'REGION') }}"
 image: "{{ lookup('env', 'IMAGE') }}"
-root_disk_size: "{{ lookup('env', 'ROOT_DISK_SIZE') or '60' }}"
+root_disk_size: "{{ lookup('env', 'ROOT_DISK_SIZE') or '80' }}"
 
 ### Distribution variables ###
 distrib: "{{ lookup('env', 'DISTRIB') }}"
