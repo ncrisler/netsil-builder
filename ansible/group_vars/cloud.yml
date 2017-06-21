@@ -12,11 +12,13 @@ provider: "{{ lookup('env', 'PROVIDER') }}"
 master_size: "{{ lookup('env', 'MASTER_SIZE') }}"
 ssh_private_key: "{{  lookup('env','SSH_PRIVATE_KEY_B64') | b64decode | default( lookup('env','SSH_PRIVATE_KEY'), True) }}"
 ssh_public_key: "{{  lookup('env','SSH_PUBLIC_KEY_B64') | b64decode | default( lookup('env','SSH_PUBLIC_KEY'), True) }}"
+network_id: "{{ lookup('env', 'NETWORK_ID') }}"
+subnet_id: "{{ lookup('env', 'SUBNET_ID') }}"
 
 ### Provider specific variables ###
 region: "{{ lookup('env', 'REGION') }}"
 image: "{{ lookup('env', 'IMAGE') }}"
-root_disk_size: "{{ lookup('env', 'ROOT_DISK_SIZE') or '60' }}"
+root_disk_size: "{{ lookup('env', 'ROOT_DISK_SIZE') or '80' }}"
 
 ### Distribution variables ###
 distrib: "{{ lookup('env', 'DISTRIB') }}"

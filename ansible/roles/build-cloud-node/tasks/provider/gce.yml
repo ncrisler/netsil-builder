@@ -26,6 +26,10 @@
     project_id: "{{ gce_project_id }}"
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: ./gce_credentials.json
+    persistent_boot_disk: True
+    disk_size: "{{ root_disk_size|int }}"
+    network: "{{ network_id|default('default') }}"
+    subnetwork: "{{ subnet_id|default('default') }}"
     preemptible: True
     metadata:
       sshKeys:
@@ -41,7 +45,6 @@
 
 - name: Retrieve public and private IP addresses
   set_fact:
-    # ssh_user: "{{ ssh_user }}"
     master_public_ip: "{{ netsil_master.instance_data[0].public_ip }}"
     master_private_ip: "{{ netsil_master.instance_data[0].private_ip }}"
     node_id: "{{ netsil_master.instance_data[0].name }}"

@@ -33,8 +33,8 @@ function deploy_aoc() {
             -e MASTER_SIZE=$SIZE \
             -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
             -e AWS_SECRET_KEY=$AWS_SECRET_KEY \
-            -e GCE_SERVICE_ACCOUNT=$GCE_SERVICE_ACCOUNT \
             -e GCE_PROJECT_ID=$GCE_PROJECT_ID \
+            -e GCE_SERVICE_ACCOUNT_EMAIL=$GCE_SERVICE_ACCOUNT_EMAIL \
             -e GCE_CREDENTIALS_FILE_B64=$GCE_CREDENTIALS_FILE_B64 \
             -e SSH_PRIVATE_KEY_B64=$SSH_PRIVATE_KEY_B64 \
             -e SSH_PUBLIC_KEY_B64=$SSH_PUBLIC_KEY_B64 \
@@ -131,8 +131,6 @@ DISTRIB=${DISTRIB:-coreos}
 # SSH_PUBLIC_KEY=${SSH_PUBLIC_KEY:-~/.ssh/id_rsa.pub}
 # AWS_ACCESS_KEY=${AWS_ACCESS_KEY:-$(grep aws_access_key_id ~/.aws/credentials | cut -f3 -d" ")}
 # AWS_SECRET_KEY=${AWS_SECRET_KEY:-$(grep aws_secret_access_key ~/.aws/credentials | cut -f3 -d" ")}
-NETWORK_ID=${NETWORK_ID:-vpc-44ebc723}
-SUBNET_ID=${SUBNET_ID:-subnet-4a45ab11}
 
 # echo $SSH_PRIVATE_KEY
 # echo $(cat $SSH_PRIVATE_KEY)
@@ -163,8 +161,6 @@ INSTANCE_ID=1
 # REGION=us-west-2
 # MASTER_SIZE=m3.xlarge # m3.large # m1.large
 # ZONE=us-west-2c
-# NETWORK_ID=vpc-02c85765
-# SUBNET_ID=subnet-9b7acbfc
 
 # case $DISTRIB in
 #     coreos)
