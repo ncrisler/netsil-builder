@@ -32,6 +32,18 @@
         from_port: 443
         to_port: 443
         cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 2001
+        to_port: 2001
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 2003
+        to_port: 2003
+        cidr_ip: 0.0.0.0/0
+      - proto: udp
+        from_port: 2003
+        to_port: 2003
+        cidr_ip: 0.0.0.0/0
 
 - name: Create AWS security group
   ec2_group:
