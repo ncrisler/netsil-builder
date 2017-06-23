@@ -30,7 +30,7 @@
 
 - name: Master node details
   debug:
-    msg: "{{ netsil_master.instances[0] }}"
+    var: netsil_master.instances[0]
 
 - name: Retrieve public and private IP addresses
   set_fact:

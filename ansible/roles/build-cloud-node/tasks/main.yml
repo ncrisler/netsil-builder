@@ -49,4 +49,4 @@
 
 - name: API create node response
   debug:
-    msg: "{{ add_node_record }}"
+    var: add_node_record
