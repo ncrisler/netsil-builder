@@ -1,0 +1,80 @@
+---
+- name: Async - Create AWS key
+  ec2_key:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    name: "netsil-{{ instance_id }}"
+    region: "{{ region }}"
+    key_material: "{{ ssh_public_key }}"
+    wait: yes
+  retries: 5
+  delay: 5
+  register: ec2_keys
+  until: ec2_keys|succeeded
+  async: 100
+  poll: 0
+
+- name: AWS key
+  debug:
+    var: ec2_keys
+
+- set_fact:
+    ingress_rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 2001
+        to_port: 2001
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 2003
+        to_port: 2003
+        cidr_ip: 0.0.0.0/0
+      - proto: udp
+        from_port: 2003
+        to_port: 2003
+        cidr_ip: 0.0.0.0/0
+
+- name: Create AWS security group
+  ec2_group:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    name: netsil_sg
+    description: Netsil Cluster
+    vpc_id: "{{ aws_vpc_id }}"
+    region: "{{ region }}"
+    rules: "{{ ingress_rules }}"
+    rules_egress:
+      - proto: all
+        from_port: 0
+        to_port: 65535
+        cidr_ip: 0.0.0.0/0
+  retries: 5
+  delay: 5
+  register: netsil_sg
+  until: netsil_sg|succeeded
+
+- name: AWS security group
+  debug:
+    var: netsil_sg
+
+- name: Async result - Create AWS key
+  async_status:
+    jid: "{{ ec2_keys.ansible_job_id}}"
+  register: ec2_keys_result
+  until: ec2_keys_result|succeeded
+  retries: 20
+
+- name: AWS key result
+  debug:
+    var: ec2_keys_result

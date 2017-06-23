@@ -1,0 +1,55 @@
+---
+- name: Create Netsil AOC master node
+  ec2:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    instance_type: "{{ master_size }}"
+    image: "{{ image }}"
+    region: "{{ region }}"
+    zone: "{{ zone }}"
+    key_name: "netsil-{{ instance_id }}"
+    group_id: "{{ netsil_sg.group_id }}"
+    vpc_subnet_id: "{{ aws_subnet_id }}"
+    assign_public_ip: yes
+    instance_tags:
+        Name: "netsil-master-{{ instance_id }}"
+        Role: "netsil-master"
+        Cluster: "netsil-{{ cluster_name }}"
+    source_dest_check: no
+    volumes:
+      - device_name: "{{ device_name }}"
+        volume_type: gp2
+        volume_size: "{{ root_disk_size|int }}"
+        delete_on_termination: yes
+    wait: yes
+    count: 1
+  register: netsil_master
+  retries: 10
+  delay: 10
+  until: not (netsil_master|failed)
+
+- name: Master node details
+  debug:
+    var: netsil_master.instances[0]
+
+- name: Retrieve public and private IP addresses
+  set_fact:
+    master_public_ip: "{{ netsil_master.instances[0].public_ip }}"
+    master_private_ip: "{{ netsil_master.instances[0].private_ip }}"
+
+- name: Wait for master SSH
+  wait_for:
+    port: 22
+    host: "{{ master_public_ip }}"
+    search_regex: OpenSSH
+    delay: 10
+
+- name: Add master to groups netsil-master, netsil-cluster
+  add_host:
+     hostname: "{{ master_public_ip }}"
+     ansible_ssh_host: "{{ master_public_ip }}"
+     ip: "{{ master_private_ip }}"
+     overlay_listen_ip: "{{ master_private_ip }}"
+     ansible_ssh_user: "{{ ssh_user }}"
+     ansible_python_interpreter: "{{ python_interpreter }}"
+     groups: netsil-master

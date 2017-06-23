@@ -1,0 +1,52 @@
+---
+- name: Build CoreOS on AWS
+  include: provider/aws.yml
+  vars:
+    ssh_user: core
+    python_interpreter: /opt/bin/python
+    device_name: /dev/xvda
+  static: False
+  when:
+    - provider == 'aws'
+    - distrib == 'coreos'
+
+- name: Build CentOS on AWS
+  include: provider/aws.yml
+  vars:
+    ssh_user: centos
+    python_interpreter: /usr/bin/python
+    device_name: /dev/sda1
+  static: False
+  when:
+    - provider == 'aws'
+    - distrib == 'centos'
+
+- name: Add master node record
+  local_action:
+    module: uri
+    url: "{{ netsil_api_url }}/organizations/{{ org_id }}/clusters/{{ cluster_id }}/nodes"
+    method: POST
+    validate_certs: "{{ validate_certs }}"
+    headers:
+      Authorization: "{{ netsil_api_token }}"
+    body:
+      name: "netsil-master-{{ instance_id }}"
+      role: master
+      instance_id: "{{ netsil_master.instances[0].id }}"
+      public_ip: "{{ master_public_ip }}"
+      private_ip: "{{ master_private_ip }}"
+    body_format: json
+    status_code: 200
+  register: add_node_record
+  until:
+    - add_node_record|success
+    - add_node_record.status == 200
+  retries: 6
+  delay: 5
+  when:
+    - netsil_master is defined
+    - netsil_master|succeeded
+
+- name: API create node response
+  debug:
+    var: add_node_record

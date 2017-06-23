@@ -1,0 +1,23 @@
+---
+- name: Update cluster record
+  local_action:
+    module: uri
+    url: "{{ netsil_api_url }}/organizations/{{ org_id }}/clusters/{{ cluster_id }}"
+    method: PUT
+    validate_certs: "{{ validate_certs }}"
+    headers:
+      Authorization: "{{ netsil_api_token }}"
+    body:
+      state: active
+    body_format: json
+    status_code: 200
+  register: update_cluster_record
+  until:
+    - update_cluster_record|success
+    - update_cluster_record.status == 200
+  retries: 6
+  delay: 5
+
+- name: API update cluster response
+  debug:
+    msg: "{{ update_cluster_record }}"

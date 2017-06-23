@@ -1,0 +1,19 @@
+---
+- name: Include AWS tasks
+  include: provider/aws.yml
+  static: False
+  when: provider == 'aws'
+
+- name: Include GCE tasks
+  include: provider/gce.yml
+  static: False
+  when: provider == 'gce'
+
+- name: Include Azure tasks
+  include: provider/azure.yml
+  static: False
+  when: provider == 'azure'
+
+- name: Include DO tasks
+  include: provider/do.yml
+  when: provider == 'do'

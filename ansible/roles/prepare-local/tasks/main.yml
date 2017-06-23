@@ -1,0 +1,10 @@
+---
+
+- name: Create SSH directory
+  file: path=/root/.ssh state=directory mode=0700
+
+- name: Copy private SSH key
+  copy:
+    content: "{{ ssh_private_key }}"
+    dest: /root/.ssh/id_rsa
+    mode: 0600

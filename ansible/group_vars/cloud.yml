@@ -1,0 +1,30 @@
+### Netsil deployment API variables ###
+netsil_api_token: "{{ lookup('env','NETSIL_API_TOKEN') }}"
+netsil_api_url: "{{ lookup('env', 'NETSIL_API_URL') | default('https://172.17.0.1', True) }}"
+validate_certs: no
+
+### Common cloud variables ###
+instance_id: "{{ lookup('env', 'INSTANCE_ID') }}"
+org_id: "{{ lookup('env', 'ORG_ID') }}"
+cluster_id: "{{ lookup('env', 'CLUSTER_ID') }}"
+cluster_name: "{{ lookup('env', 'CLUSTER_NAME') }}"
+provider: "{{ lookup('env', 'PROVIDER') }}"
+master_size: "{{ lookup('env', 'MASTER_SIZE') }}"
+ssh_private_key: "{{  lookup('env','SSH_PRIVATE_KEY_B64') | b64decode | default( lookup('env','SSH_PRIVATE_KEY'), True) }}"
+ssh_public_key: "{{  lookup('env','SSH_PUBLIC_KEY_B64') | b64decode | default( lookup('env','SSH_PUBLIC_KEY'), True) }}"
+
+### Provider specific variables ###
+region: "{{ lookup('env', 'REGION') }}"
+image: "{{ lookup('env', 'IMAGE') }}"
+root_disk_size: "{{ lookup('env', 'ROOT_DISK_SIZE') or '80' }}"
+
+### Distribution variables ###
+distrib: "{{ lookup('env', 'DISTRIB') }}"
+
+### AWS specific variables ###
+aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+aws_public_key: "{{ lookup('env', 'AWS_PUBLIC_KEY') }}"
+aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
+zone: "{{ lookup('env', 'ZONE') | default( lookup('env','REGION'), True)}}"
+aws_vpc_id: "{{ lookup('env', 'NETWORK_ID') | default( '__new__', True)}}"
+aws_subnet_id: "{{ lookup('env', 'SUBNET_ID') | default( '__new__', True)}}"
