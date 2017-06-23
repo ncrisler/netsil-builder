@@ -16,7 +16,7 @@
 
 - name: AWS key
   debug:
-    msg: "{{ ec2_keys }}"
+    var: ec2_keys
 
 - set_fact:
     ingress_rules:
@@ -31,6 +31,18 @@
       - proto: tcp
         from_port: 443
         to_port: 443
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 2001
+        to_port: 2001
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 2003
+        to_port: 2003
+        cidr_ip: 0.0.0.0/0
+      - proto: udp
+        from_port: 2003
+        to_port: 2003
         cidr_ip: 0.0.0.0/0
 
 - name: Create AWS security group
@@ -54,7 +66,7 @@
 
 - name: AWS security group
   debug:
-    msg: "{{ netsil_sg }}"
+    var: netsil_sg
 
 - name: Async result - Create AWS key
   async_status:
@@ -65,4 +77,4 @@
 
 - name: AWS key result
   debug:
-    msg: "{{ ec2_keys_result }}"
+    var: ec2_keys_result
