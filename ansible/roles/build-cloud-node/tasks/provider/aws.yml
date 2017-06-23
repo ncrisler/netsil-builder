@@ -19,7 +19,7 @@
     volumes:
       - device_name: "{{ device_name }}"
         volume_type: gp2
-        volume_size: "{{ root_disk_size | int }}"
+        volume_size: "{{ root_disk_size|int }}"
         delete_on_termination: yes
     wait: yes
     count: 1
