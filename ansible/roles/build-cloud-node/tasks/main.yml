@@ -24,7 +24,7 @@
 - name: Add master node record
   local_action:
     module: uri
-    url: "{{ netsil_api_url }}/organizations/{{ org_id }}/clusters/{{ cluster_id }}/nodes"
+    url: "{{ netsil_api_url }}/clusters/{{ cluster_id }}/nodes"
     method: POST
     validate_certs: "{{ validate_certs }}"
     headers:

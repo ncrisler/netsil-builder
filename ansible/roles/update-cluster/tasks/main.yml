@@ -2,7 +2,7 @@
 - name: Update cluster record
   local_action:
     module: uri
-    url: "{{ netsil_api_url }}/organizations/{{ org_id }}/clusters/{{ cluster_id }}"
+    url: "{{ netsil_api_url }}/clusters/{{ cluster_id }}"
     method: PUT
     validate_certs: "{{ validate_certs }}"
     headers:
