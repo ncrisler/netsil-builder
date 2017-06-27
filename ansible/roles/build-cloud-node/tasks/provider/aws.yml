@@ -36,6 +36,7 @@
   set_fact:
     master_public_ip: "{{ netsil_master.instances[0].public_ip }}"
     master_private_ip: "{{ netsil_master.instances[0].private_ip }}"
+    node_id: "{{ netsil_master.instances[0].id }}"
 
 - name: Wait for master SSH
   wait_for:
