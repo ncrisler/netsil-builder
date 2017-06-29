@@ -9,7 +9,7 @@
     zone: "{{ zone }}"
     key_name: "netsil-{{ instance_id }}"
     group_id: "{{ netsil_sg.group_id }}"
-    vpc_subnet_id: "{{ aws_subnet_id }}"
+    vpc_subnet_id: "{{ subnet_id|default( '__new__', True) }}"
     assign_public_ip: yes
     instance_tags:
         Name: "netsil-master-{{ instance_id }}"

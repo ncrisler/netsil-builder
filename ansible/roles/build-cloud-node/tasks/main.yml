@@ -54,6 +54,7 @@
   retries: 6
   delay: 5
   when:
+    - netsil_api_url != ""
     - netsil_master is defined
     - netsil_master|succeeded
 

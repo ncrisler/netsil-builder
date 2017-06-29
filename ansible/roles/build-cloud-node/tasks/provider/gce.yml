@@ -1,4 +1,8 @@
 ---
+- name: DEBUG GCE credentials
+  debug:
+    var: gce_credentials_file
+
 - name: Create GCE credentials file
   copy:
     content: "{{ gce_credentials_file }}"
@@ -28,8 +32,8 @@
     credentials_file: ./gce_credentials.json
     persistent_boot_disk: True
     disk_size: "{{ root_disk_size|int }}"
-    network: "{{ network_id|default('default') }}"
-    subnetwork: "{{ subnet_id|default('default') }}"
+    network: "{{ network_id|default( 'default', True) }}"
+    subnetwork: "{{ subnet_id|default('default', True) }}"
     preemptible: True
     metadata:
       sshKeys:

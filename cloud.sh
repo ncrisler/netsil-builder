@@ -42,7 +42,7 @@ function deploy_aoc() {
             -e NETWORK_ID=$NETWORK_ID \
             -e SUBNET_ID=$SUBNET_ID \
             netsil/netsil-builder \
-            'ansible-playbook -vvv ansible/cloud-deployment.yml'
+            'ansible-playbook ansible/cloud-deployment.yml'
     fi
 }
 
@@ -121,8 +121,9 @@ done
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ### Set default values and convert to absolute paths ###
-APPS_DIR=${APPS_DIR:-$DIR/apps}
+# APPS_DIR=${APPS_DIR:-$DIR/apps}
 # APPS_DIR=$(abs_path $APPS_DIR)
+APPS_DIR=/opt/builder/apps
 ORG_ID=${ORG_ID}
 CLUSTER_ID=${CLUSTER_ID}
 PROVIDER=${PROVIDER:-aws}

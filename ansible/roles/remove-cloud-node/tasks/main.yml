@@ -20,6 +20,7 @@
   retries: 6
   delay: 5
   when:
+    - netsil_api_url != ""
     - ec2_removal is defined
     - ec2_removal|succeeded
 

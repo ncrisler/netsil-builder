@@ -51,7 +51,7 @@
     aws_secret_key: "{{ aws_secret_key }}"
     name: netsil_sg
     description: Netsil Cluster
-    vpc_id: "{{ aws_vpc_id }}"
+    vpc_id: "{{ network_id|default( '__new__', True) }}"
     region: "{{ region }}"
     rules: "{{ ingress_rules }}"
     rules_egress:
