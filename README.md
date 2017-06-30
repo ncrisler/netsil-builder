@@ -1,20 +1,19 @@
 ## About
-Netsil Application Operations Center (AOC) is a next-gen observability and analytics tool for modern cloud applications. The Netsil AOC helps SREs and DevOps improve the reliability and performance of API and microservices-driven production applications.
+The Netsil Application Operations Center (AOC) is a next-gen observability and analytics tool for modern cloud applications.
 
 ## Introduction
-This repository provides scripts to install and deploy Netsil AOC.
+This repository provides scripts to install and deploy the AOC.
 
-Currently, these scripts support CoreOS and CentOS. They have been tested on CoreOS 1068.9.0, CoreOS 1268.6.0, and CentOS 7, though it should work on other versions of those Linux distributions.
+Currently, these scripts support CoreOS and CentOS. They have been tested on CoreOS Stable and CentOS 7, though they should work on other versions of those Linux distributions.
 
-Support for more Linux distributions is planned for future releases.
+Support for more Linux distributions is planned.
 
 ## Documentation
 You can browse through our [full documentation](https://netsil.github.io/docs), which provides API documentation, user guides, and more.
 
 ## Prerequisites 
 ### Resource Requirements
-You will need to allocate an instance with sufficient resources to run Netsil AOC.
-The requirements are listed below.
+Please provision a machine with sufficient resources to run Netsil AOC. The requirements are listed below.
 
 | Recommended | Minimum    |
 | ----------- | --------   |
@@ -23,28 +22,33 @@ The requirements are listed below.
 | 500 GB HDD  | 120 GB HDD |
 
 ### Ports
-Ensure that port **443** and port **80** (optional) are open for web access to Netsil AOC through HTTPS or HTTP
+Ensure that port **443** and port **80** (optional) are open for web access to the AOC through HTTPS or HTTP
 
 Additionally, the following ports must be open on the AOC host to receive inbound traffic from the collectors:
 * **2001** (TCP) for collectors metrics channel.
 * **2003** (TCP and UDP) for collectors control and data channel.
 
 Finally, Netsil requires an open channel to a license site for verifying your license key.
-Thus, ensure that you can reach `lm.netsil.com` on port 443 from where you are running Netsil AOC.
+Thus, ensure that you can reach `lm.netsil.com` on port 443 from where you are running the AOC.
+
+### SSH Access
+You will need SSH access to the machine where you're installing the AOC.
 
 ### CentOS
 If deploying on a CentOS machine, ensure that:
 * Docker (preferably v.1.10.0 or above) is installed and configured correctly.
 * Python 2 is installed and available at `/usr/bin/python`.
 
-## Usage
-To deploy Netsil, run the `setup.sh` script.
+## Quickstart
+To get started quickly, SSH into the machine where you're installing the AOC.
+Then, run the setup script:
 
-Running this script without arguments will print a short help section. Here, we will elaborate on some of the parameters of `setup.sh`:
+`./setup.sh -h 127.0.0.1`
 
-`-h, --host`
+This will start the installation process.
 
-If these deploy scripts are running on the same machine where you intend to install Netsil, then specify '127.0.0.1' for the host.
+## Advanced Usage
+Here, we will elaborate on some of the advanced usage parameters of `setup.sh`:
 
 `-o, --offline`
 

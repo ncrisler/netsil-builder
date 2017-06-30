@@ -5,8 +5,8 @@ MAINTAINER Ethan Devenport <ethand@stackpointcloud.com>
 WORKDIR /opt/builder
 
 # Update and install required system packages.
-RUN apt-get -qq update && \
-    apt-get -qq install -y --no-install-recommends \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
       ca-certificates \
       curl \
       python-pip \
@@ -20,7 +20,7 @@ RUN apt-get -qq update && \
       vim && \
     apt-add-repository -y ppa:ansible/ansible && \
     apt-get update && \
-    apt-get -qq install -y --no-install-recommends ansible
+    apt-get install -y --no-install-recommends ansible
 
 ## Start: TODO: We have these two lines because we run ansible locally for the templating tasks...we should do away with that and run it remotely
 RUN pip install --upgrade pip wheel && \
