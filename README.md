@@ -22,7 +22,7 @@ Please provision a machine with sufficient resources to run Netsil AOC. The requ
 | 500 GB HDD  | 120 GB HDD |
 
 ### Ports
-Ensure that port **443** and port **80** (optional) are open for web access to the AOC through HTTPS or HTTP
+Ensure that port **443** and port **80** (optional) are open for web access to the AOC through HTTPS or HTTP.
 
 Additionally, the following ports must be open on the AOC host to receive inbound traffic from the collectors:
 * **2001** (TCP) for collectors metrics channel.
@@ -36,8 +36,10 @@ You will need SSH access to the machine where you're installing the AOC.
 
 ### CentOS
 If deploying on a CentOS machine, ensure that:
-* Docker (preferably v.1.10.0 or above) is installed and configured correctly.
+* Docker (preferably v.1.10.0 or above) is installed and configured to run at OS startup.
 * Python 2 is installed and available at `/usr/bin/python`.
+* The `jq` program is installed. You can enable the EPEL repository and install via `yum install jq`.
+* The `firewalld` service is stopped and disabled: `systemctl stop firewalld && systemctl disable firewalld`.
 
 ## Quickstart
 To get started quickly, SSH into the machine where you're installing the AOC.
