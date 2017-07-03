@@ -47,7 +47,7 @@ Then, run the setup script:
 
 `./setup.sh -h 127.0.0.1`
 
-This will start the installation process.
+When the installation completes, you can access the AOC at `https://<your-machine-ip-address>`.
 
 ## Advanced Usage
 Here, we will elaborate on some of the advanced usage parameters of `setup.sh`:

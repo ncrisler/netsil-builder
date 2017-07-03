@@ -21,4 +21,8 @@ if [ "${REGISTRY}" != "dockerhub" ] ; then
     export URI_NAMESPACE="${REGISTRY}/netsil"
 fi
 
+if [ -n $DNS_RESOLVERS ] ; then
+    export DNS_RESOLVERS=${DNS_RESOLVERS}
+fi
+
 ansible-playbook --extra-vars "distrib=${DISTRIB} build_type=deploy" -i ${HOST}, --private-key /credentials/id_rsa ansible/full-deployment.yml

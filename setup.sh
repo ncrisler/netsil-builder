@@ -14,6 +14,7 @@ Parameters:
   -r, --registry     For use with third party registries (default: dockerhub)
                      You should pass the repository prefix of the 'netsil/<image>' images.
   -o, --offline      Are we deploying offline? Choose 'Yes' or 'No' (default: No)
+  -n, --dns-resolvers  If you have any internal dns servers, pass them in comma-separated.
 "
     exit 1
 }
@@ -38,6 +39,7 @@ function deploy_aoc() {
             -e HOST=$HOST \
             -e ANSIBLE_USER=$ANSIBLE_USER \
             -e REGISTRY=$REGISTRY \
+            -e DNS_RESOLVERS=$DNS_RESOLVERS \
             ${builder_image} \
             /opt/builder/scripts/deploy.sh
     fi
@@ -124,6 +126,10 @@ while [ $# -gt 0 ]; do
             ;;
         -o|--offline)
             OFFLINE="$2"
+            shift 2
+            ;;
+        -n|--dns-resolvers)
+            DNS_RESOLVERS="$2"
             shift 2
             ;;
         *)
