@@ -47,6 +47,10 @@ Then, run the setup script:
 
 `./setup.sh -h 127.0.0.1`
 
+If you have an internal DNS server(s), we also recommend passing that in as a parameter to the setup script. E.g.:
+
+`./setup.sh -h 127.0.0.1 -n 192.168.1.1`
+
 When the installation completes, you can access the AOC at `https://<your-machine-ip-address>`.
 
 ## Advanced Usage

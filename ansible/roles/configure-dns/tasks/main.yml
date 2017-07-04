@@ -33,11 +33,6 @@
     dns_resolvers: "169.254.169.254"
   when: build_type == "googlecompute"
 
-- name: Set internal DNS server
-  set_fact:
-    dns_resolvers: "{{ lookup('env', 'DNS_RESOLVERS') or '8.8.4.4, 8.8.8.8' }}"
-  when: build_type == "deploy"
-
 # TODO: We'll need to parameterize this for each cloud-platform
 # TODO: We should just fill `/etc/hosts` with the hostname returned by `hostname` as a stop-gap, since we don't know the DNS details for each cloud provider/virtualization software
 - name: Template various dns config files with the correct internal DNS resolver
@@ -46,4 +41,4 @@
     - dns_config
     - mesos-dns.json
     - spartan.json
-  when: build_type == "amazon-ebs" or build_type == "googlecompute" or build_type == "deploy"
+  when: build_type == "amazon-ebs" or build_type == "googlecompute"

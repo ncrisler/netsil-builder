@@ -22,7 +22,7 @@ if [ "${REGISTRY}" != "dockerhub" ] ; then
 fi
 
 if [ -n $DNS_RESOLVERS ] ; then
-    export DNS_RESOLVERS=${DNS_RESOLVERS}
+    python /opt/builder/scripts/add-dns-resolvers.py
 fi
 
 ansible-playbook --extra-vars "distrib=${DISTRIB} build_type=deploy" -i ${HOST}, --private-key /credentials/id_rsa ansible/full-deployment.yml

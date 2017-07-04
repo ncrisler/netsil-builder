@@ -6,14 +6,14 @@ function display_usage() {
 
 
 Parameters:
-  -h, --host         Server hostname of IP address
-  -k, --ssh-key      Private SSH key path (default: ~/.ssh/id_ra)
-  -a, --apps-dir     The apps directory (default: ./apps)
-  -u, --user         SSH user for deployment (default: $USER)
-  -d, --dcos-path    Path to the DCOS release package
-  -r, --registry     For use with third party registries (default: dockerhub)
-                     You should pass the repository prefix of the 'netsil/<image>' images.
-  -o, --offline      Are we deploying offline? Choose 'Yes' or 'No' (default: No)
+  -h, --host           Server hostname of IP address
+  -k, --ssh-key        Private SSH key path (default: ~/.ssh/id_ra)
+  -a, --apps-dir       The apps directory (default: ./apps)
+  -u, --user           SSH user for deployment (default: $USER)
+  -d, --dcos-path      Path to the DCOS release package
+  -r, --registry       For use with third party registries (default: dockerhub)
+                       You should pass the repository prefix of the 'netsil/<image>' images.
+  -o, --offline        Are we deploying offline? Choose 'Yes' or 'No' (default: No)
   -n, --dns-resolvers  If you have any internal dns servers, pass them in comma-separated.
 "
     exit 1
