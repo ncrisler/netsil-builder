@@ -79,6 +79,7 @@
   with_items:
     - dcos-cosmos
     - dcos-minuteman
+  ignore_errors: True
 
 # Reconfigure slave disconnect timeout
 - name: Reconfigure disconnect timeout of slave
