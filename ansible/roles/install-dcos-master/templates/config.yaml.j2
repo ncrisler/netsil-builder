@@ -20,8 +20,10 @@ ssh_port: 22
 ssh_user: {{ ansible_user }}
 oauth_enabled: 'false'
 telementry_enabled: 'false'
+{% if dns_resolvers %}
 resolvers:
 {% for resolver in dns_resolvers %}
   - {{ resolver }}
 {% endfor %}
+{% endif %}
 
