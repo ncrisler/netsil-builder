@@ -10,7 +10,7 @@
 
   roles:
     - role: update-cluster
-      cluster_state: pending
+      cluster_state: deploying
       cluster_message: Provisioning the server
     - build-cloud-infrastructure
     - build-cloud-node
@@ -61,7 +61,7 @@
 
   roles:
     - role: update-cluster
-      cluster_state: pending
+      cluster_state: deploying
       cluster_message: Installing prerequisites
     - prepare-dcos-master
     - install-dcos-master
@@ -72,13 +72,13 @@
     - reset-master-ips
     - inject-credentials
     - role: update-cluster
-      cluster_state: pending
+      cluster_state: deploying
       cluster_message: Installing Netsil AOC
     - template-marathon-apps
     - pull-binaries
     - install-startup-scripts
     - role: update-cluster
-      cluster_state: pending
+      cluster_state: deploying
       cluster_message: Cleaning temporary files
     - cleanup-dcos-install
     - cleanup-user-data
