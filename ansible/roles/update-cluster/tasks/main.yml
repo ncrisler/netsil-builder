@@ -1,12 +1,4 @@
 ---
-- name: Debug cluster_state
-  debug:
-    var: cluster_state
-
-- name: Debug cluster_message
-  debug:
-    var: cluster_message
-
 - name: Update cluster record - "{{ cluster_message }}"
   local_action:
     module: uri

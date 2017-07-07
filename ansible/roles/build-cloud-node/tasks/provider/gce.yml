@@ -1,26 +1,4 @@
 ---
-- name: DEBUG GCE credentials
-  debug:
-    var: gce_credentials_file
-
-- name: Create GCE credentials file
-  copy:
-    content: "{{ gce_credentials_file }}"
-    dest: ./gce_credentials.json
-
-- name: Create firewall rules
-  gce_net:
-    name: default
-    fwname: netsil-fw
-    allowed: 'tcp:22,80,443,2001,2003;udp:2003'
-    project_id: "{{ gce_project_id }}"
-    service_account_email: "{{ gce_service_account_email }}"
-    credentials_file: ./gce_credentials.json
-  register: result
-  retries: 3
-  delay: 5
-  until: result|succeeded
-
 - name: Create Netsil AOC master node
   gce:
     instance_names: "netsil-master-{{ instance_id }}"
