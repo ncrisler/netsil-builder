@@ -7,7 +7,7 @@
 - name: Delete node record
   local_action:
     module: uri
-    url: "{{ netsil_api_url }}/organizations/{{ org_id }}/clusters/{{ cluster_id }}/nodes/{{ instance_id }}"
+    url: "{{ netsil_api_url }}/clusters/{{ cluster_id }}/nodes/{{ instance_id }}"
     method: DELETE
     validate_certs: "{{ validate_certs }}"
     headers:
