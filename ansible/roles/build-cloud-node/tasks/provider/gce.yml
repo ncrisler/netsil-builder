@@ -22,8 +22,7 @@
   until: netsil_master|succeeded
 
 - name: Master node details
-  debug:
-    var: netsil_master.instance_data[0]
+  debug: var=netsil_master.instance_data[0]
 
 - name: Retrieve public and private IP addresses
   set_fact:

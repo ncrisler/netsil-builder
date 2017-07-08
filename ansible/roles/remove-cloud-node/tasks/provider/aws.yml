@@ -11,5 +11,20 @@
   register: result
 
 - name: Terminate AWS instance result
-  debug:
-    msg: "{{ result }}"
+  debug: var=result
+
+- name: Terminate AWS security group
+  ec2_group:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ region }}"
+    name: netsil_sg
+    state: absent
+
+- name: Terminate AWS key
+  ec2_key:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    name: "netsil-{{ instance_id }}"
+    region: "{{ region }}"
+    state: absent

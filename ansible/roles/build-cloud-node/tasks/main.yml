@@ -59,5 +59,4 @@
     - netsil_master|succeeded
 
 - name: API create node response
-  debug:
-    var: add_node_record
+  debug: var=add_node_record

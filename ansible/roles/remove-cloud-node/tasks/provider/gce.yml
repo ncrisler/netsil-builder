@@ -1,15 +1,29 @@
 ---
+- name: Create GCE credentials file
+  copy:
+    content: "{{ gce_credentials_file }}"
+    dest: ./gce_credentials.json
+
 - name: Terminate GCE instance
   gce:
     project_id: "{{ gce_project_id }}"
     service_account_email: "{{ gce_service_account_email }}"
-    credentials_file: "{{ gce_credentials_file }}"
+    credentials_file: ./gce_credentials.json
     instance_names: "{{ instance_id }}"
     zone: "{{ zone }}"
     state: absent
-    wait: True
   register: result
 
 - name: Terminate GCE instance result
-  debug:
-    msg: "{{ result }}"
+  debug: var=result
+
+- name: Terminate firewall rules
+  gce_net:
+    fwname: netsil-fw
+    project_id: "{{ gce_project_id }}"
+    service_account_email: "{{ gce_service_account_email }}"
+    credentials_file: ./gce_credentials.json
+    state: absent
+
+- name: Remove GCE credentials file
+  file: path=./gce_credentials.json state=absent
