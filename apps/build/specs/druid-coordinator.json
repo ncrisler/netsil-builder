@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/druid-coordinator:stable-1.4.5",
+         "image": "netsil/druid-coordinator:stable-1.5.0",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 31001, "hostPort": 31001, "protocol":"tcp"}

@@ -16,7 +16,7 @@
       ],
       "docker": {
           "network": "BRIDGE",
-          "image": "netsil/topology-service:stable-1.4.5",
+          "image": "netsil/topology-service:stable-1.5.0",
           "forcePullImage": false,
           "portMappings": [
               {"containerPort": 9002, "hostPort": 9002, "protocol":"tcp"}
