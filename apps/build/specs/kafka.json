@@ -23,7 +23,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/kafka:stable-1.4.5",
+         "image": "netsil/kafka:stable-1.5.0",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 9092, "hostPort": 9092, "protocol":"tcp"}

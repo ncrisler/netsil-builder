@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/logstash:stable-1.4.5",
+         "image": "netsil/logstash:stable-1.5.0",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 5044, "hostPort": 5044, "protocol":"tcp"},

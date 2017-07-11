@@ -23,7 +23,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/redis:stable-1.4.5",
+         "image": "netsil/redis:stable-1.5.0",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 6379, "hostPort": 6379, "protocol":"tcp"}
