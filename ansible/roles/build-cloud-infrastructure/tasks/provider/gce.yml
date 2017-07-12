@@ -8,7 +8,7 @@
   gce_net:
     name: default
     fwname: netsil-fw
-    allowed: 'tcp:22,80,443,2001,2003;udp:2003'
+    allowed: 'tcp:22,80,443,2000,2001,2003;udp:2003'
     project_id: "{{ gce_project_id }}"
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: ./gce_credentials.json
