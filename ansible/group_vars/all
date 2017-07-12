@@ -1,2 +1,2 @@
-apps_dir: "{{ lookup('env', 'APPS_DIR') | default('/apps', true) }}"
+apps_dir: "{{ lookup('env', 'APPS_DIR') | default('/apps', True) }}"
 distrib: "{{ lookup('env', 'DISTRIB') }}"

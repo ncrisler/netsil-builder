@@ -1,8 +1,13 @@
 ---
-- name: Build CoreOS on AWS
+- name: Remove cluster on AWS
   include: provider/aws.yml
   when:
     - provider == 'aws'
+
+- name: Remove cluster on GCE
+  include: provider/gce.yml
+  when:
+    - provider == 'gce'
 
 - name: Delete node record
   local_action:
@@ -20,9 +25,9 @@
   retries: 6
   delay: 5
   when:
-    - ec2_removal is defined
-    - ec2_removal|succeeded
+    - netsil_api_url != ""
+    - result is defined
+    - result|succeeded
 
 - name: API remove node response
-  debug:
-    msg: "{{ remove_node_record }}"
+  debug: var=remove_node_record

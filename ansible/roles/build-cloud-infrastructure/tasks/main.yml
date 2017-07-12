@@ -13,7 +13,3 @@
   include: provider/azure.yml
   static: False
   when: provider == 'azure'
-
-- name: Include DO tasks
-  include: provider/do.yml
-  when: provider == 'do'

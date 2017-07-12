@@ -9,7 +9,7 @@
     zone: "{{ zone }}"
     key_name: "netsil-{{ instance_id }}"
     group_id: "{{ netsil_sg.group_id }}"
-    vpc_subnet_id: "{{ aws_subnet_id }}"
+    vpc_subnet_id: "{{ subnet_id|default( '__new__', True) }}"
     assign_public_ip: yes
     instance_tags:
         Name: "netsil-master-{{ instance_id }}"
@@ -29,8 +29,7 @@
   until: not (netsil_master|failed)
 
 - name: Master node details
-  debug:
-    var: netsil_master.instances[0]
+  debug: var=netsil_master.instances[0]
 
 - name: Retrieve public and private IP addresses
   set_fact:

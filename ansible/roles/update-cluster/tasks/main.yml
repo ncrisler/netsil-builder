@@ -1,5 +1,5 @@
 ---
-- name: Update cluster record
+- name: Update cluster record - "{{ cluster_message }}"
   local_action:
     module: uri
     url: "{{ netsil_api_url }}/clusters/{{ cluster_id }}"
@@ -8,7 +8,9 @@
     headers:
       Authorization: "{{ netsil_api_token }}"
     body:
-      state: active
+      status:
+        state: "{{ cluster_state }}"
+        message: "{{ cluster_message }}"
     body_format: json
     status_code: 200
   register: update_cluster_record
@@ -17,6 +19,8 @@
     - update_cluster_record.status == 200
   retries: 6
   delay: 5
+  when:
+    - netsil_api_url != ""
 
 - name: API update cluster response
   debug:

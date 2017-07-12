@@ -33,6 +33,10 @@
         to_port: 443
         cidr_ip: 0.0.0.0/0
       - proto: tcp
+        from_port: 2000
+        to_port: 2000
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
         from_port: 2001
         to_port: 2001
         cidr_ip: 0.0.0.0/0
@@ -51,7 +55,7 @@
     aws_secret_key: "{{ aws_secret_key }}"
     name: netsil_sg
     description: Netsil Cluster
-    vpc_id: "{{ aws_vpc_id }}"
+    vpc_id: "{{ network_id|default( '__new__', True) }}"
     region: "{{ region }}"
     rules: "{{ ingress_rules }}"
     rules_egress:

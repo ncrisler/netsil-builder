@@ -21,6 +21,16 @@
     - provider == 'aws'
     - distrib == 'centos'
 
+- name: Build CoreOS on GCE
+  include: provider/gce.yml
+  vars:
+    ssh_user: core
+    python_interpreter: /opt/bin/python
+  static: False
+  when:
+    - provider == 'gce'
+    - distrib == 'coreos'
+
 - name: Add master node record
   local_action:
     module: uri
@@ -32,7 +42,7 @@
     body:
       name: "netsil-master-{{ instance_id }}"
       role: master
-      instance_id: "{{ netsil_master.instances[0].id }}"
+      instance_id: "{{ node_id }}"
       public_ip: "{{ master_public_ip }}"
       private_ip: "{{ master_private_ip }}"
     body_format: json
@@ -44,9 +54,9 @@
   retries: 6
   delay: 5
   when:
+    - netsil_api_url != ""
     - netsil_master is defined
     - netsil_master|succeeded
 
 - name: API create node response
-  debug:
-    var: add_node_record
+  debug: var=add_node_record

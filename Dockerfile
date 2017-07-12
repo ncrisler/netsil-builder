@@ -24,7 +24,10 @@ RUN apt-get update && \
 
 ## Start: TODO: We have these two lines because we run ansible locally for the templating tasks...we should do away with that and run it remotely
 RUN pip install --upgrade pip wheel && \
-    pip install pystache boto && \
+    pip install \
+      apache-libcloud==1.5.0 \
+      boto \
+      pystache && \
     mkdir -p /opt/bin && \
     ln -s /usr/bin/python /opt/bin/python
 ### End
