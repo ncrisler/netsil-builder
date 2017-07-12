@@ -14,7 +14,7 @@ services_vars:
   netsil_ceph_rgw_version: 1.5.0
   netsil_collectors_tag: stable-1.5.0
   netsil_collectors_version: 1.5.0
-  netsil_commit_hash: 4785bed39
+  netsil_commit_hash: eb379ea2a
   netsil_druid_broker_tag: stable-1.5.0
   netsil_druid_broker_version: 1.5.0
   netsil_druid_coordinator_tag: stable-1.5.0
@@ -62,5 +62,5 @@ services_vars:
   netsil_user_persistence_version: 1.5.0
   netsil_version_major: '0'
   netsil_version_minor: '2'
-  netsil_version_number: 1.5.0
-  netsil_version_tag: stable-1.5.0
+  netsil_version_number: 1.4.5
+  netsil_version_tag: stable-1.4.5
