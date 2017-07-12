@@ -42,6 +42,8 @@
       "maximumOverCapacity" : 0
   },
   "env": {
+    "DO_SCALE": "yes",
+    "PRODUCT_FLAVOR": "Pro",
     "DEPLOY_ENV": "marathon",
     "START_TIMEOUT": "10",
     "KAFKA_ADVERTISED_PORT": "9092",
