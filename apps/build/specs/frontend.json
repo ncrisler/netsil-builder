@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/frontend:stable-1.5.0",
+         "image": "netsil/frontend:stable-1.5.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 443, "hostPort": 443, "protocol":"tcp"},
@@ -33,8 +33,8 @@
   },
   "env": {
     "NETSIL_BUILD_BRANCH": "stable",
-    "NETSIL_VERSION_NUMBER": "1.4.5",
-    "NETSIL_COMMIT_HASH": "eb379ea2a",
+    "NETSIL_VERSION_NUMBER": "1.5.1",
+    "NETSIL_COMMIT_HASH": "0a0679732",
     "NETSIL_BUILD_NUMBER": "0",
     "DO_SCALE": "yes",
     "TIME_SERIES_ENDPOINT_HOST": "time-series-query-service.marathon.mesos",

@@ -17,6 +17,7 @@
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": {{ frontend.https_remote_port }}, "hostPort": {{ frontend.https_remote_port }}, "protocol":"tcp"},
+             {"containerPort": {{ frontend.https_collection_port }}, "hostPort": {{ frontend.https_collection_port }}, "protocol":"tcp"},
              {"containerPort": {{ frontend.http_local_port }}, "hostPort": {{ frontend.http_local_port }}, "protocol":"tcp"}
          ]
      }
