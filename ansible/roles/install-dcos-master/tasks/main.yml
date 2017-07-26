@@ -33,7 +33,7 @@
     - dcos_version == '1.7'
 
 - name: Download dcos_generate_config for 1.9
-  command: curl -O https://downloads.dcos.io/dcos/stable/commit/0ce03387884523f02624d3fb56c7fbe2e06e181b/dcos_generate_config.sh
+  command: curl -O https://downloads.dcos.io/dcos/stable/1.9.2/dcos_generate_config.sh
   when:
     - dcos_master_install.stat.exists == false
     - remote_dcos_package.stat.exists == false
