@@ -29,11 +29,11 @@
       "type": "googlecompute",
       "account_file": "/opt/credentials/account.json",
       "project_id": "netsil-dev",
-      "source_image": "coreos-stable-1353-7-0-v20170427",
+      "source_image": "coreos-stable-1235-9-0-v20170202",
       "ssh_username": "{{user `ssh_user`}}",
       "zone": "us-west1-a",
       "image_name": "netsil-{{user `image_name`}}-{{ timestamp }}",
-      "image_description": "Base DCOS image, uses CoreOS Stable 1353.7.0"
+      "image_description": "Base DCOS image, uses CoreOS Stable 1235.9.0"
     },
     {
       "type": "azure-arm",
