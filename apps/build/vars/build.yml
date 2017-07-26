@@ -13,50 +13,51 @@
 
 # These encode the version numbers for our images
 images:
-    alerts:                     1.5.1
-    backups:                    1.5.1
-    ceph-monitor:               1.5.1
-    ceph-osd:                   1.5.1
-    ceph-rgw:                   1.5.1
-    druid-broker:               1.5.1
-    druid-coordinator:          1.5.1
-    druid-historical:           1.5.1
-    druid-overlord:             1.5.1
-    druid-realtime:             1.5.1
-    elasticsearch:              1.5.1
-    frontend:                   1.5.1
-    ingestion-server:           1.5.1
-    kafka:                      1.5.1
-    license-manager:            1.5.1
-    logstash:                   1.5.1
-    metadata:                   1.5.1
+    alerts:                     1.5.2
+    backups:                    1.5.2
+    ceph-monitor:               1.5.2
+    ceph-osd:                   1.5.2
+    ceph-rgw:                   1.5.2
+    druid-broker:               1.5.2
+    druid-coordinator:          1.5.2
+    druid-historical:           1.5.2
+    druid-overlord:             1.5.2
+    druid-realtime:             1.5.2
+    elasticsearch:              1.5.2
+    frontend:                   1.5.2
+    ingestion-server:           1.5.2
+    kafka:                      1.5.2
+    license-manager:            1.5.2
+    logstash:                   1.5.2
+    metadata:                   1.5.2
     # TODO: Should we move the "netsil" image out of here and make this a list of pro-only images?
-    netsil:                     1.5.1
-    collectors:                 1.5.1
-    topology-service:           1.5.1
-    time-series-query-service:  1.5.1
-    sp-load-balancer:           1.5.1
-    notifications:              1.5.1
-    redis:                      1.5.1
-    stream-processor:           1.5.1
-    upgrade-manager:            1.5.1
-    user-db:                    1.5.1
-    user-persistence:           1.5.1
+    netsil:                     1.5.2
+    collectors:                 1.5.2
+    topology-service:           1.5.2
+    time-series-query-service:  1.5.2
+    sp-load-balancer:           1.5.2
+    notifications:              1.5.2
+    redis:                      1.5.2
+    stream-processor:           1.5.2
+    upgrade-manager:            1.5.2
+    user-db:                    1.5.2
+    user-persistence:           1.5.2
 
 envDefaults:
     NETSIL_BUILD_BRANCH: master
     NETSIL_VERSION_MAJOR: 0
     NETSIL_VERSION_MINOR: 2
     NETSIL_BUILD_NUMBER: 0
-    NETSIL_VERSION_NUMBER: 1.5.1
+    NETSIL_VERSION_NUMBER: 1.5.2
     URI_NAMESPACE: netsil
     BUILD_TYPE: release
     PRODUCT_FLAVOR: Lite
     BUILD_ENV: production
-    OMNIBUS_BRANCH: netsil/5.11.2
-    OMNIBUS_SOFTWARE_BRANCH: netsil/5.11.2
+    OMNIBUS_BRANCH: netsil/5.15.0
+    OMNIBUS_SOFTWARE_BRANCH: netsil/5.15.0
     OMNIBUS_RUBY_BRANCH: datadog-5.5.0
-    DD_AGENT_BRANCH: netsil/5.11.2
+    DD_AGENT_BRANCH: netsil/5.15.0
+    INTEGRATIONS_CORE_BRANCH: 5.15.0
     TRACE_AGENT_BRANCH: 5.11.0
     OMNIBUS_BUILD: ~/omnibus
     OMNIBUS_PKG_DIR: ~/omnibus

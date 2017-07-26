@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/notifications:stable-1.5.1",
+         "image": "netsil/notifications:stable-1.5.2",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 8882, "hostPort": 8882, "protocol":"tcp"},
