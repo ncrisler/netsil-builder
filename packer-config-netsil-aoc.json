@@ -43,7 +43,7 @@
       "type": "googlecompute",
       "account_file": "/opt/credentials/account.json",
       "project_id": "netsil-dev",
-      "source_image": "netsil-base-dcos-1493339644",
+      "source_image": "netsil-base-dcos-1501104112",
       "machine_type": "n1-standard-4",
       "disk_size": 20,
       "ssh_username": "core",

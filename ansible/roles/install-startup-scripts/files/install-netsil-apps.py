@@ -58,6 +58,12 @@ def restart_app(app_id):
             print "Could not connect to marathon..."
             count = wait(count, step, timeout)
 
+def restart_netsil_apps():
+    apps = get_current_apps()
+    for app in apps:
+        app_id = app['id']
+        restart_app(app_id)
+
 def install_netsil_apps():
     for app in os.listdir(APPS_DIR):
         with open(APPS_DIR + '/' + app, 'rb') as app_file:
@@ -75,16 +81,35 @@ def install_netsil_apps():
                 print "Installed app: " + str(app_id)
             elif status == 409:
                 print "Warning! App with ID " + str(app_id) + " already exists!"
-                # restart_app(app_id)
+                restart_app(app_id)
             else:
                 print "Error: Return code " + str(status) + " not recognized."
                 print "Error: " + str(resp.read())
                 exit(1)
 
+def get_current_apps():
+    try:
+        conn = httplib.HTTPConnection(MARATHON_HOST + ':' + MARATHON_PORT)
+        conn.request('GET', '/v2/apps')
+        resp = conn.getresponse()
+        body = resp.read()
+        apps_data = json.loads(body)
+        return apps_data['apps']
+    except:
+        print "Could not contact marathon!"
+        exit(1)
+
+def first_time_install():
+    return not get_current_apps()
+
 def main():
     wait_for_marathon()
-    install_netsil_apps()
 
+    # Install apps only if there aren't any marathon apps
+    if first_time_install():
+        install_netsil_apps()
+    else:
+        restart_netsil_apps()
 
 if __name__ == '__main__':
     main()

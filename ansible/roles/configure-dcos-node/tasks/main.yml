@@ -48,36 +48,6 @@
 - name: Further disable by setting the conf file
   copy: src=coredump.conf dest=/etc/systemd/coredump.conf
 
-# Cleanup exited containers and dangling volumes on a timer
-- name: Install docker-cleanup.service 
-  copy: src=docker-cleanup.service dest=/etc/systemd/system/docker-cleanup.service
-
-- name: Install docker-cleanup.timer 
-  copy: src=docker-cleanup.timer dest=/etc/systemd/system/docker-cleanup.timer
-
-- name: Start/enable docker-cleanup.timer
-  service: name=docker-cleanup.timer state=started enabled=yes
-
-# Install logrotate
-- name: Ensure conf directory exists
-  file: path=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }}/etc state=directory mode=0755
-
-- name: Install docker-logrotate conf
-  copy: src=docker-logrotate.conf dest=/opt/netsil/latest/etc/docker-logrotate.conf
-
-- name: Install docker-logrotate.service 
-  copy: src=docker-logrotate.service dest=/etc/systemd/system/docker-logrotate.service
-
-- name: Install docker-logrotate.timer 
-  copy: src=docker-logrotate.timer dest=/etc/systemd/system/docker-logrotate.timer
-
-- name: Enable docker-logrotate.timer
-  shell: "systemctl enable docker-logrotate.timer"
-
-- name: Start docker-logrotate.timer if deploying
-  shell: "systemctl start docker-logrotate.timer"
-  when: build_type == "deploy"
-
 - name: Disable cosmos and minuteman
   service: name={{ item }} enabled=no
   with_items:
