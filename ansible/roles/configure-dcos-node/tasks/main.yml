@@ -40,10 +40,10 @@
 
 # Exhibitor configuration
 - name: Set max client connections to 500 in defaults.conf
-  lineinfile: dest=/run/dcos_exhibitor/exhibitor_defaults.conf regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=5&autopurge.purgeInterval\=6"
+  lineinfile: dest=/run/dcos_exhibitor/exhibitor_defaults.conf regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=3&autopurge.purgeInterval\=1"
 
 - name: Set max client connections to 500 in start exhibitor
-  lineinfile: dest=/opt/mesosphere/active/exhibitor/usr/exhibitor/start_exhibitor.py regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=5&autopurge.purgeInterval\=6"
+  lineinfile: dest=/opt/mesosphere/active/exhibitor/usr/exhibitor/start_exhibitor.py regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=3&autopurge.purgeInterval\=1"
 
 - name: Further disable by setting the conf file
   copy: src=coredump.conf dest=/etc/systemd/coredump.conf
