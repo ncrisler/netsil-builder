@@ -38,6 +38,36 @@ def wait_for_marathon():
             count = wait(count, step, timeout)
 
 # Solely to get past the wait-time
+def install_app(app_id, app_json):
+    timeout=1800
+    count=0
+    step=10
+    while True:
+        try:
+            # Make install request
+            conn = httplib.HTTPConnection(MARATHON_HOST + ':' + MARATHON_PORT)
+            conn.request('POST', '/v2/apps', json.dumps(app_json), {"Content-type": "application/json"})
+            resp = conn.getresponse()
+            status = resp.status
+
+            if status == 201 or status == 200:
+                print "Installed app: " + str(app_id)
+                break
+            elif status == 409:
+                print "Warning! App with ID " + str(app_id) + " already exists!"
+                restart_app(app_id)
+                break
+            elif status == 503:
+                print "Got a return code of 503. Retrying request."
+                count = wait(count, step, timeout)
+            else:
+                print "Error: Return code " + str(status) + " not recognized."
+                print "Error: " + str(resp.read())
+                exit(1)
+        except:
+            print "Could not connect to marathon..."
+            count = wait(count, step, timeout)
+
 def restart_app(app_id):
     timeout=1800
     count=0
@@ -68,24 +98,8 @@ def install_netsil_apps():
     for app in os.listdir(APPS_DIR):
         with open(APPS_DIR + '/' + app, 'rb') as app_file:
             app_json = json.load(app_file)
-            if 'id' in app_json:
-                app_id = app_json['id']
-            else:
-                print "Error! No app id in json file."
-                exit(1)
-            conn = httplib.HTTPConnection(MARATHON_HOST + ':' + MARATHON_PORT)
-            conn.request('POST', '/v2/apps', json.dumps(app_json), {"Content-type": "application/json"})
-            resp = conn.getresponse()
-            status = resp.status
-            if status == 201:
-                print "Installed app: " + str(app_id)
-            elif status == 409:
-                print "Warning! App with ID " + str(app_id) + " already exists!"
-                restart_app(app_id)
-            else:
-                print "Error: Return code " + str(status) + " not recognized."
-                print "Error: " + str(resp.read())
-                exit(1)
+            app_id = app_json['id']
+            install_app(app_id, app_json):
 
 def get_current_apps():
     try:
