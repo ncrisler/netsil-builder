@@ -11,7 +11,7 @@
       ],
       "docker": {
           "network": "BRIDGE",
-          "image": "netsil/metadata:stable-1.5.2",
+          "image": "netsil/metadata:stable-1.5.3",
           "forcePullImage": false,
           "portMappings": [
               {"containerPort": 5444, "hostPort": 5444, "protocol":"tcp"}
@@ -34,11 +34,11 @@
     "DO_SCALE": "yes",
     "URI_NAMESPACE": "netsil",
     "NETSIL_BUILD_BRANCH": "stable",
-    "NETSIL_VERSION_NUMBER": "1.5.2",
-    "NETSIL_COMMIT_HASH": "0d3f2a8fe",
+    "NETSIL_VERSION_NUMBER": "1.5.3",
+    "NETSIL_COMMIT_HASH": "b658f793c",
     "NETSIL_BUILD_NUMBER": "0",
-    "NETSIL_SERVICE_TAG": "stable-1.5.2",
-    "NETSIL_VERSION_TAG": "stable-1.5.2",
+    "NETSIL_SERVICE_TAG": "stable-1.5.3",
+    "NETSIL_VERSION_TAG": "stable-1.5.3",
     "BUILD_ENV": "production",
     "USER_PERSISTENCE_SERVER_HOST": "user-persistence.marathon.mesos",
     "USER_PERSISTENCE_SERVER_PORT": "8891"
