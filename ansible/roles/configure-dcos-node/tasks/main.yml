@@ -6,6 +6,20 @@
 - name: Further disable by setting the conf file
   copy: src=coredump.conf dest=/etc/systemd/coredump.conf
 
+# Install docker-healthcheck
+- name: Install docker-healthcheck script
+  copy: src=docker-healthcheck dest=/opt/netsil/latest/bin/docker-healthcheck mode=755
+
+- name: Install docker-healthcheck service
+  copy: src=docker-healthcheck.service dest=/etc/systemd/system/docker-healthcheck.service
+
+- name: Enable docker-healthcheck service
+  service: name=docker-healthcheck.service enabled=yes
+
+- name: Start docker-healthcheck service
+  service: name=docker-healthcheck.service state=started
+  when: build_type == "deploy"
+
 # Cleanup exited containers and dangling volumes on a timer
 - name: Install docker-cleanup.service 
   copy: src=docker-cleanup.service dest=/etc/systemd/system/docker-cleanup.service

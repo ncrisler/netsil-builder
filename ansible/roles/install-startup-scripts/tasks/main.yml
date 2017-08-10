@@ -4,14 +4,8 @@
     ansible_python_interpreter: "/opt/bin/python"
   when: ansible_os_family == "CoreOS"
 
-# This will install a startup script that will install all the marathon apps
-# Run it only when the dcos-marathon service is up and running
-# TODO: Of course, these startup scripts will only work if systemd is installed...But we have a dependency chain of DCOS --> systemd --> CoreOS, where A implies B is installed if "A --> B", so I think it's safe to say that systemd will be installed.
 - name: Install setup-node.sh for joining workers
   copy: src=setup-node.sh dest=/opt/netsil/latest/bin/setup-node.sh mode=744
-
-#- name: Install install-netsil-apps.sh for installing netsil apps in marathon
-#  copy: src=manage-netsil-apps.sh dest=/opt/netsil/latest/bin/manage-netsil-apps.sh mode=744
 
 - name: Install install-netsil-apps.py for installing netsil apps in marathon
   copy: src=install-netsil-apps.py dest=/opt/netsil/latest/bin/install-netsil-apps.py mode=744
@@ -31,44 +25,3 @@
 - name: Install debug script
   copy: src=grab-debug.sh dest=/opt/netsil/latest/bin/grab-debug.sh mode=755
 
-# Install marathon health checker
-- name: Install marathon-health-checker.sh for restarting marathon if it gets into a bad state
-  copy: src=marathon-health-checker.sh dest=/opt/netsil/latest/bin/marathon-health-checker.sh mode=744
-
-- name: Install marathon-health-checker service
-  copy: src=marathon-health-checker.service dest=/etc/systemd/system/marathon-health-checker.service
-
-- name: Enable marathon-health-checker service
-  service: name=marathon-health-checker enabled=yes
-
-- name: Start marathon-health-checker service
-  service: name=marathon-health-checker state=started
-  when: build_type == "deploy"
-
-# Install zk health checker
-- name: Install zk-health-checker.py for repairing zookeeper if it gets into a bad state
-  copy: src=zk-health-checker.py dest=/opt/netsil/latest/bin/zk-health-checker.py mode=744
-
-- name: Install zk-health-checker service
-  template: src=zk-health-checker.service.j2 dest=/etc/systemd/system/zk-health-checker.service
-
-- name: Enable zk-health-checker service
-  service: name=zk-health-checker enabled=yes
-
-- name: Start zk-health-checker service
-  service: name=zk-health-checker state=started
-  when: build_type == "deploy"
-
-# Install docker-healthcheck
-- name: Install docker-healthcheck script
-  copy: src=docker-healthcheck dest=/opt/netsil/latest/bin/docker-healthcheck mode=755
-
-- name: Install docker-healthcheck service
-  copy: src=docker-healthcheck.service dest=/etc/systemd/system/docker-healthcheck.service
-
-- name: Enable docker-healthcheck service
-  service: name=docker-healthcheck.service enabled=yes
-
-- name: Start docker-healthcheck service
-  service: name=docker-healthcheck.service state=started
-  when: build_type == "deploy"

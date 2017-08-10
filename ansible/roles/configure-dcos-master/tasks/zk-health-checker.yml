@@ -1,0 +1,13 @@
+# Install zk health checker
+- name: Install zk-health-checker.py for repairing zookeeper if it gets into a bad state
+  copy: src=zk-health-checker.py dest=/opt/netsil/latest/bin/zk-health-checker.py mode=744
+
+- name: Install zk-health-checker service
+  template: src=zk-health-checker.service.j2 dest=/etc/systemd/system/zk-health-checker.service
+
+- name: Enable zk-health-checker service
+  service: name=zk-health-checker enabled=yes
+
+- name: Start zk-health-checker service
+  service: name=zk-health-checker state=started
+  when: build_type == "deploy"

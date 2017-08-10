@@ -9,3 +9,21 @@
 # Reconfigure slave disconnect timeout
 - name: Reconfigure disconnect timeout of slave
   lineinfile: dest=/opt/mesosphere/etc/mesos-master regexp='^MESOS_MAX_SLAVE_PING_TIMEOUTS=' line="MESOS_MAX_SLAVE_PING_TIMEOUTS=5"
+
+# Install marathon health checker
+- name: Install marathon-health-checker.sh for restarting marathon if it gets into a bad state
+  copy: src=marathon-health-checker.sh dest=/opt/netsil/latest/bin/marathon-health-checker.sh mode=744
+
+- name: Install marathon-health-checker service
+  copy: src=marathon-health-checker.service dest=/etc/systemd/system/marathon-health-checker.service
+
+- name: Enable marathon-health-checker service
+  service: name=marathon-health-checker enabled=yes
+
+- name: Start marathon-health-checker service
+  service: name=marathon-health-checker state=started
+  when: build_type == "deploy"
+
+- name: Install zk-health-checker
+  include: zk-health-checker.yml
+  when: build_type != "cloud"
