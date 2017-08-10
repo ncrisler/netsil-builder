@@ -42,7 +42,7 @@ function deploy_aoc() {
             -e NETWORK_ID=$NETWORK_ID \
             -e SUBNET_ID=$SUBNET_ID \
             netsil/netsil-builder \
-            'ansible-playbook ansible/cloud-deployment.yml'
+            'ansible-playbook ansible/deploy-app.yml'
     fi
 }
 
