@@ -1,0 +1,17 @@
+---
+# Exhibitor configuration
+- name: Set max client connections to 500 in defaults.conf
+  lineinfile: dest=/run/dcos_exhibitor/exhibitor_defaults.conf regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=3&autopurge.purgeInterval\=1"
+
+- name: Set max client connections to 500 in start exhibitor
+  lineinfile: dest=/opt/mesosphere/active/exhibitor/usr/exhibitor/start_exhibitor.py regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=3&autopurge.purgeInterval\=1"
+
+- name: Disable cosmos and minuteman
+  service: name={{ item }} enabled=no
+  with_items:
+    - dcos-cosmos
+    - dcos-minuteman
+
+# Reconfigure slave disconnect timeout
+- name: Reconfigure disconnect timeout of slave
+  lineinfile: dest=/opt/mesosphere/etc/mesos-master regexp='^MESOS_MAX_SLAVE_PING_TIMEOUTS=' line="MESOS_MAX_SLAVE_PING_TIMEOUTS=5"

@@ -31,8 +31,10 @@
   become_user: root
 
   roles:
+    - initialize-dcos-node
     - configure-dcos-ui
-    - configure-dcos-node
+    - configure-dcos-master
+    - configure-dcos-slave
     - configure-dns
     - reset-master-ips
     - inject-credentials

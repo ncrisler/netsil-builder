@@ -1,0 +1,19 @@
+- name: Ensure /opt/netsil version directory exists
+  file: path=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }} state=directory mode=0755
+
+- name: Ensure latest symlink exists
+  file: src=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }} dest=/opt/netsil/latest state=link force=yes
+
+- name: Ensure netsil bin directory exists
+  file: path=/opt/netsil/latest/bin state=directory
+
+- name: Ensure netsil asset directory exists
+  file: path=/opt/netsil/latest/assets state=directory
+
+- name: Ensure conf directory exists
+  file: path=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }}/etc state=directory mode=0755
+
+- name: Templates the cluster version number onto the host
+  template: src=version-info.json.j2 dest=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }}/version-info
+  vars:
+    netsil_version_number: "{{ services_vars['netsil_version_number'] }}"

@@ -7,12 +7,6 @@
 # This will install a startup script that will install all the marathon apps
 # Run it only when the dcos-marathon service is up and running
 # TODO: Of course, these startup scripts will only work if systemd is installed...But we have a dependency chain of DCOS --> systemd --> CoreOS, where A implies B is installed if "A --> B", so I think it's safe to say that systemd will be installed.
-- name: Ensure latest symlink exists
-  file: src=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }} dest=/opt/netsil/latest state=link force=yes
-
-- name: Ensure netsil bin directory exists
-  file: path=/opt/netsil/latest/bin state=directory
-
 - name: Install setup-node.sh for joining workers
   copy: src=setup-node.sh dest=/opt/netsil/latest/bin/setup-node.sh mode=744
 
