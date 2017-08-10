@@ -68,6 +68,7 @@
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
     ### Start: ansible-specific vars ###
     ansible_user: centos
+    ansible_python_interpreter: /usr/bin/python
     ### End: ansible-specific vars ###
 
   gather_facts: True
