@@ -80,3 +80,10 @@
     - template-marathon-apps
     - pull-binaries
     - install-startup-scripts
+
+- hosts: netsil-cloud-agent0001
+  vars:
+    ansible_python_interpreter: /usr/bin/python
+    
+  roles:
+    - install-cloud-apps

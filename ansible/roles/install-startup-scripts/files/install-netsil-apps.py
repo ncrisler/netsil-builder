@@ -2,6 +2,7 @@ import httplib
 import json
 import time
 import os
+import argparse
 
 MARATHON_HOST = os.environ.get('MARATHON_HOST', failobj='marathon.mesos')
 MARATHON_PORT = os.environ.get('MARATHON_PORT', failobj='8080')
@@ -81,10 +82,15 @@ def install_netsil_apps():
                 print "Error: " + str(resp.read())
                 exit(1)
 
-def main():
+def main(action):
     wait_for_marathon()
-    install_netsil_apps()
+    if action == 'install':
+        install_netsil_apps()
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='install action')
+    parser.add_argument('-a', '--action', default='install', dest='action', type=str, nargs='?')
+    args = parser.parse_args()
+    main(args.action)
+

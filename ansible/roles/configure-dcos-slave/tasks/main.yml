@@ -30,3 +30,11 @@
 # Reconfigure gc_delay so executors clean up failed tasks more frequently
 - name: Reconfigure executor GC of slave
   lineinfile: dest=/opt/mesosphere/etc/mesos-slave-common regexp='^MESOS_GC_DELAY=' line="MESOS_GC_DELAY=60mins"
+
+- name: Remove latest meta slaves directory
+  shell: rm -f /var/lib/mesos/slave/meta/slaves/latest
+  when: build_type == "cloud"
+
+- name: Restart dcos slaves
+  service: name=dcos-mesos-slaves state=restarted
+  when: build_type == "cloud"
