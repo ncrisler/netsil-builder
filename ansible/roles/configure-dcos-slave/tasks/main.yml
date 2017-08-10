@@ -20,15 +20,6 @@
 - name: Set slave resources
   copy: src=mesos-resources dest=/var/lib/dcos/mesos-resources
 
-- name: Further disable by setting the conf file
-  copy: src=coredump.conf dest=/etc/systemd/coredump.conf
-
-- name: Disable cosmos and minuteman
-  service: name={{ item }} enabled=no
-  with_items:
-    - dcos-cosmos
-    - dcos-minuteman
-
 # Overcommit memory
 - name: Overcommit memory to fix things like redis startup
   copy: src=overcommit.conf dest=/etc/sysctl.d/overcommit.conf
