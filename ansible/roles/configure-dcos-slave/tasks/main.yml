@@ -1,0 +1,41 @@
+---
+# Some misc configurations
+- name: Find and output the location of dcos-mesos-slave.service
+  shell: "find /opt/mesosphere | grep dcos-mesos-slave.service"
+  register: dcos_mesos_slave
+
+- debug: msg="{{ dcos_mesos_slave.stdout }}"
+- name: Link dcos-mesos-slave into /etc/system/systemd
+  file: src={{ dcos_mesos_slave.stdout }} dest=/etc/systemd/system/dcos-mesos-slave.service state=link
+
+- name: Link dcos-mesos-slave into /etc/system/systemd/dcos.target.wants. This enables the service.
+  file: src={{ dcos_mesos_slave.stdout }} dest=/etc/systemd/system/dcos.target.wants/dcos-mesos-slave.service state=link
+
+- name: Create slave role in /etc
+  file: path=/etc/mesosphere/roles/slave state=file
+
+- name: Create slave role in /opt/mesosphere
+  file: path=/opt/mesosphere/etc/roles/slave state=directory
+
+- name: Set slave resources
+  copy: src=mesos-resources dest=/var/lib/dcos/mesos-resources
+
+- name: Further disable by setting the conf file
+  copy: src=coredump.conf dest=/etc/systemd/coredump.conf
+
+- name: Disable cosmos and minuteman
+  service: name={{ item }} enabled=no
+  with_items:
+    - dcos-cosmos
+    - dcos-minuteman
+
+# Overcommit memory
+- name: Overcommit memory to fix things like redis startup
+  copy: src=overcommit.conf dest=/etc/sysctl.d/overcommit.conf
+
+- name: Reload sysctl
+  shell: "sysctl -p /etc/sysctl.d/overcommit.conf"
+
+# Reconfigure gc_delay so executors clean up failed tasks more frequently
+- name: Reconfigure executor GC of slave
+  lineinfile: dest=/opt/mesosphere/etc/mesos-slave-common regexp='^MESOS_GC_DELAY=' line="MESOS_GC_DELAY=60mins"

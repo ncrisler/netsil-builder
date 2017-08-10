@@ -1,49 +1,7 @@
-# TODO: Reorganize this ansible role later
 ---
 - name: Include CoreOS tasks
   include: configure-coreos.yml
   when: ansible_os_family == "CoreOS"
-
-# Configure version number
-# TODO: We have this "latest symlink exists" job elsewhere. Maybe it could be refactored into an "initial setup" role or "configure paths" role?
-- name: Ensure /opt/netsil version directory exists
-  file: path=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }} state=directory mode=0755
-
-- name: Ensure latest symlink exists
-  file: src=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }} dest=/opt/netsil/latest state=link force=yes
-
-- name: Templates the cluster version number onto the host
-  template: src=version-info.json.j2 dest=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }}/version-info
-  vars:
-    netsil_version_number: "{{ services_vars['netsil_version_number'] }}"
-
-# Some misc configurations
-- name: Find and output the location of dcos-mesos-slave.service
-  shell: "find /opt/mesosphere | grep dcos-mesos-slave.service"
-  register: dcos_mesos_slave
-
-- debug: msg="{{ dcos_mesos_slave.stdout }}"
-- name: Link dcos-mesos-slave into /etc/system/systemd
-  file: src={{ dcos_mesos_slave.stdout }} dest=/etc/systemd/system/dcos-mesos-slave.service state=link
-
-- name: Link dcos-mesos-slave into /etc/system/systemd/dcos.target.wants. This enables the service.
-  file: src={{ dcos_mesos_slave.stdout }} dest=/etc/systemd/system/dcos.target.wants/dcos-mesos-slave.service state=link
-
-- name: Create slave role in /etc
-  file: path=/etc/mesosphere/roles/slave state=file
-
-- name: Create slave role in /opt/mesosphere
-  file: path=/opt/mesosphere/etc/roles/slave state=directory
-
-- name: Set slave resources
-  copy: src=mesos-resources dest=/var/lib/dcos/mesos-resources
-
-# Exhibitor configuration
-- name: Set max client connections to 500 in defaults.conf
-  lineinfile: dest=/run/dcos_exhibitor/exhibitor_defaults.conf regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=3&autopurge.purgeInterval\=1"
-
-- name: Set max client connections to 500 in start exhibitor
-  lineinfile: dest=/opt/mesosphere/active/exhibitor/usr/exhibitor/start_exhibitor.py regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=3&autopurge.purgeInterval\=1"
 
 - name: Further disable by setting the conf file
   copy: src=coredump.conf dest=/etc/systemd/coredump.conf
@@ -73,27 +31,6 @@
 
 - name: Start/enable docker-logrotate.timer
   shell: "systemctl start docker-logrotate.timer && systemctl enable docker-logrotate.timer"
-
-- name: Disable cosmos and minuteman
-  service: name={{ item }} enabled=no
-  with_items:
-    - dcos-cosmos
-    - dcos-minuteman
-
-# Reconfigure slave disconnect timeout
-- name: Reconfigure disconnect timeout of slave
-  lineinfile: dest=/opt/mesosphere/etc/mesos-master regexp='^MESOS_MAX_SLAVE_PING_TIMEOUTS=' line="MESOS_MAX_SLAVE_PING_TIMEOUTS=5"
-
-# Reconfigure gc_delay so executors clean up failed tasks more frequently
-- name: Reconfigure executor GC of slave
-  lineinfile: dest=/opt/mesosphere/etc/mesos-slave-common regexp='^MESOS_GC_DELAY=' line="MESOS_GC_DELAY=60mins"
-
-# Overcommit memory
-- name: Overcommit memory to fix things like redis startup
-  copy: src=overcommit.conf dest=/etc/sysctl.d/overcommit.conf
-
-- name: Reload sysctl
-  shell: "sysctl -p /etc/sysctl.d/overcommit.conf"
 
 - name: Restart DCOS services
   service: name={{ item }} state=restarted

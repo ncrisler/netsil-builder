@@ -35,6 +35,7 @@
     - configure-dcos-ui
     - configure-dcos-master
     - configure-dcos-slave
+    - configure-dcos-node
     - configure-dns
     - reset-master-ips
     - inject-credentials
