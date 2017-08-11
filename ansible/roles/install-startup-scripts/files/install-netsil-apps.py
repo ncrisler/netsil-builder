@@ -144,8 +144,28 @@ def install_netsil_apps():
                 print "Error: Return code " + str(status) + " not recognized."
                 print "Error: " + str(resp.read())
                 exit(1)
+
 def wait_for_deployments():
-    pass
+    deploy_period=10
+    deploy_count=0
+    deploy_max=900
+
+    # Initial sleep for deployments to queue up
+    time.sleep(deploy_period)
+    while deploy_count < deploy_max:
+        try:
+            conn = httplib.HTTPConnection(MARATHON_HOST + ':' + MARATHON_PORT)
+            conn.request('GET', '/v2/deployments')
+            resp = conn.getresponse()
+            respBody = resp.read()
+            if respBody != '[]':
+                print "There are still pending deployments"
+                time.sleep(deploy_period)
+            else:
+                break
+        except:
+            print "Could not connect to marathon..."
+            exit(1)
 
 def main(action):
     wait_for_marathon()
