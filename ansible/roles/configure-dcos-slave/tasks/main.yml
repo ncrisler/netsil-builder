@@ -36,5 +36,5 @@
   when: build_type == "cloud"
 
 - name: Restart dcos slaves
-  service: name=dcos-mesos-slaves state=restarted
+  service: name=dcos-mesos-slave state=restarted
   when: build_type == "cloud"

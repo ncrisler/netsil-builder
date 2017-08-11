@@ -3,4 +3,4 @@
   service: name=netsil-startup state=started
 
 - name: Run scale script
-  command: {{ ansible_python_interpreter }} /opt/netsil/latest/bin/install-netsil-apps.py scale
+  command: "{{ ansible_python_interpreter }} /opt/netsil/latest/bin/install-netsil-apps.py -a scale"

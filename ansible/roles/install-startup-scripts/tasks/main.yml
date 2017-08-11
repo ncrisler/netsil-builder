@@ -10,8 +10,6 @@
 - name: Install install-netsil-apps.py for installing netsil apps in marathon
   copy: src=install-netsil-apps.py dest=/opt/netsil/latest/bin/install-netsil-apps.py mode=744
 
-# TODO: We should do like mesosphere and put this netsil-startup.service file inside /opt/netsil/latest and symlink to it from /etc/systemd/system
-# TODO: In fact, go through and look for any .service files. Symlink them the same way.
 - name: Template netsil startup service
   template: src=netsil-startup.service.j2 dest=/etc/systemd/system/netsil-startup.service
 

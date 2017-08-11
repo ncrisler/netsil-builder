@@ -85,5 +85,9 @@
   vars:
     ansible_python_interpreter: /usr/bin/python
     
+  gather_facts: True
+  become: yes
+  become_user: root
+
   roles:
     - install-cloud-apps

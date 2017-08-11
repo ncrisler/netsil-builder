@@ -7,8 +7,12 @@ import argparse
 MARATHON_HOST = os.environ.get('MARATHON_HOST', failobj='marathon.mesos')
 MARATHON_PORT = os.environ.get('MARATHON_PORT', failobj='8080')
 MESOS_HOST = os.environ.get('MESOS_HOST', failobj='leader.mesos')
-MESOS_PORT = os.environ.get('MARATHON_PORT', failobj='5050')
+MESOS_PORT = os.environ.get('MESOS_PORT', failobj='5050')
 APPS_DIR = os.environ.get('APPS_DIR', failobj='/opt/netsil/latest/apps/build/specs')
+BUILD_TYPE = os.environ.get('BUILD_TYPE', failobj='cloud')
+
+exclude_in_cloud = ['ceph-osd', 'ceph-rgw', 'ceph-monitor', 'druid-realtime']
+exclude_in_singlenode = ['druid-middle-manager', 'tranquility']
 
 def wait(count, step, timeout):
     time.sleep(step)
@@ -65,10 +69,24 @@ def do_scale(app_json):
     else:
         return False
 
+def filter_apps(all_apps, filter_list):
+    for app in filter_list:
+        app_file = app + '.json'
+        if app_file in all_apps:
+            all_apps.remove(app_file)
+    return all_apps
+
+def list_apps():
+    all_apps = os.listdir(APPS_DIR)
+    if BUILD_TYPE == 'cloud':
+        return filter_apps(all_apps, exclude_in_cloud)
+    else:
+        return filter_apps(all_apps, exclude_in_singlenode)
+
 def scale_netsil_apps():
     total_workers = get_total_workers()
     scale_json = {'instances': total_workers}
-    for app in os.listdir(APPS_DIR):
+    for app in list_apps():
         with open(APPS_DIR + '/' + app, 'rb') as app_file:
             app_json = json.load(app_file)
             if 'id' in app_json and do_scale(app_json):
@@ -105,7 +123,7 @@ def restart_app(app_id):
             count = wait(count, step, timeout)
 
 def install_netsil_apps():
-    for app in os.listdir(APPS_DIR):
+    for app in list_apps():
         with open(APPS_DIR + '/' + app, 'rb') as app_file:
             app_json = json.load(app_file)
             if 'id' in app_json:
@@ -126,12 +144,15 @@ def install_netsil_apps():
                 print "Error: Return code " + str(status) + " not recognized."
                 print "Error: " + str(resp.read())
                 exit(1)
+def wait_for_deployments():
+    pass
 
 def main(action):
     wait_for_marathon()
     if action == 'install':
         install_netsil_apps()
     elif action == 'scale':
+        wait_for_deployments()
         scale_netsil_apps()
 
 if __name__ == '__main__':
