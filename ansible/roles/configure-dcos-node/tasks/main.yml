@@ -3,6 +3,10 @@
   include: configure-coreos.yml
   when: ansible_os_family == "CoreOS"
 
+- name: Include CentOS tasks
+  include: configure-redhat.yml
+  when: ansible_os_family == "RedHat"
+
 - name: Further disable by setting the conf file
   copy: src=coredump.conf dest=/etc/systemd/coredump.conf
 
