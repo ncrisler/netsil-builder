@@ -1,0 +1,76 @@
+licenses:
+  ICU:
+    file: /opt/netsil/licenses/ICU
+    link: http://www.unicode.org/copyright.html#License
+  LibICU:
+    file: /opt/netsil/licenses/LibICU
+    link: https://opensource.apple.com/source/ICU/ICU-461.18/license.html
+  LGPL:
+    file: /opt/netsil/licenses/LGPL
+    link: https://www.gnu.org/licenses/lgpl-3.0.en.html
+  GPL2:
+    file: /opt/netsil/licenses/GPL2
+    link: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
+  GPL:
+    file: /opt/netsil/licenses/GPL3
+    link: https://www.gnu.org/licenses/gpl-3.0.en.html
+  lxml:
+    file: /opt/netsil/licenses/lxml
+    link: https://github.com/lxml/lxml/blob/master/doc/licenses/BSD.txt
+  netaddr:
+    file: /opt/netsil/licenses/netaddr
+    link: https://github.com/drkjam/netaddr/blob/rel-0.7.x/LICENSE
+  libtins:
+    file: /opt/netsil/licenses/libtins
+    link: https://github.com/mfontanini/libtins/blob/master/LICENSE
+  libntoh:
+    file: /opt/netsil/licenses/libntoh
+    link: https://github.com/sch3m4/libntoh/blob/master/LICENSE
+  dd-agent:
+    file: /opt/netsil/licenses/ddagent
+    link: https://github.com/DataDog/dd-agent/blob/master/LICENSE
+  BSD3:
+    file: /opt/netsil/licenses/MD5
+    link: https://opensource.org/licenses/BSD-3-Clause
+  Libyara:
+    file: /opt/netsil/licenses/Libyara
+    link: https://github.com/VirusTotal/yara/blob/master/COPYING
+  re2:
+    file: /opt/netsil/licenses/re2
+    link: https://github.com/google/re2/blob/master/LICENSE
+  Protobuf:
+    file: /opt/netsil/licenses/Protobuf
+    link: https://github.com/google/protobuf/blob/master/LICENSE
+  MIT:
+    file: /opt/netsil/licenses/MIT
+    link: https://opensource.org/licenses/MIT
+  Libcurl:
+    file: /opt/netsil/licenses/Libcurl
+    link: https://curl.haxx.se/docs/copyright.html
+  Jansson:
+    file: /opt/netsil/licenses/Jansson
+    link: https://github.com/akheron/jansson/blob/master/LICENSE
+  Libtecla:
+    file: /opt/netsil/licenses/Libtecla
+    link: https://github.com/michaelmacinnis/tecla/blob/master/LICENSE
+  libyaml-cpp:
+    file: /opt/netsil/licenses/libyamlcpp
+    link: https://github.com/mirek/YAML.framework#license
+  OpenSSL:
+    file: /opt/netsil/licenses/OpenSSL
+    link: https://www.openssl.org/source/license.txt
+  Apache:
+    file: /opt/netsil/licenses/Apache
+    link: http://www.apache.org/licenses/LICENSE-2.0
+  Boost:
+    file: /opt/netsil/licenses/Boost
+    link: http://www.boost.org/LICENSE_1_0.txt
+  Zlib:
+    file: /opt/netsil/licenses/Zlib
+    link: https://opensource.org/licenses/Zlib
+  ZPL:
+    file: /opt/netsil/licenses/ZPL
+    link: https://opensource.org/licenses/ZPL-2.0
+  ISC:
+    file: /opt/netsil/licenses/ISC
+    link: https://opensource.org/licenses/ISC
