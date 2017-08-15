@@ -1,0 +1,11 @@
+---
+- name: Create Licenses directory
+  file: dest=/opt/netsil/licenses state=directory mode=0755
+- name: Download links
+  get_url: url={{item.value.link}} dest={{item.value.file}} validate_certs=no
+  with_dict: "{{ licenses }}"
+- name: Create Sources directory
+- file: dest=/opt/netsil/sources state=directory mode=0755
+- name: Download source code
+  get_url: url={{item.value.link}} dest={{item.value.file}} validate_certs=no
+  with_dict: "{{ sources }}"

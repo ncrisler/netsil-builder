@@ -29,6 +29,7 @@
   become_user: root
 
   roles:
+    - install-licenses
     - configure-dcos-ui
     - configure-dcos-node
     - configure-dns
