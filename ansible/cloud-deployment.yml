@@ -60,7 +60,6 @@
   become_user: root
 
   roles:
-    - install-licenses
     - role: update-cluster
       cluster_state: deploying
       cluster_message: Installing prerequisites

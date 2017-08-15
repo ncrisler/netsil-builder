@@ -18,7 +18,7 @@ licenses:
     file: /opt/netsil/licenses/lxml
     link: https://github.com/lxml/lxml/blob/master/doc/licenses/BSD.txt
   netaddr:
-    file: /opt/netsil/licenses/lxml
+    file: /opt/netsil/licenses/netaddr
     link: https://github.com/drkjam/netaddr/blob/rel-0.7.x/LICENSE
   libtins:
     file: /opt/netsil/licenses/libtins

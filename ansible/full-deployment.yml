@@ -18,7 +18,6 @@
     - /apps/build/vars/services.yml
     - /apps/build/vars/cluster.yml
     - /apps/build/vars/build.yml
-    - /apps/build/vars/licenses.yml
 
   vars:
     netsil_build_branch: "{{ services_vars['netsil_build_branch'] }}"
@@ -44,7 +43,6 @@
   become_user: root
 
   roles:
-    - install-licenses
     - prepare-dcos-master
     - install-dcos-master
     - install-dcos-slave
