@@ -23,7 +23,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/kafka:stable-1.5.3",
+         "image": "netsil/kafka:stable-1.6.2",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 9092, "hostPort": 9092, "protocol":"tcp"}
@@ -42,6 +42,8 @@
       "maximumOverCapacity" : 0
   },
   "env": {
+    "DO_SCALE": "yes",
+    "PRODUCT_FLAVOR": "Pro",
     "DEPLOY_ENV": "marathon",
     "START_TIMEOUT": "10",
     "KAFKA_ADVERTISED_PORT": "9092",

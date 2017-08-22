@@ -13,42 +13,42 @@
 
 # These encode the version numbers for our images
 images:
-    alerts:                     1.5.3
-    backups:                    1.5.3
-    ceph-monitor:               1.5.3
-    ceph-osd:                   1.5.3
-    ceph-rgw:                   1.5.3
-    druid-broker:               1.5.3
-    druid-coordinator:          1.5.3
-    druid-historical:           1.5.3
-    druid-overlord:             1.5.3
-    druid-realtime:             1.5.3
-    elasticsearch:              1.5.3
-    frontend:                   1.5.3
-    ingestion-server:           1.5.3
-    kafka:                      1.5.3
-    license-manager:            1.5.3
-    logstash:                   1.5.3
-    metadata:                   1.5.3
+    alerts:                     1.6.2
+    backups:                    1.6.2
+    ceph-monitor:               1.6.2
+    ceph-osd:                   1.6.2
+    ceph-rgw:                   1.6.2
+    druid-broker:               1.6.2
+    druid-coordinator:          1.6.2
+    druid-historical:           1.6.2
+    druid-overlord:             1.6.2
+    druid-realtime:             1.6.2
+    elasticsearch:              1.6.2
+    frontend:                   1.6.2
+    ingestion-server:           1.6.2
+    kafka:                      1.6.2
+    license-manager:            1.6.2
+    logstash:                   1.6.2
+    metadata:                   1.6.2
     # TODO: Should we move the "netsil" image out of here and make this a list of pro-only images?
-    netsil:                     1.5.3
-    collectors:                 1.5.3
-    topology-service:           1.5.3
-    time-series-query-service:  1.5.3
-    sp-load-balancer:           1.5.3
-    notifications:              1.5.3
-    redis:                      1.5.3
-    stream-processor:           1.5.3
-    upgrade-manager:            1.5.3
-    user-db:                    1.5.3
-    user-persistence:           1.5.3
+    netsil:                     1.6.2
+    collectors:                 1.6.2
+    topology-service:           1.6.2
+    time-series-query-service:  1.6.2
+    sp-load-balancer:           1.6.2
+    notifications:              1.6.2
+    redis:                      1.6.2
+    stream-processor:           1.6.2
+    upgrade-manager:            1.6.2
+    user-db:                    1.6.2
+    user-persistence:           1.6.2
 
 envDefaults:
     NETSIL_BUILD_BRANCH: master
     NETSIL_VERSION_MAJOR: 0
     NETSIL_VERSION_MINOR: 2
     NETSIL_BUILD_NUMBER: 0
-    NETSIL_VERSION_NUMBER: 1.5.3
+    NETSIL_VERSION_NUMBER: 1.6.2
     URI_NAMESPACE: netsil
     BUILD_TYPE: release
     PRODUCT_FLAVOR: Lite
@@ -210,7 +210,7 @@ publishSpecs:
         template: none
         repo: https://github.com/netsil/manifests
         ext: zip
-    
+
     netsil-apps:
         template: none
         dir: ./pro/apps

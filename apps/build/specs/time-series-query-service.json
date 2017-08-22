@@ -16,7 +16,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/time-series-query-service:stable-1.5.3",
+         "image": "netsil/time-series-query-service:stable-1.6.2",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 9047, "hostPort": 9047, "protocol":"tcp"}
@@ -36,6 +36,7 @@
       "maximumOverCapacity" : 0
   },
   "env": {
+    "DO_SCALE": "yes",
     "PRODUCT_FLAVOR": "Pro",
     "DRUID_HOST": "druid-broker.marathon.mesos",
     "DRUID_PORT": "31004",

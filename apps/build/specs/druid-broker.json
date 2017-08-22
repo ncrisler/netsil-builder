@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/druid-broker:stable-1.5.3",
+         "image": "netsil/druid-broker:stable-1.6.2",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 31004, "hostPort": 31004, "protocol":"tcp"}
@@ -36,19 +36,6 @@
     "druid_service": "druid-broker",
     "druid_port": "31004",
     "druid_server_http_numThreads": "20"
-  },
-  "healthChecks": [
-    {
-      "protocol": "COMMAND",
-      "command": {
-        "value": "curl 'http://$HOST:$PORT0/druid/broker/v1/loadstatus'|grep true"
-      },
-      "gracePeriodSeconds": 120,
-      "intervalSeconds": 30,
-      "timeoutSeconds": 20,
-      "maxConsecutiveFailures": 2,
-      "ignoreHttp1xx": false
-    }
-  ]
+  }
 }
 

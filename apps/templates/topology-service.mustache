@@ -39,7 +39,8 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
-    "PRODUCT_FLAVOR": "Pro",
+    "DO_SCALE": "yes",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "TIME_SERIES_ENDPOINT_HOST": "{{ topology-service.time_series_endpoint_host }}",
     "TIME_SERIES_ENDPOINT_PORT": "{{ topology-service.time_series_endpoint_port }}",
     "USER_PERSISTENCE_SERVER_HOST": "{{ topology-service.user_persistence_server_host }}",

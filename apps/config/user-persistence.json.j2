@@ -6,7 +6,9 @@
     "redis_port": 6379,
     "user_db_host": "user-db.marathon.mesos",
     "user_db_port": "3306",
-    "nodejs_env": "NODE_ENV={{ build_env }}"
+    "nodejs_env": "NODE_ENV={{ build_env }}",
+    "license_manager_service_host": "license-manager.marathon.mesos",
+    "license_manager_service_port": 9009
   },
 {% extends "common.json.j2" %}
 {% block common_params %}
