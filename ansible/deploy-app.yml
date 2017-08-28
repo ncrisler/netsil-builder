@@ -50,6 +50,7 @@
     mesos_master_ip_list: "127.0.0.1"
     distrib: "{{ lookup('env', 'DISTRIB') }}"
     build_type: deploy
+    src_credentials_dir: "/opt/credentials"
     ### Start: ansible-specific vars ###
     ansible_user: "{{ lookup('env', 'ANSIBLE_USER') or 'core' }}"
     ansible_python_interpreter: /usr/bin/python

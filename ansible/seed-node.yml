@@ -21,6 +21,7 @@
     build_type: "{{ build_type }}"
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
     mesos_master_ip_list: "127.0.0.1"
+    src_credentials_dir: "/opt/credentials"
     ### Start: ansible-specific vars ###
     ansible_user: core
     ansible_python_interpreter: /opt/bin/python

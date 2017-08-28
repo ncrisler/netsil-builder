@@ -91,3 +91,4 @@
 
   roles:
     - install-cloud-apps
+    - inject-credentials
