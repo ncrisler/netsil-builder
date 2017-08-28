@@ -2,9 +2,9 @@
 # This works with the netsil-dcos-gce scripts
 - hosts: allnodes
   vars_files:
-    - /home/centos/netsil-dcos-gce/netsil/netsil-builder/apps/build/vars/services.yml
-    - /home/centos/netsil-dcos-gce/netsil/netsil-builder/apps/build/vars/cluster.yml
-    - /home/centos/netsil-dcos-gce/netsil/netsil-builder/apps/build/vars/build.yml
+    - "{{ apps_dir }}/build/vars/services.yml"
+    - "{{ apps_dir }}/build/vars/cluster.yml"
+    - "{{ apps_dir }}/build/vars/build.yml"
   vars:
     netsil_build_branch: "{{ services_vars['netsil_build_branch'] }}"
     netsil_version_number: "{{ services_vars['netsil_version_number'] }}"
@@ -32,9 +32,9 @@
 
 - hosts: masters
   vars_files:
-    - /home/centos/netsil-dcos-gce/netsil/netsil-builder/apps/build/vars/services.yml
-    - /home/centos/netsil-dcos-gce/netsil/netsil-builder/apps/build/vars/cluster.yml
-    - /home/centos/netsil-dcos-gce/netsil/netsil-builder/apps/build/vars/build.yml
+    - "{{ apps_dir }}/build/vars/services.yml"
+    - "{{ apps_dir }}/build/vars/cluster.yml"
+    - "{{ apps_dir }}/build/vars/build.yml"
   vars:
     build_env: "{{ cluster_vars['build_env'] }}"
     build_type: "cloud"
@@ -51,9 +51,9 @@
 
 - hosts: agents
   vars_files:
-    - /home/centos/netsil-dcos-gce/netsil/netsil-builder/apps/build/vars/services.yml
-    - /home/centos/netsil-dcos-gce/netsil/netsil-builder/apps/build/vars/cluster.yml
-    - /home/centos/netsil-dcos-gce/netsil/netsil-builder/apps/build/vars/build.yml
+    - "{{ apps_dir }}/build/vars/services.yml"
+    - "{{ apps_dir }}/build/vars/cluster.yml"
+    - "{{ apps_dir }}/build/vars/build.yml"
   vars:
     netsil_build_branch: "{{ services_vars['netsil_build_branch'] }}"
     netsil_version_number: "{{ services_vars['netsil_version_number'] }}"
@@ -66,7 +66,7 @@
     build_env: "{{ cluster_vars['build_env'] }}"
     build_type: "cloud"
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
-    src_credentials_dir: "/home/centos"
+    src_credentials_dir: "/home/centos/.docker"
     ### Start: ansible-specific vars ###
     ansible_user: centos
     ansible_python_interpreter: /usr/bin/python
