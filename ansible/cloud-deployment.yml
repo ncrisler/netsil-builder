@@ -66,6 +66,7 @@
     build_env: "{{ cluster_vars['build_env'] }}"
     build_type: "cloud"
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
+    src_credentials_dir: "/home/centos"
     ### Start: ansible-specific vars ###
     ansible_user: centos
     ansible_python_interpreter: /usr/bin/python
@@ -76,6 +77,7 @@
   become_user: root
 
   roles:
+    - inject-credentials
     - configure-dcos-slave
     - template-marathon-apps
     - pull-binaries
@@ -91,4 +93,3 @@
 
   roles:
     - install-cloud-apps
-    - inject-credentials
