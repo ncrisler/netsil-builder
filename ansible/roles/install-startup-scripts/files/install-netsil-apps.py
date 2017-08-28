@@ -11,7 +11,7 @@ MESOS_PORT = os.environ.get('MESOS_PORT', failobj='5050')
 APPS_DIR = os.environ.get('APPS_DIR', failobj='/opt/netsil/latest/apps/build/specs')
 BUILD_TYPE = os.environ.get('BUILD_TYPE', failobj='cloud')
 
-exclude_in_cloud = ['ceph-osd', 'ceph-rgw', 'ceph-monitor', 'druid-realtime']
+exclude_in_cloud = ['ceph-osd', 'ceph-rgw', 'ceph-monitor']
 exclude_in_singlenode = ['druid-middle-manager', 'tranquility']
 
 def wait(count, step, timeout):
