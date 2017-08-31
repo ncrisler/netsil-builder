@@ -67,6 +67,7 @@
     build_type: "cloud"
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
     src_credentials_dir: "/home/centos/.docker"
+    setup_worker: "{{ setup_worker | default('no') }}"
     ### Start: ansible-specific vars ###
     ansible_user: centos
     ansible_python_interpreter: /usr/bin/python
@@ -82,6 +83,7 @@
     - template-marathon-apps
     - pull-binaries
     - install-startup-scripts
+    - setup-worker # Only runs when we are adding an agent/worker to a pre-existing cluster
 
 - hosts: netsil-cloud-agent0001
   vars:
