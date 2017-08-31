@@ -83,7 +83,6 @@
     - template-marathon-apps
     - pull-binaries
     - install-startup-scripts
-    - setup-worker # Only runs when we are adding an agent/worker to a pre-existing cluster
 
 - hosts: netsil-cloud-agent0001
   vars:
