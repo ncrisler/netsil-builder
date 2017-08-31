@@ -8,7 +8,7 @@
   copy: src=setup-node.sh dest=/opt/netsil/latest/bin/setup-node.sh mode=744
 
 - name: Install cloud-worker-join.sh for joining cloud workers
-  copy: src=cloud-worker-join.sh dest=/opt/netsil/latest/bin/cloud-worker-join.sh mode=744
+  copy: src=cloud-setup-worker.sh dest=/opt/netsil/latest/bin/cloud-setup-worker.sh mode=744
 
 - name: Install install-netsil-apps.py for installing netsil apps in marathon
   copy: src=install-netsil-apps.py dest=/opt/netsil/latest/bin/install-netsil-apps.py mode=744
