@@ -38,8 +38,8 @@
 
 - name: Remove latest meta slaves directory
   shell: rm -f /var/lib/mesos/slave/meta/slaves/latest
-  when: build_type == "cloud"
+  when: is_ha == "yes"
 
 - name: Restart dcos slaves
   service: name=dcos-mesos-slave state=restarted
-  when: build_type == "cloud"
+  when: is_ha == "yes"

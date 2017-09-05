@@ -22,13 +22,13 @@
 
 - name: Start marathon-health-checker service
   service: name=marathon-health-checker state=started
-  when: build_type == "deploy" or build_type == "cloud"
+  when: build_type == "deploy" or is_ha == "yes"
 
 - name: Install zk-health-checker
   include: zk-health-checker.yml
-  when: build_type != "cloud"
+  when: is_ha == "no"
 
 - name: Restart dcos masters
   service: name=dcos-mesos-master state=restarted
-  when: build_type == "cloud"
+  when: is_ha == "yes"
 

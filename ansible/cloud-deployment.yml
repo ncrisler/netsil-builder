@@ -15,7 +15,7 @@
     is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
     resource_role: "{{ cluster_vars['resource_role'] }}"
     build_env: "{{ cluster_vars['build_env'] }}"
-    build_type: "cloud"
+    is_ha: "yes"
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
     mesos_master_ip_list: "127.0.0.1"
     ### Start: ansible-specific vars ###
@@ -37,7 +37,7 @@
     - "{{ apps_dir }}/build/vars/build.yml"
   vars:
     build_env: "{{ cluster_vars['build_env'] }}"
-    build_type: "cloud"
+    is_ha: "yes"
     ### Start: ansible-specific vars ###
     ansible_user: centos
     ### End: ansible-specific vars ###
@@ -64,7 +64,7 @@
     is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
     resource_role: "{{ cluster_vars['resource_role'] }}"
     build_env: "{{ cluster_vars['build_env'] }}"
-    build_type: "cloud"
+    is_ha: "yes"
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
     src_credentials_dir: "/home/centos/.docker"
     setup_worker: "{{ setup_worker | default('no') }}"

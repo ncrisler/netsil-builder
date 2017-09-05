@@ -9,9 +9,9 @@ MARATHON_PORT = os.environ.get('MARATHON_PORT', failobj='8080')
 MESOS_HOST = os.environ.get('MESOS_HOST', failobj='leader.mesos')
 MESOS_PORT = os.environ.get('MESOS_PORT', failobj='5050')
 APPS_DIR = os.environ.get('APPS_DIR', failobj='/opt/netsil/latest/apps/build/specs')
-BUILD_TYPE = os.environ.get('BUILD_TYPE', failobj='cloud')
+IS_HA = os.environ.get('IS_HA', failobj='no')
 
-exclude_in_cloud = ['ceph-osd', 'ceph-rgw', 'ceph-monitor']
+exclude_in_ha = ['ceph-osd', 'ceph-rgw', 'ceph-monitor']
 exclude_in_singlenode = ['druid-middle-manager', 'tranquility']
 
 def wait(count, step, timeout):
@@ -78,8 +78,8 @@ def filter_apps(all_apps, filter_list):
 
 def list_apps():
     all_apps = os.listdir(APPS_DIR)
-    if BUILD_TYPE == 'cloud':
-        return filter_apps(all_apps, exclude_in_cloud)
+    if IS_HA == 'yes':
+        return filter_apps(all_apps, exclude_in_ha)
     else:
         return filter_apps(all_apps, exclude_in_singlenode)
 
