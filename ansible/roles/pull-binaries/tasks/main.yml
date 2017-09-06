@@ -1,13 +1,4 @@
 ---
-- name: Ensure latest symlink exists
-  file: src=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }} dest=/opt/netsil/latest state=link force=yes
-
-- name: Ensure netsil bin directory exists
-  file: path=/opt/netsil/latest/bin state=directory
-
-- name: Ensure netsil asset directory exists
-  file: path=/opt/netsil/latest/assets state=directory
-
 #- name: Template pull-binaries script
 #  template: src=pull-binaries.sh.j2 dest=/opt/netsil/latest/bin/pull-binaries.sh mode=744
 

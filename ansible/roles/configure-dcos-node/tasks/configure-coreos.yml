@@ -1,10 +1,7 @@
-# Disabling systemd coredumps
 - name: Stop and disable coredump service
   # shell: "systemctl stop systemd-coredump.socket && systemctl disable systemd-coredump.socket"
   service: name=systemd-coredump.socket state=stopped enabled=no
 
-# Disable updates and reboot
-# TODO: We need only do these for coreos
 - name: Disable CoreOS reboot
   copy: src=update.conf dest=/etc/coreos/update.conf
 

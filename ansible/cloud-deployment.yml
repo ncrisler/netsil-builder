@@ -1,41 +1,10 @@
 ---
-- hosts: localhost
-  connection: local
-  gather_facts: False
-  become: False
-  become_user: root
-
+# This works with the netsil-dcos-gce scripts
+- hosts: allnodes
   vars_files:
-    - group_vars/cloud.yml
-
-  roles:
-    - role: update-cluster
-      cluster_state: deploying
-      cluster_message: Provisioning the server
-    - build-cloud-infrastructure
-    - build-cloud-node
-    - prepare-local
-
-- hosts: netsil-master
-  gather_facts: False
-  become: True
-  become_user: root
-
-  vars:
-    ansible_user: "{{ lookup('env', 'ANSIBLE_USER') or 'core' }}"
-    ansible_python_interpreter: /opt/bin/python
-
-  roles:
-    - { role: coreos-bootstrap, when: distrib == 'coreos' }
-
-- hosts: netsil-master
-
-  vars_files:
-    - group_vars/cloud.yml
     - "{{ apps_dir }}/build/vars/services.yml"
     - "{{ apps_dir }}/build/vars/cluster.yml"
     - "{{ apps_dir }}/build/vars/build.yml"
-
   vars:
     netsil_build_branch: "{{ services_vars['netsil_build_branch'] }}"
     netsil_version_number: "{{ services_vars['netsil_version_number'] }}"
@@ -46,12 +15,64 @@
     is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
     resource_role: "{{ cluster_vars['resource_role'] }}"
     build_env: "{{ cluster_vars['build_env'] }}"
+    build_type: "dummy"
+    is_ha: "yes"
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
     mesos_master_ip_list: "127.0.0.1"
-    distrib: "{{ lookup('env', 'DISTRIB') }}"
-    build_type: deploy
     ### Start: ansible-specific vars ###
-    ansible_user: "{{ lookup('env', 'ANSIBLE_USER') or 'core' }}"
+    ansible_user: centos
+    ### End: ansible-specific vars ###
+
+  gather_facts: True
+  become: yes
+  become_user: root
+
+  roles:
+    - initialize-dcos-node
+    - configure-dcos-node
+
+- hosts: masters
+  vars_files:
+    - "{{ apps_dir }}/build/vars/services.yml"
+    - "{{ apps_dir }}/build/vars/cluster.yml"
+    - "{{ apps_dir }}/build/vars/build.yml"
+  vars:
+    build_env: "{{ cluster_vars['build_env'] }}"
+    build_type: "dummy"
+    is_ha: "yes"
+    ### Start: ansible-specific vars ###
+    ansible_user: centos
+    ### End: ansible-specific vars ###
+
+  gather_facts: True
+  become: yes
+  become_user: root
+
+  roles:
+    - configure-dcos-master
+
+- hosts: agents
+  vars_files:
+    - "{{ apps_dir }}/build/vars/services.yml"
+    - "{{ apps_dir }}/build/vars/cluster.yml"
+    - "{{ apps_dir }}/build/vars/build.yml"
+  vars:
+    netsil_build_branch: "{{ services_vars['netsil_build_branch'] }}"
+    netsil_version_number: "{{ services_vars['netsil_version_number'] }}"
+    netsil_commit_hash: "{{ services_vars['netsil_commit_hash'] }}"
+    netsil_build_number: "{{ services_vars['netsil_build_number'] }}"
+    netsil_version_tag: "{{ services_vars['netsil_version_tag'] }}"
+    uri_namespace: "{{ cluster_vars['uri_namespace'] }}"
+    is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
+    resource_role: "{{ cluster_vars['resource_role'] }}"
+    build_env: "{{ cluster_vars['build_env'] }}"
+    build_type: "dummy"
+    is_ha: "yes"
+    force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
+    src_credentials_dir: "/home/centos/.docker"
+    setup_worker: "{{ setup_worker | default('no') }}"
+    ### Start: ansible-specific vars ###
+    ansible_user: centos
     ansible_python_interpreter: /usr/bin/python
     ### End: ansible-specific vars ###
 
@@ -60,28 +81,20 @@
   become_user: root
 
   roles:
-    - role: update-cluster
-      cluster_state: deploying
-      cluster_message: Installing prerequisites
-    - prepare-dcos-master
-    - install-dcos-master
-    - install-dcos-slave
-    - configure-dcos-ui
-    - configure-dcos-node
-    - configure-dns
-    - reset-master-ips
     - inject-credentials
-    - role: update-cluster
-      cluster_state: deploying
-      cluster_message: Installing Netsil AOC
+    - configure-dcos-slave
     - template-marathon-apps
     - pull-binaries
     - install-startup-scripts
-    - role: update-cluster
-      cluster_state: deploying
-      cluster_message: Cleaning temporary files
-    - cleanup-dcos-install
-    - cleanup-user-data
-    - role: update-cluster
-      cluster_state: active
-      cluster_message: Cluster ready
+
+- hosts: single-agent
+  vars:
+    build_type: "dummy"
+    ansible_python_interpreter: /usr/bin/python
+    
+  gather_facts: True
+  become: yes
+  become_user: root
+
+  roles:
+    - install-cloud-apps

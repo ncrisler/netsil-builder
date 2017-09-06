@@ -1,0 +1,34 @@
+---
+# Exhibitor configuration
+- name: Set max client connections to 500 in defaults.conf
+  lineinfile: dest=/run/dcos_exhibitor/exhibitor_defaults.conf regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=3&autopurge.purgeInterval\=1"
+
+- name: Set max client connections to 500 in start exhibitor
+  lineinfile: dest=/opt/mesosphere/active/exhibitor/usr/exhibitor/start_exhibitor.py regexp='^zoo-cfg-extra' line="zoo-cfg-extra=tickTime\=2000&initLimit\=10&syncLimit\=5&quorumListenOnAllIPs\=true&maxClientCnxns\=500&autopurge.snapRetainCount\=3&autopurge.purgeInterval\=1"
+
+# Reconfigure slave disconnect timeout
+- name: Reconfigure disconnect timeout of slave
+  lineinfile: dest=/opt/mesosphere/etc/mesos-master regexp='^MESOS_MAX_SLAVE_PING_TIMEOUTS=' line="MESOS_MAX_SLAVE_PING_TIMEOUTS=5"
+
+# Install marathon health checker
+- name: Install marathon-health-checker.sh for restarting marathon if it gets into a bad state
+  copy: src=marathon-health-checker.sh dest=/opt/netsil/latest/bin/marathon-health-checker.sh mode=744
+
+- name: Install marathon-health-checker service
+  copy: src=marathon-health-checker.service dest=/etc/systemd/system/marathon-health-checker.service
+
+- name: Enable marathon-health-checker service
+  service: name=marathon-health-checker enabled=yes
+
+- name: Start marathon-health-checker service
+  service: name=marathon-health-checker state=started
+  when: build_type == "deploy" or is_ha == "yes"
+
+- name: Install zk-health-checker
+  include: zk-health-checker.yml
+  when: is_ha == "no"
+
+- name: Restart dcos masters
+  service: name=dcos-mesos-master state=restarted
+  when: is_ha == "yes"
+
