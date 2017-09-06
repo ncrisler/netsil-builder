@@ -45,6 +45,8 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+    "DO_SCALE": "yes",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
     "START_TIMEOUT": "{{ kafka.start_timeout }}",
     "KAFKA_ADVERTISED_PORT": "{{ kafka.port }}",

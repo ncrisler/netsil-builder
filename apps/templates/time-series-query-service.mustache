@@ -39,7 +39,8 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
-    "PRODUCT_FLAVOR": "Pro",
+    "DO_SCALE": "yes",
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DRUID_HOST": "{{ time-series-query-service.druid_host }}",
     "DRUID_PORT": "{{ time-series-query-service.druid_port }}",
     "SQL_HOST": "{{ time-series-query-service.sql_host }}",

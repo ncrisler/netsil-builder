@@ -1,0 +1,22 @@
+sources:
+  libzmq:
+    file: /opt/netsil/sources/libzmq.zip
+    link: https://github.com/zeromq/libzmq/archive/master.zip
+  log4cpp:
+    file: /opt/netsil/sources/log4cpp.zip
+    link: https://github.com/orocos-toolchain/log4cpp/archive/master.zip
+  rpcap:
+    file: /opt/netsil/sources/rpcap.zip
+    link: https://www.winpcap.org/archive/3.1-WpcapSrc.zip
+  txZMQ:
+    file: /opt/netsil/sources/txZMQ.zip
+    link: https://github.com/smira/txZMQ/archive/master.zip
+  openJDK:
+    file: /opt/netsil/sources/openJDK.zip
+    link: http://www.java.net/download/openjdk/jdk8/promoted/b132/openjdk-8-src-b132-03_mar_2014.zip
+  stunnel:
+    file: /opt/netsil/sources/stunnel.tar.gz
+    link: https://www.stunnel.org/downloads/stunnel-5.42.tar.gz
+  flex:
+    file: /opt/netsil/sources/flex.zip
+    link: https://github.com/westes/flex/archive/master.zip

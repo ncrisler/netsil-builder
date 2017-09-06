@@ -39,18 +39,5 @@
     "druid_service": "{{ druid-broker.druid_service }}",
     "druid_port": "{{ druid-broker.druid_port }}",
     "druid_server_http_numThreads": "{{ druid-broker.druid_server_http_numThreads }}"
-  },
-  "healthChecks": [
-    {
-      "protocol": "COMMAND",
-      "command": {
-        "value": "curl 'http://$HOST:$PORT0/druid/broker/v1/loadstatus'|grep true"
-      },
-      "gracePeriodSeconds": 120,
-      "intervalSeconds": 30,
-      "timeoutSeconds": 20,
-      "maxConsecutiveFailures": 2,
-      "ignoreHttp1xx": false
-    }
-  ]
+  }
 }
