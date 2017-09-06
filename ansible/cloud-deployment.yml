@@ -15,6 +15,7 @@
     is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
     resource_role: "{{ cluster_vars['resource_role'] }}"
     build_env: "{{ cluster_vars['build_env'] }}"
+    build_type: "dummy"
     is_ha: "yes"
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
     mesos_master_ip_list: "127.0.0.1"
@@ -37,6 +38,7 @@
     - "{{ apps_dir }}/build/vars/build.yml"
   vars:
     build_env: "{{ cluster_vars['build_env'] }}"
+    build_type: "dummy"
     is_ha: "yes"
     ### Start: ansible-specific vars ###
     ansible_user: centos
@@ -64,6 +66,7 @@
     is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
     resource_role: "{{ cluster_vars['resource_role'] }}"
     build_env: "{{ cluster_vars['build_env'] }}"
+    build_type: "dummy"
     is_ha: "yes"
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
     src_credentials_dir: "/home/centos/.docker"
@@ -84,8 +87,9 @@
     - pull-binaries
     - install-startup-scripts
 
-- hosts: netsil-cloud-agent0001
+- hosts: single-agent
   vars:
+    build_type: "dummy"
     ansible_python_interpreter: /usr/bin/python
     
   gather_facts: True
