@@ -16,6 +16,7 @@
     is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
     resource_role: "{{ cluster_vars['resource_role'] }}"
     build_env: "{{ cluster_vars['build_env'] }}"
+    build_type: template
     force_pull_image: "{{ cluster_vars['force_pull_image'] }}"
     mesos_master_ip_list: "127.0.0.1"
     is_ha: "{{ lookup('env', 'IS_HA') or cluster_vars['is_ha'] }}"

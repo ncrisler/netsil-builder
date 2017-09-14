@@ -3,36 +3,12 @@
   set_fact:
     build_specs_dir: /opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }}/apps/build/specs
 
-- name: Create build directories
-  local_action: file path={{ item }} state=directory
-  with_items:
-    - "{{ apps_dir }}/build/config"
-    - "{{ apps_dir }}/build/specs"
+- name: Template services 
+  include: template.yml
+  when: build_type == "template"
 
-# TODO: We have to do this because variables aren't being passed to local_action tasks for some reason...
-- name: Template services config
-  local_action: template src={{ apps_dir }}/config/{{ item }}.json.j2 dest={{ apps_dir }}/build/config/{{ item }}.config.json
-  vars:
-    tmp_item: "{{ item | regex_replace('-', '_') }}"
-    netsil_service_tag: "{{ services_vars['netsil_' + tmp_item + '_tag'] | default(netsil_version_tag) }}"
-  with_items: "{{ pushImages.Pro }}"
-  when: is_ha == "no"
-
-- name: Template services config for HA
-  local_action: template src={{ apps_dir }}/ha-config/{{ item }}.json.j2 dest={{ apps_dir }}/build/config/{{ item }}.config.json
-  vars:
-    tmp_item: "{{ item | regex_replace('-', '_') }}"
-    netsil_service_tag: "{{ services_vars['netsil_' + tmp_item + '_tag'] | default(netsil_version_tag) }}"
-  with_items: "{{ pushImages.Pro }}"
-  when: is_ha == "yes"
-
-- name: Template services
-  local_action: shell /usr/local/bin/pystache {{ apps_dir }}/templates/{{ item }}.mustache {{ apps_dir }}/build/config/{{ item }}.config.json > {{ apps_dir }}/build/specs/{{ item }}.json
-  with_items: "{{ pushImages.Pro }}"
-
-- name: Validate templated jsons
-  local_action: shell python -m json.tool {{ apps_dir }}/build/specs/{{ item }}.json
-  with_items: "{{ pushImages.Pro }}"
+- name: Clean remote build directory
+  file: path={{ build_specs_dir }}/ state=absent
 
 - name: Create remote build specs directory
   file: path={{ build_specs_dir }} state=directory
