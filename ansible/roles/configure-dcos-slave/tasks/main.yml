@@ -19,7 +19,7 @@
 
 - name: Set slave resources
   copy: src=mesos-resources dest=/var/lib/dcos/mesos-resources
-  when: is_ha == "no"
+  when: is_ha != "yes"
 
 - name: Set slave resources for ha
   copy: src=mesos-resources-ha dest=/var/lib/dcos/mesos-resources

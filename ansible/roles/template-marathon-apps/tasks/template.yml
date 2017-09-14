@@ -17,7 +17,7 @@
     tmp_item: "{{ item | regex_replace('-', '_') }}"
     netsil_service_tag: "{{ services_vars['netsil_' + tmp_item + '_tag'] | default(netsil_version_tag) }}"
   with_items: "{{ pushImages.Pro }}"
-  when: is_ha == "no"
+  when: is_ha != "yes"
 
 - name: Template services config for HA
   local_action: template src={{ apps_dir }}/ha-config/{{ item }}.json.j2 dest={{ apps_dir }}/build/config/{{ item }}.config.json

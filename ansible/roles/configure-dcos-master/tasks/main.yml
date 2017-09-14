@@ -26,7 +26,7 @@
 
 - name: Install zk-health-checker
   include: zk-health-checker.yml
-  when: is_ha == "no"
+  when: is_ha != "yes"
 
 - name: Restart dcos masters
   service: name=dcos-mesos-master state=restarted
