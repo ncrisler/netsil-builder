@@ -9,7 +9,7 @@ Currently, these scripts support CoreOS and CentOS. They have been tested on Cor
 Support for more Linux distributions is planned.
 
 ## Documentation
-You can browse through our [full documentation](https://netsil.github.io/docs), which provides API documentation, user guides, and more.
+You can browse through our [full documentation](https://docs.netsil.io), which provides API documentation, user guides, and more.
 
 ## Prerequisites 
 ### Resource Requirements
