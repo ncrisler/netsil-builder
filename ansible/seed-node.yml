@@ -9,11 +9,11 @@
     - /apps/build/vars/sources.yml
 
   vars:
-    netsil_build_branch: "{{ services_vars['netsil_build_branch'] }}"
-    netsil_version_number: "{{ services_vars['netsil_version_number'] }}"
-    netsil_commit_hash: "{{ services_vars['netsil_commit_hash'] }}"
-    netsil_build_number: "{{ services_vars['netsil_build_number'] }}"
-    netsil_version_tag: "{{ services_vars['netsil_version_tag'] }}"
+    netsil_build_branch: "{{ cluster_vars['netsil_build_branch'] }}"
+    netsil_version_number: "{{ cluster_vars['netsil_version_number'] }}"
+    netsil_commit_hash: "{{ cluster_vars['netsil_commit_hash'] }}"
+    netsil_build_number: "{{ cluster_vars['netsil_build_number'] }}"
+    netsil_version_tag: "{{ cluster_vars['netsil_version_tag'] }}"
     uri_namespace: "{{ cluster_vars['uri_namespace'] }}"
     is_private_registry: "{{ cluster_vars['is_private_registry'] }}"
     resource_role: "{{ cluster_vars['resource_role'] }}"
