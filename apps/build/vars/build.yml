@@ -28,7 +28,6 @@ images:
     ingestion-server:           1.6.2
     kafka:                      1.6.2
     license-manager:            1.6.2
-    logstash:                   1.6.2
     metadata:                   1.6.2
     # TODO: Should we move the "netsil" image out of here and make this a list of pro-only images?
     netsil:                     1.6.2
@@ -163,7 +162,6 @@ pushImages:
         - ingestion-server
         - kafka
         - license-manager
-        - logstash
         - metadata
         - notifications
         - redis

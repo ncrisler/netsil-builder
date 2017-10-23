@@ -35,8 +35,6 @@ services_vars:
   netsil_kafka_version: 1.6.2
   netsil_license_manager_tag: stable-1.6.2
   netsil_license_manager_version: 1.6.2
-  netsil_logstash_tag: stable-1.6.2
-  netsil_logstash_version: 1.6.2
   netsil_metadata_tag: stable-1.6.2
   netsil_metadata_version: 1.6.2
   netsil_netsil_tag: stable-1.6.2
