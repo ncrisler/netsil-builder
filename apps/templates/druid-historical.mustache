@@ -4,15 +4,8 @@
      "type": "DOCKER",
      "volumes": [
         {
-            "containerPath": "druid-historical-data",
-            "mode": "RW",
-            "persistent": {
-              "size": 100
-            }
-        },
-        {
             "containerPath": "/var/tmp/druid/indexCache",
-            "hostPath": "druid-historical-data",
+            "hostPath": "/var/tmp/druid/indexCache",
             "mode": "RW"
         },
         {
@@ -32,27 +25,30 @@
      }
  },
   "cpus": {{ cpus }},
-  "mem": {{ mem }},
+  "mem": {{ druid-historical.mem }},
   "instances": {{ instances }},
   "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
   ],
   "upgradeStrategy" : {
-      "minimumHealthCapacity" : 0,
+      "minimumHealthCapacity" : {{ druid-historical.min_health }},
       "maximumOverCapacity" : 0
   },
 {{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
     "DO_SCALE": "yes",
     "NODE_TYPE": "historical",
     "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
     "druid_service": "{{ druid-historical.druid_service }}",
     "druid_port": "{{ druid-historical.druid_port }}",
-    "druid_server_http_numThreads": "{{ druid-historical.druid_server_http_numThreads }}",
-    "druid_segmentCache_numLoadingThreads": "{{ druid-historical.druid_segmentCache_numLoadingThreads }}"
+    "druid_segmentCache_numLoadingThreads": "{{ druid-historical.druid_segmentCache_numLoadingThreads }}",
+    "COLLECT_DRUID_METRICS": "{{ druid-historical.collect_druid_metrics }}"
   }
 }

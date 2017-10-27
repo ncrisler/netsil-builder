@@ -45,6 +45,9 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
     "NODE_TYPE": "overlord",
     "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
@@ -58,6 +61,7 @@
     "druid_indexer_storage_type": "{{ druid-overlord.druid_indexer_storage_type }}",
     "druid_indexer_queue_startDelay": "{{ druid-overlord.druid_indexer_queue_startDelay }}",
     "druid_indexer_fork_property_druid_processing_numThreads": "{{ druid-overlord.druid_indexer_fork_property_druid_processing_numThreads }}",
-    "druid_indexer_fork_property_druid_computation_buffer_size": "{{ druid-overlord.druid_indexer_fork_property_druid_computation_buffer_size}}"
+    "druid_indexer_fork_property_druid_computation_buffer_size": "{{ druid-overlord.druid_indexer_fork_property_druid_computation_buffer_size}}",
+    "COLLECT_DRUID_METRICS": "{{ druid-overlord.collect_druid_metrics }}"
   }
 }

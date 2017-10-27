@@ -45,6 +45,9 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
     "PRODUCT_FLAVOR": "Pro",
     "LICENSE_MANAGER_API_ENDPOINT": "{{ license-manager.endpoint }}",
     "LICENSE_MANAGER_SERVICE_PORT": "{{ license-manager.port }}",

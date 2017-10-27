@@ -10,7 +10,8 @@
     "zk_port": "2181",
     "netsil_events_host": "ingestion-server.marathon.mesos",
     "netsil_events_port": "5000",
-    "sp_lb_host": "sp-load-balancer.marathon.mesos"
+    "sp_lb_host": "sp-load-balancer.marathon.mesos",
+    "min_health": 0
   },
 {% extends "common.json.j2" %}
 {% block common_params %}

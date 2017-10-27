@@ -55,6 +55,11 @@
 {{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
+  "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}"
+{{/is_ha}}
+  },
   "cpus": {{ cpus }},
   "mem": {{ mem }},
   "instances": {{ instances }},

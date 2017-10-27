@@ -3,7 +3,8 @@
     "app_id": "druid-broker",
     "druid_service": "druid-broker",
     "druid_port": "31004",
-    "druid_server_http_numThreads": "20"
+    "min_health": 0,
+    "collect_druid_metrics": "no"
   },
 {% extends "common.json.j2" %}
 {% block common_params %}

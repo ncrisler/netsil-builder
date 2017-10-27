@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/druid-coordinator:stable-1.6.2",
+         "image": "netsil/druid-coordinator:stable-1.8.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 31001, "hostPort": 31001, "protocol":"tcp"}
@@ -36,7 +36,8 @@
     "druid_service": "druid-coordinator",
     "druid_port": "31001",
     "druid_coordinator_load_timeout": "PT30S",
-    "druid_coordinator_period": "PT60S"
+    "druid_coordinator_period": "PT60S",
+    "COLLECT_DRUID_METRICS": "no"
   }
 }
 

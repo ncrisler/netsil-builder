@@ -4,27 +4,8 @@
      "type": "DOCKER",
      "volumes": [
         {
-          "containerPath": "realtime-segments",
-          "mode": "RW",
-          "persistent": {
-            "size": 5000
-          }
-        },
-        {
           "containerPath": "/opt/netsil/druid/realtime-segments",
-          "hostPath": "realtime-segments",
-          "mode": "RW"
-        },
-        {
-          "containerPath": "localStorage",
-          "mode": "RW",   
-          "persistent": {
-            "size": 20000
-          }
-        },
-        {
-          "containerPath": "/tmp/druid/localStorage",
-          "hostPath": "localStorage",
+          "hostPath": "/opt/netsil/druid/realtime-segments",
           "mode": "RW"
         },
         {
@@ -50,13 +31,16 @@
       ["hostname", "UNIQUE"]
   ],
   "upgradeStrategy" : {
-      "minimumHealthCapacity" : 0,
+      "minimumHealthCapacity" : {{ druid-realtime.min_health }},
       "maximumOverCapacity" : 0
   },
 {{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
     "DO_SCALE": "yes",
     "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
@@ -64,9 +48,8 @@
     "druid_service": "{{ druid-realtime.druid_service }}",
     "druid_port": "{{ druid-realtime.druid_port }}",
     "druid_realtime_specFile": "{{ druid-realtime.druid_realtime_specFile }}",
-    "druid_server_http_numThreads": "{{ druid-realtime.druid_server_http_numThreads }}"
-  },
-  "residency": {
-    "taskLostBehavior": "WAIT_FOREVER"
+    "COLLECT_DRUID_METRICS": "{{ druid-realtime.collect_druid_metrics }}",
+    "ENABLE_REMOTE_JMX": "{{ druid-realtime.enable_remote_jmx }}",
+    "JMX_PORT": "{{ druid-realtime.jmx_port }}"
   }
 }

@@ -7,11 +7,16 @@
         "hostPath": "/var/log/netsil",
         "containerPath": "/var/log/netsil",
         "mode": "RW"
+       },
+       {
+        "hostPath": "/opt/netsil/netsil-webserver-certs",
+        "containerPath": "/opt/netsil/frontend/netsil-webserver-certs",
+        "mode": "RW"
        }
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/frontend:stable-1.6.2",
+         "image": "netsil/frontend:stable-1.8.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 443, "hostPort": 443, "protocol":"tcp"},
@@ -33,9 +38,11 @@
   },
   "env": {
     "NETSIL_BUILD_BRANCH": "stable",
-    "NETSIL_VERSION_NUMBER": "1.6.2",
-    "NETSIL_COMMIT_HASH": "54df2ee70",
+    "NETSIL_VERSION_NUMBER": "1.8.1",
+    "NETSIL_COMMIT_HASH": "41c20fd",
     "NETSIL_BUILD_NUMBER": "0",
+    "NETSIL_FRONTEND_VERSION": "1.8.1",
+    "NETSIL_COLLECTORS_VERSION": "1.8.1",
     "DO_SCALE": "yes",
     "TIME_SERIES_ENDPOINT_HOST": "time-series-query-service.marathon.mesos",
     "TIME_SERIES_ENDPOINT_PORT": "9047",
@@ -59,13 +66,16 @@
     "NOTIFICATIONS_SERVICE_PORT": "9988",
     "REDIS_HOST": "redis.marathon.mesos",
     "REDIS_PORT": "6379",
+    "SUPERUSER_HOST": "superuser.marathon.mesos",
+    "SUPERUSER_PORT": "8443",
     "BACKUPS_HOST": "backups.marathon.mesos",
-    "BACKUPS_PORT": "9090",
+    "BACKUPS_PORT": "9093",
     "NODEJS_ENV": "NODE_ENV=production",
     "HTTPS_REMOTE_PORT": "443",
     "HTTP_LOCAL_PORT": "80",
     "WS_LOCAL_PORT": "81",
-    "PRODUCT_FLAVOR": "Pro"
+    "PRODUCT_FLAVOR": "Pro",
+    "LOAD_BALANCE_AOC_SP": "yes"
   }
 }
 

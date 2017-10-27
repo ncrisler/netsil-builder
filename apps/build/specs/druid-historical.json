@@ -4,15 +4,8 @@
      "type": "DOCKER",
      "volumes": [
         {
-            "containerPath": "druid-historical-data",
-            "mode": "RW",
-            "persistent": {
-              "size": 100
-            }
-        },
-        {
             "containerPath": "/var/tmp/druid/indexCache",
-            "hostPath": "druid-historical-data",
+            "hostPath": "/var/tmp/druid/indexCache",
             "mode": "RW"
         },
         {
@@ -24,7 +17,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/druid-historical:stable-1.6.2",
+         "image": "netsil/druid-historical:stable-1.8.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 31005, "hostPort": 31005, "protocol":"tcp"}
@@ -32,7 +25,7 @@
      }
  },
   "cpus": 1.0,
-  "mem": 16384,
+  "mem": 8192,
   "instances": 1,
   "acceptedResourceRoles": ["*"],
   "constraints": [
@@ -49,8 +42,8 @@
     "DEPLOY_ENV": "marathon",
     "druid_service": "druid-historical",
     "druid_port": "31005",
-    "druid_server_http_numThreads": "20",
-    "druid_segmentCache_numLoadingThreads": "8"
+    "druid_segmentCache_numLoadingThreads": "8",
+    "COLLECT_DRUID_METRICS": "no"
   }
 }
 

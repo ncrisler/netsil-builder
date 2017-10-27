@@ -8,6 +8,11 @@
         "hostPath": "/var/log/netsil",
         "containerPath": "/var/log/netsil",
         "mode": "RW"
+       },
+       {
+        "hostPath": "/opt/netsil/netsil-webserver-certs",
+        "containerPath": "/opt/netsil/frontend/netsil-webserver-certs",
+        "mode": "RW"
        }
 {{/production}}
      ],
@@ -30,17 +35,22 @@
       ["hostname", "UNIQUE"]
   ],
   "upgradeStrategy" : {
-      "minimumHealthCapacity" : 0,
+      "minimumHealthCapacity" : {{ frontend.min_health }},
       "maximumOverCapacity" : 0
   },
 {{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
     "NETSIL_BUILD_BRANCH": "{{ netsil_build_branch }}",
     "NETSIL_VERSION_NUMBER": "{{ netsil_version_number }}",
     "NETSIL_COMMIT_HASH": "{{ netsil_commit_hash }}",
     "NETSIL_BUILD_NUMBER": "{{ netsil_build_number }}",
+    "NETSIL_FRONTEND_VERSION": "{{ netsil_frontend_version }}",
+    "NETSIL_COLLECTORS_VERSION": "{{ netsil_collectors_version }}",
     "DO_SCALE": "yes",
     "TIME_SERIES_ENDPOINT_HOST": "{{ frontend.time_series_endpoint_host }}",
     "TIME_SERIES_ENDPOINT_PORT": "{{ frontend.time_series_endpoint_port }}",
@@ -64,12 +74,15 @@
     "NOTIFICATIONS_SERVICE_PORT": "{{ frontend.notifications_service_port}}",
     "REDIS_HOST": "{{ frontend.redis_host }}",
     "REDIS_PORT": "{{ frontend.redis_port }}",
+    "SUPERUSER_HOST": "{{ frontend.superuser_host }}",
+    "SUPERUSER_PORT": "{{ frontend.superuser_port }}",
     "BACKUPS_HOST": "{{ frontend.backups_host }}",
     "BACKUPS_PORT": "{{ frontend.backups_port }}",
     "NODEJS_ENV": "{{ frontend.nodejs_env }}",
     "HTTPS_REMOTE_PORT": "{{ frontend.https_remote_port }}",
     "HTTP_LOCAL_PORT": "{{ frontend.http_local_port }}",
     "WS_LOCAL_PORT": "{{ frontend.ws_local_port }}",
-    "PRODUCT_FLAVOR": "{{ product_flavor }}"
+    "PRODUCT_FLAVOR": "{{ product_flavor }}",
+    "LOAD_BALANCE_AOC_SP": "{{ frontend.load_balance_aoc_sp }}"
   }
 }

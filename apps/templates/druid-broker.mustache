@@ -26,18 +26,22 @@
       ["hostname", "UNIQUE"]
   ],
   "upgradeStrategy" : {
-      "minimumHealthCapacity" : 0,
+      "minimumHealthCapacity" : {{ druid-broker.min_health }},
       "maximumOverCapacity" : 0
   },
 {{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
+    "DO_SCALE": "yes",
     "NODE_TYPE": "broker",
     "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
     "druid_service": "{{ druid-broker.druid_service }}",
     "druid_port": "{{ druid-broker.druid_port }}",
-    "druid_server_http_numThreads": "{{ druid-broker.druid_server_http_numThreads }}"
+    "COLLECT_DRUID_METRICS": "{{ druid-broker.collect_druid_metrics }}"
   }
 }

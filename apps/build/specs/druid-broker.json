@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/druid-broker:stable-1.6.2",
+         "image": "netsil/druid-broker:stable-1.8.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 31004, "hostPort": 31004, "protocol":"tcp"}
@@ -30,12 +30,13 @@
       "maximumOverCapacity" : 0
   },
   "env": {
+    "DO_SCALE": "yes",
     "NODE_TYPE": "broker",
     "PRODUCT_FLAVOR": "Pro",
     "DEPLOY_ENV": "marathon",
     "druid_service": "druid-broker",
     "druid_port": "31004",
-    "druid_server_http_numThreads": "20"
+    "COLLECT_DRUID_METRICS": "no"
   }
 }
 

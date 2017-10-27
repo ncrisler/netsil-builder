@@ -20,7 +20,7 @@
  },
   "cpus": {{ cpus }},
   "mem": {{ mem }},
-  "instances": {{ instances }},
+  "instances": {{ druid-coordinator.instances }},
   "acceptedResourceRoles": ["{{ role }}"],
   "constraints": [
       ["hostname", "UNIQUE"]
@@ -33,12 +33,16 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
     "NODE_TYPE": "coordinator",
     "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
     "druid_service": "{{ druid-coordinator.druid_service }}",
     "druid_port": "{{ druid-coordinator.druid_port }}",
     "druid_coordinator_load_timeout": "{{ druid-coordinator.druid_coordinator_load_timeout }}",
-    "druid_coordinator_period": "{{ druid-coordinator.druid_coordinator_period }}"
+    "druid_coordinator_period": "{{ druid-coordinator.druid_coordinator_period }}",
+    "COLLECT_DRUID_METRICS": "{{ druid-coordinator.collect_druid_metrics }}"
   }
 }

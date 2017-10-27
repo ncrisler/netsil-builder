@@ -1,5 +1,5 @@
 {
- "id": "notifications",
+ "id": "superuser",
  "container": {
      "type": "DOCKER",
      "volumes": [
@@ -11,11 +11,10 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/notifications:stable-1.8.1",
+         "image": "netsil/superuser:stable-1.8.0",
          "forcePullImage": false,
          "portMappings": [
-             {"containerPort": 8882, "hostPort": 8882, "protocol":"tcp"},
-             {"containerPort": 9988, "hostPort": 9988, "protocol":"tcp"}
+             {"containerPort": 8443, "hostPort": 8443, "protocol":"tcp"}
          ]
      }
  },
@@ -31,21 +30,21 @@
       "maximumOverCapacity" : 0
   },
   "env": {
-    "NETSIL_NOTIFICATIONS_VERSION": "1.8.1",
-    "ALERTS_SERVICE_HOST": "alerts.marathon.mesos",
-    "ALERTS_SERVICE_PORT": "8881",
-    "NETSIL_EVENTS_HOST": "ingestion-server.marathon.mesos",
-    "NETSIL_EVENTS_PORT": "5000",
-    "TIME_SERIES_ENDPOINT_HOST": "time-series-query-service.marathon.mesos",
-    "TIME_SERIES_ENDPOINT_PORT": "9047",
+    "DO_SCALE": "yes",
+    "API_SERVER_HOST": "stream-processor.marathon.mesos",
+    "API_SERVER_PORT": "8888",
+    "BACKUPS_HOST": "backups.marathon.mesos",
+    "BACKUPS_PORT": "9093",
     "USER_PERSISTENCE_HOST": "user-persistence.marathon.mesos",
     "USER_PERSISTENCE_PORT": "8891",
+    "LICENSE_MANAGER_SERVICE_HOST": "license-manager.marathon.mesos",
+    "LICENSE_MANAGER_SERVICE_PORT": "9009",
     "REDIS_HOST": "redis.marathon.mesos",
     "REDIS_PORT": "6379",
     "NODEJS_ENV": "NODE_ENV=production",
-    "TEST_API_PORT": "9988",
-    "ZOOKEEPER_HOST": "leader.mesos",
-    "ZOOKEEPER_PORT": "2181"
+    "NOTIFICATIONS_SERVICE_HOST": "notifications.marathon.mesos",
+    "NOTIFICATIONS_SERVICE_PORT": "9988",
+    "PRODUCT_FLAVOR": "Pro"
   }
 }
 

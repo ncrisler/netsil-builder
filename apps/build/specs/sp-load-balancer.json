@@ -16,7 +16,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/sp-load-balancer:stable-1.6.2",
+         "image": "netsil/sp-load-balancer:stable-1.8.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 5005, "hostPort": 5005, "protocol":"tcp"}
@@ -28,17 +28,17 @@
   "mem": 16384,
   "instances": 1,
   "upgradeStrategy" : {
-      "minimumHealthCapacity" : 0,
+      "minimumHealthCapacity" : 0.5,
       "maximumOverCapacity" : 0
   },
   "env": {
+    "LOAD_BALANCE_AOC_SP": "yes",
+    "DO_SCALE": "yes",
     "PRODUCT_FLAVOR": "Pro",
     "DRUID_HOST": "druid-broker.marathon.mesos",
     "DRUID_PORT": "31004",
-    "SQL_HOST": "stream-processor.marathon.mesos",
-    "SQL_PORT": "8888",
-    "USER_PERSISTENCE_SERVER_HOST": "",
-    "USER_PERSISTENCE_SERVER_PORT": "",
+    "USER_PERSISTENCE_SERVER_HOST": "user-persistence.marathon.mesos",
+    "USER_PERSISTENCE_SERVER_PORT": "8891",
     "BUILD_ENV": "production",
     "PYTHON_SERVICE": "sp_load_balancer_service"
   }

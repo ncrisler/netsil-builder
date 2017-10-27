@@ -1,0 +1,594 @@
+{
+  "id": "/marathon-lb",
+  "cmd": null,
+  "cpus": 2,
+  "mem": 50000,
+  "disk": 0,
+  "instances": 3,
+  "args": [
+    "sse",
+    "-m",
+    "http://marathon.mesos:8080",
+    "--health-check",
+    "--dont-bind-http-https",
+    "--haproxy-map",
+    "--max-reload-retries",
+    "10",
+    "--reload-interval",
+    "10",
+    "--group",
+    "internal"
+  ],
+  "env": {
+    "HAPROXY_GLOBAL_DEFAULT_OPTIONS": "redispatch,http-server-close,dontlognull",
+    "HAPROXY_SSL_CERT": "",
+    "HAPROXY_SYSCTL_PARAMS": "net.ipv4.tcp_tw_reuse=1 net.ipv4.tcp_fin_timeout=30 net.ipv4.tcp_max_syn_backlog=10240 net.ipv4.tcp_max_tw_buckets=400000 net.ipv4.tcp_max_orphans=60000 net.core.somaxconn=10000"
+  },
+  "container": {
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "mesosphere/marathon-lb:v1.11.0",
+      "network": "HOST",
+      "portMappings": [],
+      "privileged": true,
+      "parameters": [
+        {
+          "key": "label",
+          "value": "created_by=marathon"
+        },
+        {
+          "key": "label",
+          "value": "dcos_pkg_name=marathon-lb"
+        }
+      ],
+      "forcePullImage": false
+    }
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 60,
+      "intervalSeconds": 5,
+      "timeoutSeconds": 2,
+      "maxConsecutiveFailures": 2,
+      "portIndex": 0,
+      "path": "/_haproxy_health_check",
+      "protocol": "HTTP",
+      "ignoreHttp1xx": false
+    }
+  ],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0.2
+  },
+  "labels": {
+    "DCOS_PACKAGE_RELEASE": "27",
+    "DCOS_PACKAGE_SOURCE": "https://universe.mesosphere.com/repo",
+    "DCOS_PACKAGE_METADATA": "eyJwYWNrYWdpbmdWZXJzaW9uIjoiMy4wIiwibmFtZSI6Im1hcmF0aG9uLWxiIiwidmVyc2lvbiI6IjEuMTEuMCIsIm1haW50YWluZXIiOiJzdXBwb3J0QG1lc29zcGhlcmUuaW8iLCJkZXNjcmlwdGlvbiI6IkhBUHJveHkgY29uZmlndXJlZCB1c2luZyBNYXJhdGhvbiBzdGF0ZSIsInRhZ3MiOlsibG9hZGJhbGFuY2VyIiwic2VydmljZS1kaXNjb3ZlcnkiLCJyZXZlcnNlLXByb3h5IiwicHJveHkiLCJoYXByb3h5Il0sInNlbGVjdGVkIjpmYWxzZSwic2NtIjoiaHR0cHM6Ly9naXRodWIuY29tL21lc29zcGhlcmUvbWFyYXRob24tbGIiLCJmcmFtZXdvcmsiOmZhbHNlLCJwcmVJbnN0YWxsTm90ZXMiOiJXZSByZWNvbW1lbmQgYXQgbGVhc3QgMiBDUFVzIGFuZCAxR2lCIG9mIFJBTSBmb3IgZWFjaCBNYXJhdGhvbi1MQiBpbnN0YW5jZS4gXG5cbipOT1RFKjogRm9yIGFkZGl0aW9uYWwgYGBgRW50ZXJwcmlzZSBFZGl0aW9uYGBgIERDL09TIGluc3RydWN0aW9ucywgc2VlIGh0dHBzOi8vZG9jcy5tZXNvc3BoZXJlLmNvbS9hZG1pbmlzdHJhdGlvbi9pZC1hbmQtYWNjZXNzLW1ndC9zZXJ2aWNlLWF1dGgvbWxiLWF1dGgvIiwicG9zdEluc3RhbGxOb3RlcyI6Ik1hcmF0aG9uLWxiIERDL09TIFNlcnZpY2UgaGFzIGJlZW4gc3VjY2Vzc2Z1bGx5IGluc3RhbGxlZCFcblNlZSBodHRwczovL2dpdGh1Yi5jb20vbWVzb3NwaGVyZS9tYXJhdGhvbi1sYiBmb3IgZG9jdW1lbnRhdGlvbi4iLCJwb3N0VW5pbnN0YWxsTm90ZXMiOiJNYXJhdGhvbi1sYiBEQy9PUyBTZXJ2aWNlIGhhcyBiZWVuIHVuaW5zdGFsbGVkIGFuZCB3aWxsIG5vIGxvbmdlciBydW4uIiwibGljZW5zZXMiOlt7Im5hbWUiOiJBcGFjaGUgTGljZW5zZSBWZXJzaW9uIDIuMCIsInVybCI6Imh0dHBzOi8vZ2l0aHViLmNvbS9tZXNvc3BoZXJlL21hcmF0aG9uL2Jsb2IvbWFzdGVyL0xJQ0VOU0UifSx7Im5hbWUiOiJHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSB2ZXJzaW9uIDIiLCJ1cmwiOiJodHRwOi8vd3d3LmhhcHJveHkub3JnL2Rvd25sb2FkLzEuNi9kb2MvTElDRU5TRSJ9XSwiaW1hZ2VzIjp7Imljb24tc21hbGwiOiJodHRwczovL2Rvd25sb2Fkcy5tZXNvc3BoZXJlLmNvbS91bml2ZXJzZS9hc3NldHMvaWNvbi1zZXJ2aWNlLW1hcmF0aG9ubGItc21hbGwucG5nIiwiaWNvbi1tZWRpdW0iOiJodHRwczovL2Rvd25sb2Fkcy5tZXNvc3BoZXJlLmNvbS91bml2ZXJzZS9hc3NldHMvaWNvbi1zZXJ2aWNlLW1hcmF0aG9ubGItbWVkaXVtLnBuZyIsImljb24tbGFyZ2UiOiJodHRwczovL2Rvd25sb2Fkcy5tZXNvc3BoZXJlLmNvbS91bml2ZXJzZS9hc3NldHMvaWNvbi1zZXJ2aWNlLW1hcmF0aG9ubGItbGFyZ2UucG5nIn19",
+    "DCOS_PACKAGE_REGISTRY_VERSION": "3.0",
+    "DCOS_PACKAGE_VERSION": "1.11.0",
+    "DCOS_PACKAGE_NAME": "marathon-lb",
+    "DCOS_PACKAGE_IS_FRAMEWORK": "false"
+  },
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "portDefinitions": [
+    {
+      "port": 9090,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 9091,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10000,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10001,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10002,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10003,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10004,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10005,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10006,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10007,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10008,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10009,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10010,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10011,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10012,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10013,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10014,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10015,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10016,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10017,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10018,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10019,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10020,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10021,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10022,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10023,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10024,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10025,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10026,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10027,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10028,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10029,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10030,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10031,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10032,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10033,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10034,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10035,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10036,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10037,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10038,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10039,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10040,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10041,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10042,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10043,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10044,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10045,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10046,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10047,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10048,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10049,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10050,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10051,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10052,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10053,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10054,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10055,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10056,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10057,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10058,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10059,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10060,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10061,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10062,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10063,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10064,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10065,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10066,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10067,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10068,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10069,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10070,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10071,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10072,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10073,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10074,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10075,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10076,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10077,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10078,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10079,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10080,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10081,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10082,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10083,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10084,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10085,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10086,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10087,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10088,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10089,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10090,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10091,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10092,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10093,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10094,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10095,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10096,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10097,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10098,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10099,
+      "protocol": "tcp",
+      "labels": {}
+    },
+    {
+      "port": 10100,
+      "protocol": "tcp",
+      "labels": {}
+    }
+  ],
+  "requirePorts": true
+}

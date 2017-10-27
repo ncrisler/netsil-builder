@@ -6,10 +6,9 @@
     "druid_port": "31004",
     "sql_host": "stream-processor.marathon.mesos",
     "sql_port": "8888",
-    "user_persistence_server_host": "user-persistence.marathon.mesos",
-    "user_persistence_server_port": "8891",
     "elasticsearch_server": "elasticsearch.marathon.mesos",
-    "elasticsearch_port": "9200"
+    "elasticsearch_port": "9200",
+    "min_health": 0
   },
 {% extends "common.json.j2" %}
 {% block common_params %}
