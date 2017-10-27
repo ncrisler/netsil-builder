@@ -35,6 +35,10 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
+    "NETSIL_USER_PERSISTENCE_VERSION": "{{ netsil_user_persistence_version }}",
     "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "REDIS_HOST": "{{ user-persistence.redis_host }}",
     "REDIS_PORT": "{{ user-persistence.redis_port }}",

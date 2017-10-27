@@ -46,6 +46,11 @@
 {{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
+  "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}"
+{{/is_ha}}
+  },
   "instances": {{ instances }},
   "residency": {
     "taskLostBehavior": "WAIT_FOREVER"

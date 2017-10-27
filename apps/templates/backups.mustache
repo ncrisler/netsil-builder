@@ -34,6 +34,9 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
     "NETSIL_BUILD_BRANCH": "{{ netsil_build_branch }}",
     "NETSIL_VERSION_NUMBER": "{{ netsil_version_number }}",
     "NETSIL_COMMIT_HASH": "{{ netsil_commit_hash }}",

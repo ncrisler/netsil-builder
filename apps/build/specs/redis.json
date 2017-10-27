@@ -23,7 +23,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/redis:stable-1.6.2",
+         "image": "netsil/redis:stable-1.7.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 6379, "hostPort": 6379, "protocol":"tcp"}
@@ -37,6 +37,8 @@
   "upgradeStrategy" : {
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
+  },
+  "env": {
   },
   "cpus": 1.0,
   "mem": 16384,

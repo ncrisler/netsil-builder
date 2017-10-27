@@ -23,7 +23,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/elasticsearch:stable-1.6.2",
+         "image": "netsil/elasticsearch:stable-1.7.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 9200, "hostPort": 9200, "protocol":"tcp"},
@@ -40,6 +40,8 @@
   "upgradeStrategy" : {
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
+  },
+  "env": {
   },
   "instances": 1,
   "residency": {

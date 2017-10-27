@@ -36,6 +36,10 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
+    "NETSIL_NOTIFICATIONS_VERSION": "{{ netsil_notifications_version }}",
     "ALERTS_SERVICE_HOST": "{{ notifications.alerts_service_host }}",
     "ALERTS_SERVICE_PORT": "{{ notifications.alerts_service_port }}",
     "NETSIL_EVENTS_HOST": "{{ notifications.netsil_events_host }}",
@@ -47,6 +51,8 @@
     "REDIS_HOST": "{{ notifications.redis_host }}",
     "REDIS_PORT": "{{ notifications.redis_port }}",
     "NODEJS_ENV": "{{ notifications.nodejs_env }}",
-    "TEST_API_PORT": "{{ notifications.test_api_port }}"
+    "TEST_API_PORT": "{{ notifications.test_api_port }}",
+    "ZOOKEEPER_HOST": "{{ notifications.zookeeper_host }}",
+    "ZOOKEEPER_PORT": "{{ notifications.zookeeper_port }}"
   }
 }

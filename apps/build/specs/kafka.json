@@ -23,10 +23,10 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/kafka:stable-1.6.2",
+         "image": "netsil/kafka:stable-1.7.1",
          "forcePullImage": false,
          "portMappings": [
-             {"containerPort": 9092, "hostPort": 9092, "protocol":"tcp"}
+            {"containerPort": 9092, "hostPort": 9092, "protocol":"tcp"}
          ]
      }
  },
@@ -52,10 +52,8 @@
     "KAFKA_LOG_RETENTION_HOURS": "2",
     "KAFKA_LOG_DIRS": "/opt/netsil/kafka/kafka-log-dir",
     "KAFKA_LOG_SEGMENT_BYTES": "104857600",
-    "KAFKA_NUM_PARTITIONS": "4"
-  },
-  "residency": {
-    "taskLostBehavior": "WAIT_FOREVER"
+    "KAFKA_NUM_PARTITIONS": "4",
+    "KAFKA_DEFAULT_REPLICATION_FACTOR": "1"
   }
 }
 

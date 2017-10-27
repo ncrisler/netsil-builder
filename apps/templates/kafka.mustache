@@ -3,6 +3,14 @@
  "container": {
      "type": "DOCKER",
      "volumes": [
+{{#is_ha}}
+       {
+         "containerPath": "/opt/netsil/kafka/kafka-log-dir",
+         "hostPath": "/opt/netsil/kafka/kafka-log-dir",
+         "mode": "RW"
+       },
+{{/is_ha}}
+{{^is_ha}}
        {
          "containerPath": "kafka-log-dir",
          "mode": "RW",
@@ -15,6 +23,7 @@
          "hostPath": "kafka-log-dir",
          "mode": "RW"
        },
+{{/is_ha}}
        {
          "hostPath": "/var/log/netsil",
          "containerPath": "/var/log/netsil",
@@ -26,7 +35,10 @@
          "image": "{{ uri_namespace }}/kafka:{{ netsil_service_tag }}",
          "forcePullImage": false,
          "portMappings": [
-             {"containerPort": {{ kafka.port }}, "hostPort": {{ kafka.port }}, "protocol":"tcp"}
+{{#is_ha}}
+            {"containerPort": {{ kafka.jmx_port }}, "hostPort": {{ kafka.jmx_port }}, "protocol":"tcp"},
+{{/is_ha}}
+            {"containerPort": {{ kafka.port }}, "hostPort": {{ kafka.port }}, "protocol":"tcp"}
          ]
      }
  },
@@ -38,13 +50,17 @@
       ["hostname", "UNIQUE"]
   ],
   "upgradeStrategy" : {
-      "minimumHealthCapacity" : 0,
+      "minimumHealthCapacity" : {{ kafka.min_health }},
       "maximumOverCapacity" : 0
   },
 {{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+    "JMX_OPTS": "{{ kafka.jmx_opts }}",
+{{/is_ha}}
     "DO_SCALE": "yes",
     "PRODUCT_FLAVOR": "{{ product_flavor }}",
     "DEPLOY_ENV": "marathon",
@@ -55,9 +71,7 @@
     "KAFKA_LOG_RETENTION_HOURS": "{{ kafka.log_retention_hours }}",
     "KAFKA_LOG_DIRS": "{{ kafka.log_dirs }}",
     "KAFKA_LOG_SEGMENT_BYTES": "{{ kafka.log_segment_bytes }}",
-    "KAFKA_NUM_PARTITIONS": "{{ kafka.num_partitions }}"
-  },
-  "residency": {
-    "taskLostBehavior": "WAIT_FOREVER"
+    "KAFKA_NUM_PARTITIONS": "{{ kafka.num_partitions }}",
+    "KAFKA_DEFAULT_REPLICATION_FACTOR": "{{ kafka.default_replication_factor }}"
   }
 }

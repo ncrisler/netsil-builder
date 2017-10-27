@@ -1,0 +1,57 @@
+{
+ "id": "{{ superuser.app_id }}",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [
+{{#production}}
+       {
+        "hostPath": "/var/log/netsil",
+        "containerPath": "/var/log/netsil",
+        "mode": "RW"
+       }
+{{/production}}
+     ],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "{{ uri_namespace }}/superuser:{{ netsil_service_tag }}",
+         "forcePullImage": false,
+         "portMappings": [
+             {"containerPort": {{ superuser.port }}, "hostPort": {{ superuser.port }}, "protocol":"tcp"}
+         ]
+     }
+ },
+  "cpus": {{ cpus }},
+  "mem": {{ mem }},
+  "instances": {{ instances }},
+  "acceptedResourceRoles": ["{{ role }}"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "upgradeStrategy" : {
+      "minimumHealthCapacity" : 0,
+      "maximumOverCapacity" : 0
+  },
+{{#private}}
+  "uris": ["file:///etc/docker.tar.gz"],
+{{/private}}
+  "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
+    "DO_SCALE": "yes",
+    "API_SERVER_HOST": "{{ superuser.api_server_host }}",
+    "API_SERVER_PORT": "{{ superuser.api_server_port }}",
+    "BACKUPS_HOST": "{{ superuser.backups_host }}",
+    "BACKUPS_PORT": "{{ superuser.backups_port }}",
+    "USER_PERSISTENCE_HOST": "{{ superuser.user_persistence_host }}",
+    "USER_PERSISTENCE_PORT": "{{ superuser.user_persistence_port }}",
+    "LICENSE_MANAGER_SERVICE_HOST": "{{ superuser.license_manager_service_host }}",
+    "LICENSE_MANAGER_SERVICE_PORT": "{{ superuser.license_manager_service_port }}",
+    "REDIS_HOST": "{{ superuser.redis_host }}",
+    "REDIS_PORT": "{{ superuser.redis_port }}",
+    "NODEJS_ENV": "{{ superuser.nodejs_env }}",
+    "NOTIFICATIONS_SERVICE_HOST": "{{ superuser.notifications_service_host }}",
+    "NOTIFICATIONS_SERVICE_PORT": "{{ superuser.notifications_service_port }}",
+    "PRODUCT_FLAVOR": "Pro"
+  }
+}

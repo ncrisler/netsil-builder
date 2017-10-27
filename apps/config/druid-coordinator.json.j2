@@ -4,7 +4,9 @@
     "druid_service": "druid-coordinator",
     "druid_port": "31001",
     "druid_coordinator_load_timeout": "PT30S",
-    "druid_coordinator_period": "PT60S"
+    "druid_coordinator_period": "PT60S",
+    "instances": 1,
+    "collect_druid_metrics": "no"
   },
 {% extends "common.json.j2" %}
 {% block common_params %}

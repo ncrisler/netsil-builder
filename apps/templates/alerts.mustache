@@ -37,6 +37,10 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
+    "NETSIL_ALERTS_VERSION": "{{ netsil_alerts_version }}",
     "NODEJS_ENV": "{{ alerts.nodejs_env }}",
     "USER_DB_HOST": "{{ alerts.user_db_host }}",
     "USER_DB_PORT": "{{ alerts.user_db_port }}",

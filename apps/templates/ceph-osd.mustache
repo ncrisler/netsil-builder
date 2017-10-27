@@ -57,13 +57,16 @@
       ["hostname", "UNIQUE"]
   ],
   "upgradeStrategy" : {
-      "minimumHealthCapacity" : 0,
+      "minimumHealthCapacity" : {{ ceph-osd.min_health }},
       "maximumOverCapacity" : 0
   },
 {{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
     "DO_SCALE": "yes",
     "MON_IP": "{{ ceph-osd.mon_ip }}",
     "MON_PORT": "{{ ceph-osd.mon_port }}",

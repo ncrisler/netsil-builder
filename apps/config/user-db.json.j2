@@ -1,7 +1,9 @@
 {
   "user-db": {
     "app_id": "user-db",
-    "port": 3306
+    "port": 3306,
+    "do_scale": "no",
+    "min_health": 0
   },
 {% extends "common.json.j2" %}
 {% block common_params %}

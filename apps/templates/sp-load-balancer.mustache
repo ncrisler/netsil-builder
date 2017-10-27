@@ -28,20 +28,23 @@
   "mem": {{ mem }},
   "instances": {{ instances }},
   "upgradeStrategy" : {
-      "minimumHealthCapacity" : 0,
+      "minimumHealthCapacity" : {{ sp-load-balancer.min_health }},
       "maximumOverCapacity" : 0
   },
 {{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
+    "LOAD_BALANCE_AOC_SP": "{{ sp-load-balancer.load_balance_aoc_sp }}",
+    "DO_SCALE": "{{ sp-load-balancer.do_scale }}",
     "PRODUCT_FLAVOR": "Pro",
     "DRUID_HOST": "{{ sp-load-balancer.druid_host }}",
     "DRUID_PORT": "{{ sp-load-balancer.druid_port }}",
-    "SQL_HOST": "{{ sp-load-balancer.sql_host }}",
-    "SQL_PORT": "{{ sp-load-balancer.sql_port }}",
-    "USER_PERSISTENCE_SERVER_HOST": "{{ sp-load-balancer.user_persistence_server_host }}",
-    "USER_PERSISTENCE_SERVER_PORT": "{{ sp-load-balancer.user_persistence_server_port }}",
+    "USER_PERSISTENCE_SERVER_HOST": "{{ user_persistence_server_host }}",
+    "USER_PERSISTENCE_SERVER_PORT": "{{ user_persistence_server_port }}",
   {{#development}}
     "BUILD_ENV": "development",
   {{/development}}

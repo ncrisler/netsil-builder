@@ -5,7 +5,7 @@
     ],
     "docker": {
       "network": "BRIDGE",
-      "image": "netsil/druid-overlord:stable-1.6.2",
+      "image": "netsil/druid-overlord:stable-1.8.1",
       "forcePullImage": false,
       "portMappings": [
         {"containerPort": 31006, "hostPort": 31006},
@@ -55,7 +55,8 @@
     "druid_indexer_storage_type": "metadata",
     "druid_indexer_queue_startDelay": "PT30S",
     "druid_indexer_fork_property_druid_processing_numThreads": "4",
-    "druid_indexer_fork_property_druid_computation_buffer_size": "100000000"
+    "druid_indexer_fork_property_druid_computation_buffer_size": "100000000",
+    "COLLECT_DRUID_METRICS": "no"
   }
 }
 

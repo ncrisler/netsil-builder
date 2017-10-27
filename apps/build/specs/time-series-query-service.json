@@ -4,11 +4,6 @@
      "type": "DOCKER",
      "volumes": [
         {
-          "hostPath": "/var/log/netsil",
-          "containerPath": "/var/log/netsil",
-          "mode": "RW"
-        },
-        {
           "hostPath": "/var/tmp",
           "containerPath": "/var/tmp",
           "mode": "RW"
@@ -16,11 +11,13 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/time-series-query-service:stable-1.6.2",
+         "image": "netsil/time-series-query-service:stable-1.8.1",
          "forcePullImage": false,
-         "portMappings": [
-             {"containerPort": 9047, "hostPort": 9047, "protocol":"tcp"}
-         ]
+         "portMappings": [{
+             "containerPort": 9047,
+             "hostPort": 9047,
+             "protocol":"tcp"
+         }]
      }
  },
   "cmd": ". /root/netsil-proxy/exports.sh && /root/netsil-proxy/startup.sh && supervisord -c /opt/netsil/netsil-proxy/tools/netsil-proxy/supervisor/netsil-proxy-supervisor-include.conf",
@@ -28,9 +25,7 @@
   "mem": 16384,
   "instances": 1,
   "acceptedResourceRoles": ["*"],
-  "constraints": [
-      ["hostname", "UNIQUE"]
-  ],
+  "constraints": [],
   "upgradeStrategy" : {
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0

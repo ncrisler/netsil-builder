@@ -64,6 +64,9 @@
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
   "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
     "MON_IP": "{{ ceph-rgw.mon_ip }}",
     "MON_PORT": "{{ ceph-rgw.mon_port }}",
     "CEPH_CONF_DIR": "{{ ceph-rgw.ceph_conf_dir }}",

@@ -3,6 +3,7 @@
  "container": {
      "type": "DOCKER",
      "volumes": [
+{{^is_ha}}
        {
          "containerPath": "mysqldata",
          "mode": "RW",
@@ -15,6 +16,7 @@
          "hostPath": "mysqldata",
          "mode": "RW"
        },
+{{/is_ha}}
        {
         "hostPath": "/var/log/netsil",
         "containerPath": "/var/log/netsil",
@@ -38,16 +40,22 @@
       ["hostname", "UNIQUE"]
   ],
   "upgradeStrategy" : {
-      "minimumHealthCapacity" : 0,
+      "minimumHealthCapacity" : {{ user-db.min_health }},
       "maximumOverCapacity" : 0
   },
 {{#private}}
   "uris": ["file:///etc/docker.tar.gz"],
 {{/private}}
-  "env": {
-    "MYSQL_ALLOW_EMPTY_PASSWORD": "yes"
-  },
+{{^is_ha}}
   "residency": {
     "taskLostBehavior": "WAIT_FOREVER"
+  },
+{{/is_ha}}
+  "env": {
+{{#is_ha}}
+    "IS_HA": "{{ is_ha }}",
+{{/is_ha}}
+    "MYSQL_ALLOW_EMPTY_PASSWORD": "yes",
+    "DO_SCALE": "{{ user-db.do_scale }}"
   }
 }

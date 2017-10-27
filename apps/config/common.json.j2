@@ -6,6 +6,11 @@
     "netsil_build_number": "{{ netsil_build_number }}",
     "netsil_version_tag": "{{ netsil_version_tag }}",
     "netsil_service_tag": "{{ netsil_service_tag }}",
+    "netsil_alerts_version": "{{ services_vars['netsil_alerts_version'] }}",
+    "netsil_user_persistence_version": "{{ services_vars['netsil_user_persistence_version'] }}",
+    "netsil_notifications_version": "{{ services_vars['netsil_notifications_version'] }}",
+    "netsil_frontend_version": "{{ services_vars['netsil_frontend_version'] }}",
+    "netsil_collectors_version": "{{ services_vars['netsil_collectors_version'] }}",
     "private": {{ is_private_registry }},
     "role": "{{ resource_role }}",
     "forcePullImage": {{ force_pull_image }},
@@ -13,6 +18,7 @@
     "cpus": 1.0,
     "mem": 16384,
     "product_flavor": "Pro",
+{# Do NOT add the is_ha variable here, otherwise the marathon templates will be incorrectly templated #}
     "instances": 1,
     "user_persistence_server_host": "user-persistence.marathon.mesos",
     "user_persistence_server_port": "8891"

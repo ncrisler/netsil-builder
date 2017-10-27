@@ -23,7 +23,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/user-db:stable-1.6.2",
+         "image": "netsil/user-db:stable-1.7.1",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 3306, "hostPort": 3306, "protocol":"tcp"}
@@ -41,11 +41,12 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
-  "env": {
-    "MYSQL_ALLOW_EMPTY_PASSWORD": "yes"
-  },
   "residency": {
     "taskLostBehavior": "WAIT_FOREVER"
+  },
+  "env": {
+    "MYSQL_ALLOW_EMPTY_PASSWORD": "yes",
+    "DO_SCALE": "no"
   }
 }
 

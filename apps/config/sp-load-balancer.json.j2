@@ -4,8 +4,9 @@
     "port": 5005,
     "druid_host": "druid-broker.marathon.mesos",
     "druid_port": "31004",
-    "sql_host": "stream-processor.marathon.mesos",
-    "sql_port": "8888"
+    "load_balance_aoc_sp": "yes",
+    "do_scale": "yes",
+    "min_health": "0.5"
   },
 {% extends "common.json.j2" %}
 {% block common_params %}
