@@ -19,6 +19,7 @@ Parameters:
 }
 
 function deploy_aoc() {
+    echo "deploying aoc"
     builder_image=netsil/netsil-builder
     if [ "${OFFLINE}" = "No" ]; then
         sudo docker build -t ${builder_image} ${DIR}
@@ -53,7 +54,7 @@ function abs_path() {
 function check_docker() {
     (command -v docker || docker) > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
-        echo -n "Unable to locate 'docker' in your path. "
+        echo "Unable to locate 'docker' in your path."
         echo "Please make sure Docker is installed."
         exit 1
     fi 
@@ -211,6 +212,7 @@ fi
 ### Perform prerequisite check for Docker ###
 #############################################
 check_docker
+echo "Docker check done"
 
 ##########################################
 ### Local deployment pre-configuration ###
