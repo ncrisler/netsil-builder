@@ -12,5 +12,6 @@ docker run -e "INVENTORY=[agents]\nlocalhost ansible_connection=local" \
        -e "NETSIL_VERSION_NUMBER=${NETSIL_VERSION_NUMBER}" \
        -e "NETSIL_BUILD_NUMBER=${NETSIL_BUILD_NUMBER}" \
        -e "NETSIL_COMMIT_HASH=${NETSIL_COMMIT_HASH}" \
+       -e LOCAL_USER_ID=`id -u $USER` \
        -v ${APPS_DIR}:/apps \
-       -t ${URI_NAMESPACE}/netsil-builder /opt/builder/start-template.sh
+       -t ${URI_NAMESPACE}/netsil-builder /opt/builder/scripts/start-template.sh

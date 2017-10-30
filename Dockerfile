@@ -1,5 +1,5 @@
 FROM ubuntu:xenial
-MAINTAINER Ethan Devenport <ethand@stackpointcloud.com>
+MAINTAINER Kevin Lu <kevin@netsil.com>
 
 # Set the working directory.
 WORKDIR /opt/builder
@@ -11,26 +11,30 @@ RUN apt-get update && \
       curl \
       python-pip \
       python-setuptools \
-      qemu \
-      qemu-utils \
-      software-properties-common \
+      python-dev \
       ssh-client \
       sudo \
       unzip \
-      vim && \
-    apt-add-repository -y ppa:ansible/ansible && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends ansible
+      build-essential \
+      vim
 
 ## Start: TODO: We have these two lines because we run ansible locally for the templating tasks...we should do away with that and run it remotely
 RUN pip install --upgrade pip wheel && \
     pip install \
       apache-libcloud==1.5.0 \
       boto \
-      pystache && \
+      pystache \
+      ansible==2.3 && \
     mkdir -p /opt/bin && \
     ln -s /usr/bin/python /opt/bin/python
 ### End
+
+RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
+RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)" \
+    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture).asc" \
+    && gpg --verify /usr/local/bin/gosu.asc \
+    && rm /usr/local/bin/gosu.asc \
+    && chmod +x /usr/local/bin/gosu
 
 # Download and extract the Packer binary (0.12.2).
 ENV PACKER_VERSION=0.12.2
@@ -42,5 +46,5 @@ RUN curl -sOL https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${P
 COPY . /opt/builder/
 
 # Setup environment and launch Packer.
-ENTRYPOINT ["/bin/sh", "-c"]
+ENTRYPOINT ["/opt/builder/scripts/entrypoint.sh"]
 CMD [ "/opt/builder/scripts/start.sh" ]
