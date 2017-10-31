@@ -25,7 +25,6 @@ images:
     druid-historical:           1.8.1
     druid-overlord:             1.8.1
     druid-realtime:             1.8.1
-    elasticsearch:              1.7.1
     frontend:                   1.8.1
     ingestion-server:           1.8.0
     kafka:                      1.7.1
@@ -158,7 +157,6 @@ pushImages:
         - druid-historical
         - druid-overlord
         - druid-realtime
-        - elasticsearch
         - frontend
         - superuser
         - ingestion-server
@@ -181,7 +179,6 @@ haManualUpgrade:
     - druid-historical
     - druid-overlord
     - druid-realtime
-    - elasticsearch
     - kafka
     - redis
     - user-db

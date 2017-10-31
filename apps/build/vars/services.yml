@@ -22,8 +22,6 @@ services_vars:
   netsil_druid_overlord_version: 1.8.1
   netsil_druid_realtime_tag: stable-1.8.1
   netsil_druid_realtime_version: 1.8.1
-  netsil_elasticsearch_tag: stable-1.7.1
-  netsil_elasticsearch_version: 1.7.1
   netsil_frontend_tag: stable-1.8.1
   netsil_frontend_version: 1.8.1
   netsil_ingestion_server_tag: stable-1.8.0
