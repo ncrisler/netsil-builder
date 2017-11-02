@@ -37,6 +37,8 @@
     "druid_port": "31001",
     "druid_coordinator_load_timeout": "PT30S",
     "druid_coordinator_period": "PT60S",
+    "TIME_SERIES_ENDPOINT_HOST": "time-series-query-service.marathon.mesos",
+    "TIME_SERIES_ENDPOINT_PORT": "9047",
     "COLLECT_DRUID_METRICS": "no"
   }
 }
