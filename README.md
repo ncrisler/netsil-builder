@@ -41,6 +41,7 @@ If deploying on a CentOS machine, ensure that:
 * The `jq` program is installed. You can enable the EPEL repository and install via `yum install jq`.
 * The `firewalld` service is stopped and disabled: `systemctl stop firewalld && systemctl disable firewalld`.
 * Please run the command `setenforce 0` as well for permissive selinux mode
+* Enable root ssh login (just during installation, can disable afterwards)
 
 ## Quickstart
 To get started quickly, SSH into the machine where you're installing the AOC.
