@@ -86,7 +86,7 @@ function check_ssh_auth() {
 ###############################################################################
 function setup_ssh_auth() {
     if [ ! -d "~/.ssh" ]; then
-        mkdir ~/.ssh && chmod 700 ~/.ssh
+        mkdir -p ~/.ssh && chmod 700 ~/.ssh
     fi
 
     ssh-keygen -q -b 2048 -t rsa -N '' -f $DIR/netsil_rsa
