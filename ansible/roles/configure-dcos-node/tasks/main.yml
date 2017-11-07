@@ -35,9 +35,6 @@
   service: name=docker-cleanup.timer state=started enabled=yes
 
 # Install logrotate
-- name: Ensure conf directory exists
-  file: path=/opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }}/etc state=directory mode=0755
-
 - name: Install docker-logrotate conf
   copy: src=docker-logrotate.conf dest=/opt/netsil/latest/etc/docker-logrotate.conf
 
