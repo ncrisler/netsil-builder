@@ -46,5 +46,5 @@ RUN curl -sOL https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${P
 COPY . /opt/builder/
 
 # Setup environment and launch Packer.
-ENTRYPOINT ["/opt/builder/scripts/entrypoint.sh"]
+#ENTRYPOINT ["/opt/builder/scripts/entrypoint.sh"]
 CMD [ "/opt/builder/scripts/start.sh" ]
