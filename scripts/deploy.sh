@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x -e
+set -xe
 
 if [ -z "$HOST" ]; then
     echo "HOST is not set."
@@ -21,4 +21,10 @@ if [ "${REGISTRY}" != "dockerhub" ] ; then
     export URI_NAMESPACE="${REGISTRY}/netsil"
 fi
 
-ansible-playbook --extra-vars "distrib=${DISTRIB} build_type=deploy" -i ${HOST}, --private-key /credentials/id_rsa ansible/full-deployment.yml
+if [ "$MODE" = "HA" ] ; then
+    inventory_file=$HOST
+    ansible-playbook --extra-vars "distrib=${DISTRIB} build_type=deploy" -i ${inventory_file} --private-key /credentials/id_rsa ansible/cloud-deployment.yml
+else
+    ansible-playbook --extra-vars "distrib=${DISTRIB} build_type=deploy" -i ${HOST}, --private-key /credentials/id_rsa ansible/full-deployment.yml
+fi
+

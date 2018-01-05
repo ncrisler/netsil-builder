@@ -2,14 +2,15 @@
 set -e
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline] 
+    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline]
 
 
 Parameters:
-  -h, --host         Server hostname of IP address
-  -k, --ssh-key      Private SSH key path (default: ~/.ssh/id_ra)
-  -a, --apps-dir     The apps directory (default: ./apps)
+  -h, --host         In single-master mode, the server hostname or IP address. In HA mode, the inventory file.
   -u, --user         SSH user for deployment (default: $USER)
+  -k, --ssh-key      Private SSH key path (default: ~/.ssh/id_ra)
+  -m, --mode         Deploy mode: HA or single-master (default: single-master)
+  -a, --apps-dir     The apps directory (default: ./apps)
   -d, --dcos-path    Path to the DCOS release package
   -r, --registry     For use with third party registries (default: dockerhub)
                      You should pass the repository prefix of the 'netsil/<image>' images.
@@ -39,6 +40,7 @@ function deploy_aoc() {
             -e HOST=$HOST \
             -e ANSIBLE_USER=$ANSIBLE_USER \
             -e REGISTRY=$REGISTRY \
+            -e MODE=$MODE \
             ${builder_image} \
             /opt/builder/scripts/deploy.sh
     fi
@@ -57,7 +59,7 @@ function check_docker() {
         echo "Unable to locate 'docker' in your path."
         echo "Please make sure Docker is installed."
         exit 1
-    fi 
+    fi
 
     sudo docker info > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
@@ -107,12 +109,16 @@ while [ $# -gt 0 ]; do
             SSH_PRIVATE_KEY="$2"
             shift 2
             ;;
-        -a|--apps-dir)
-            APPS_DIR="$2"
-            shift 2
-            ;;
         -u|--user)
             USER="$2"
+            shift 2
+            ;;
+        -m|--mode)
+            MODE="$2"
+            shift 2
+            ;;
+        -a|--apps-dir)
+            APPS_DIR="$2"
             shift 2
             ;;
         -d|--dcos-path)
@@ -143,6 +149,7 @@ SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY:-~/.ssh/id_rsa}
 SSH_PRIVATE_KEY=$(abs_path $SSH_PRIVATE_KEY)
 APPS_DIR=${APPS_DIR:-$DIR/apps}
 APPS_DIR=$(abs_path $APPS_DIR)
+MODE=${MODE:-"single-master"}
 CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
 REGISTRY=${REGISTRY:-"dockerhub"}
