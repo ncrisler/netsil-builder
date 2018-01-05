@@ -2,13 +2,12 @@
 set -e
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline]
-
+    echo "Usage: ./setup.sh -h hostname or inventory file [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline]
 
 Parameters:
   -h, --host         In single-master mode, the server hostname or IP address. In HA mode, the inventory file.
   -u, --user         SSH user for deployment (default: $USER)
-  -k, --ssh-key      Private SSH key path (default: ~/.ssh/id_ra)
+  -k, --ssh-key      Private SSH key path (default: ~/.ssh/id_rsa)
   -m, --mode         Deploy mode: HA or single-master (default: single-master)
   -a, --apps-dir     The apps directory (default: ./apps)
   -d, --dcos-path    Path to the DCOS release package
@@ -237,7 +236,9 @@ fi
 ##########################################
 ### Perform prerequisite check for SSH ###
 ##########################################
-check_ssh_auth
+if [ "$MODE" != "HA" ] ; then
+    check_ssh_auth
+fi
 
 ####################################
 ### Resolving NETSIL_VERSION_TAG ###
