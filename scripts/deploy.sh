@@ -1,10 +1,13 @@
 #!/bin/bash
 set -xe
 
-if [ -z "$HOST" ]; then
-    echo "HOST is not set."
-    exit 1
+if [ "$MODE" != "HA" ] ; then
+    if [ -z "$HOST" ] ; then
+        echo "HOST is not set."
+        exit 1
+    fi
 fi
+
 
 ##################################################
 ### Environment variables inherited by Ansible ###
@@ -22,8 +25,7 @@ if [ "${REGISTRY}" != "dockerhub" ] ; then
 fi
 
 if [ "$MODE" = "HA" ] ; then
-    inventory_file=$HOST
-    ansible-playbook --extra-vars "distrib=${DISTRIB} build_type=deploy" -i ${inventory_file} --private-key /credentials/id_rsa ansible/cloud-deployment.yml
+    ansible-playbook --extra-vars "distrib=${DISTRIB} build_type=deploy" -i /opt/inventory --private-key /credentials/id_rsa ansible/cloud-deployment.yml
 else
     ansible-playbook --extra-vars "distrib=${DISTRIB} build_type=deploy" -i ${HOST}, --private-key /credentials/id_rsa ansible/full-deployment.yml
 fi

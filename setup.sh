@@ -2,18 +2,19 @@
 set -e
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname or inventory file [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline]
+    echo "Usage: ./setup.sh <-h hostname | -i inventory_file> [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline]
 
 Parameters:
-  -h, --host         In single-master mode, the server hostname or IP address. In HA mode, the inventory file.
-  -u, --user         SSH user for deployment (default: $USER)
-  -k, --ssh-key      Private SSH key path (default: ~/.ssh/id_rsa)
-  -m, --mode         Deploy mode: HA or single-master (default: single-master)
-  -a, --apps-dir     The apps directory (default: ./apps)
-  -d, --dcos-path    Path to the DCOS release package
-  -r, --registry     For use with third party registries (default: dockerhub)
-                     You should pass the repository prefix of the 'netsil/<image>' images.
-  -o, --offline      Are we deploying offline? Choose 'Yes' or 'No' (default: No)
+  -h, --host              In single-master mode, the server hostname or IP address. 
+  -i, --inventory-file    In HA mode, the inventory/hosts file.
+  -u, --user              SSH user for deployment (default: $USER)
+  -k, --ssh-key           Private SSH key path (default: ~/.ssh/id_rsa)
+  -m, --mode              Deploy mode: HA or single-master (default: single-master)
+  -a, --apps-dir          The apps directory (default: ./apps)
+  -d, --dcos-path         Path to the DCOS release package
+  -r, --registry          For use with third party registries (default: dockerhub)
+                          You should pass the repository prefix of the 'netsil/<image>' images.
+  -o, --offline           Are we deploying offline? Choose 'Yes' or 'No' (default: No)
 "
     exit 1
 }
@@ -35,6 +36,7 @@ function deploy_aoc() {
             -v ${APPS_DIR}:/apps \
             -v ${SSH_PRIVATE_KEY}:/credentials/id_rsa \
             -v ${CREDENTIALS_PATH}:/opt/credentials \
+            -v ${INVENTORY_FILE}:/opt/inventory \
             -e DISTRIB=$DISTRIB \
             -e HOST=$HOST \
             -e ANSIBLE_USER=$ANSIBLE_USER \
@@ -102,6 +104,10 @@ while [ $# -gt 0 ]; do
     case $1 in
         -h|--host)
             HOST="$2"
+            shift 2
+            ;;
+        -i|--inventory-file)
+            INVENTORY_FILE="$2"
             shift 2
             ;;
         -k|--ssh-key)
@@ -192,7 +198,7 @@ fi
 #############################
 ### Run build-time checks ###
 #############################
-if [ -z ${HOST} ]; then
+if [ -z ${HOST} ] && [-z ${INVENTORY_FILE} ]; then
     echo "Could not find host: $HOST" 1>&2
     display_usage
     exit 1
