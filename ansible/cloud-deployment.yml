@@ -1,5 +1,25 @@
 ---
-# This works with the netsil-dcos-gce scripts
+- hosts: masters
+  vars_files:
+    - "{{ apps_dir }}/build/vars/services.yml"
+    - "{{ apps_dir }}/build/vars/cluster.yml"
+    - "{{ apps_dir }}/build/vars/build.yml"
+  vars:
+    build_env: "{{ cluster_vars['build_env'] }}"
+    build_type: "dummy"
+    is_ha: "yes"
+    ### Start: ansible-specific vars ###
+    ansible_user: core
+    ### End: ansible-specific vars ###
+
+  gather_facts: True
+  become: yes
+  become_user: root
+
+  roles:
+    - install-dcos-master
+    - configure-dcos-master
+
 - hosts: allnodes
   vars_files:
     - "{{ apps_dir }}/build/vars/services.yml"
@@ -30,24 +50,4 @@
   roles:
     - initialize-dcos-node
     - configure-dcos-node
-
-- hosts: masters
-  vars_files:
-    - "{{ apps_dir }}/build/vars/services.yml"
-    - "{{ apps_dir }}/build/vars/cluster.yml"
-    - "{{ apps_dir }}/build/vars/build.yml"
-  vars:
-    build_env: "{{ cluster_vars['build_env'] }}"
-    build_type: "dummy"
-    is_ha: "yes"
-    ### Start: ansible-specific vars ###
-    ansible_user: core
-    ### End: ansible-specific vars ###
-
-  gather_facts: True
-  become: yes
-  become_user: root
-
-  roles:
-    - configure-dcos-master
 

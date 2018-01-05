@@ -24,7 +24,8 @@
     - local_dcos_package.stat.exists == true
 
 - name: Download DCOS package
-  command: curl -O https://downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/dcos_generate_config.sh
+  #command: curl -O https://downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/dcos_generate_config.sh
+  command: curl -O https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh 
   when:
     - dcos_master_install.stat.exists == false
     - remote_dcos_package.stat.exists == false
