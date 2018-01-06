@@ -11,7 +11,11 @@ exhibitor_storage_backend: static
 ip_detect_filename: /genconf/ip-detect
 master_discovery: static
 master_list:
-{% if ansible_default_ipv4.address is defined %}
+{% if groups['masters'] is defined %}
+{% for master in groups['masters'] %}
+- {{ hostvars[master]['ip'] }}
+{% endfor %}
+{% elif ansible_default_ipv4.address is defined %}
  - {{ ansible_default_ipv4.address }}
 {% else %}
   - {{ ansible_eth0.ipv4.address }}
