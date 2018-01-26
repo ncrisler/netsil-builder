@@ -6,7 +6,7 @@ VER=""
 declare -a to_install=()
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline]
+    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline] [-y yes-all]
 
 
 Parameters:
@@ -17,7 +17,8 @@ Parameters:
   -d, --dcos-path    Path to the DCOS release package
   -r, --registry     For use with third party registries (default: dockerhub)
                      You should pass the repository prefix of the 'netsil/<image>' images.
-  -o, --offline      Are we deploying offline? Choose 'Yes' or 'No' (default: No)
+  -o, --offline      Are we deploying offline? Choose 'yes' or 'no' (default: no)
+  -y, --yes-all      Auto-respond yes to all queries. Choose 'yes' or 'no' (default: no)
 "
     exit 1
 }
@@ -25,7 +26,7 @@ Parameters:
 function deploy_aoc() {
     echo "deploying aoc"
     builder_image=netsil/netsil-builder
-    if [ "${OFFLINE}" = "No" ]; then
+    if [ "${OFFLINE}" = "no" ]; then
         sudo docker build -t ${builder_image} ${DIR}
     else
         if [ "${REGISTRY}" != "dockerhub" ] ; then
@@ -89,6 +90,10 @@ function detect_os_version() {
     echo "OS is $OS and Version is $VER"
 }
 
+function install_docker() {
+    
+}
+
 function check_docker() {
     (command -v docker || docker) > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
@@ -99,7 +104,7 @@ function check_docker() {
 
     sudo docker info > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
-        echo "Docker does not appear to be running locally."
+        echo "Docker does not appear to be running locally. Please start the Docker daemon and ensure it is enabled at startup."
         exit 1
     fi
 
@@ -197,6 +202,9 @@ function install_missing_pkgs() {
     pkgs=$( IFS=$' '; echo "${to_install[*]}" )
     echo "We need to install the following packages: $pkgs"
     read -p "Proceed? (y/n)?" choice
+    if [ "$YES_ALL" = "yes" ] ; then
+        choice=y
+    fi
     case "$choice" in
         y|Y|"" )
             echo "Yes"
@@ -278,6 +286,10 @@ while [ $# -gt 0 ]; do
             OFFLINE="$2"
             shift 2
             ;;
+        -y|--yes-all)
+            YES_ALL="$2"
+            shift 2
+            ;;
         *)
             echo "Unknown parameter \"$1\"" 1>&2
             display_usage
@@ -297,7 +309,8 @@ APPS_DIR=$(abs_path $APPS_DIR)
 CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
 REGISTRY=${REGISTRY:-"dockerhub"}
-OFFLINE=${OFFLINE:-"No"}
+OFFLINE=${OFFLINE:-"no"}
+YES_ALL=${YES_ALL:-"no"}
 ############################################################
 ### If DCOS_PATH is defined:                             ###
 ###  * Replace with relative path with an absolute path. ###
@@ -359,18 +372,21 @@ if [ ! -d "${APPS_DIR}" ]; then
     exit 1
 fi
 
+###################
+### Gather info ###
+###################
+detect_os_version
+
 ##########################
 ### Pre-install checks ###
 ##########################
-# We don't install these for you, as they are rather custom
-# May provide automatic installs in the future
+# These require more custom installation than a simple "apt-get" or "yum"
 check_docker
 check_python
 
 ##################################
 ### Perform OS-specific checks ###
 ##################################
-detect_os_version
 check_by_distrib
 install_missing_pkgs
 
