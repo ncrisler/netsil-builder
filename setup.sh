@@ -142,10 +142,11 @@ function install_python() {
     if [ "$OS" = "ubuntu" ] ; then
         sudo apt-get -y update
         sudo apt-get -y install python2.7
+        python_version_check
     else
         echo "This script is not yet able to install python for your OS"
-	echo "Exiting for manual package installation."
-	exit 0
+        echo "Exiting for manual package installation."
+        exit 0
     fi
 }
 
