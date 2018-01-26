@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+OS=""
+VER=""
+declare -a to_install=()
+
 function display_usage() {
     echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline]
 
@@ -51,6 +55,40 @@ function abs_path() {
     )
 }
 
+function detect_os_version() {
+    # Do checks based on linux distribution
+    if [ -f /etc/os-release ]; then
+        # freedesktop.org and systemd
+        . /etc/os-release
+        OS=$ID
+        VER=$VERSION_ID
+    elif type lsb_release >/dev/null 2>&1; then
+        # linuxbase.org
+        OS=$(lsb_release -si)
+        VER=$(lsb_release -sr)
+    elif [ -f /etc/lsb-release ]; then
+        # For some versions of Debian/Ubuntu without lsb_release command
+        . /etc/lsb-release
+        OS=$DISTRIB_ID
+        VER=$DISTRIB_RELEASE
+    elif [ -f /etc/debian_version ]; then
+        # Older Debian/Ubuntu/etc.
+        OS=Debian
+        VER=$(cat /etc/debian_version)
+    elif [ -f /etc/SuSe-release ]; then
+        # Older SuSE/etc.
+        ...
+    elif [ -f /etc/redhat-release ]; then
+        # Older Red Hat, CentOS, etc.
+        ...
+    else
+        # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
+        OS=$(uname -s)
+        VER=$(uname -r)
+    fi
+    echo "OS is $OS and Version is $VER"
+}
+
 function check_docker() {
     (command -v docker || docker) > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
@@ -90,58 +128,42 @@ function check_jq() {
     if [ -x "/usr/bin/jq" ] ; then
         echo "jq check passed."
     else
-        echo "jq check passed."
-        echo "Please install jq."
+        echo "jq was not installed. Adding to list of packages to install."
         exit 1
     fi
 }
 
 function check_ubuntu() {
-    
+    # Do symlinking
+    declare -a binaries=("mkdir" "ln" "tar")
+    for i in "${binaries[@]}"
+    do
+        if [ -x "/usr/bin/$i" ] ; then
+            echo "Symlinking $i"
+            sudo ln -s /bin/$i /usr/bin/$i
+        fi
+    done
+
+    if [ -x "/usr/bin/useradd" ] ; then
+        sudo ln -s /usr/sbin/useradd /usr/bin/useradd
+    fi
+
+    to_install+=("unzip")
+    to_install+=("ipset")
+    to_install+=("selinux-utils")
+    to_install+=("jq")
 }
 
 function check_coreos() {
-    
+    echo ""
 }
 
 function check_centos() {
-    
+    echo ""
 }
 
 function check_by_distrib() {
-    # Do checks based on linux distribution
-    if [ -f /etc/os-release ]; then
-        # freedesktop.org and systemd
-        . /etc/os-release
-        OS=$ID
-        VER=$VERSION_ID
-    elif type lsb_release >/dev/null 2>&1; then
-        # linuxbase.org
-        OS=$(lsb_release -si)
-        VER=$(lsb_release -sr)
-    elif [ -f /etc/lsb-release ]; then
-        # For some versions of Debian/Ubuntu without lsb_release command
-        . /etc/lsb-release
-        OS=$DISTRIB_ID
-        VER=$DISTRIB_RELEASE
-    elif [ -f /etc/debian_version ]; then
-        # Older Debian/Ubuntu/etc.
-        OS=Debian
-        VER=$(cat /etc/debian_version)
-    elif [ -f /etc/SuSe-release ]; then
-        # Older SuSE/etc.
-        ...
-    elif [ -f /etc/redhat-release ]; then
-        # Older Red Hat, CentOS, etc.
-        ...
-    else
-        # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
-        OS=$(uname -s)
-        VER=$(uname -r)
-    fi
-
-    echo "OS is $OS and Version is $VER"
-    if [ "$OS" = "Ubuntu" ] ; then
+    if [ "$OS" = "ubuntu" ] ; then
         if [ "$VER" = "16.04" ] ; then
             check_ubuntu
         else
@@ -153,6 +175,46 @@ function check_by_distrib() {
     elif [ "$OS" = "rhel" ] || [ "$OS" = "centos" ] ; then
         check_centos
     fi
+}
+
+function not_supported() {
+    echo "Your OS is not supported. If you have the packages installed, press (y) to proceed."
+    echo "Otherwise, exit with (n)."
+    case "$choice" in
+        y|Y|"" ) echo "Yes" ;;
+        n|N )
+            echo "Exiting for manual package installation."
+            exit 0
+            ;;
+        * )
+            echo "Exiting. Did not recognize choice."
+            exit 1
+            ;;
+    esac
+}
+
+function install_missing_pkgs() {
+    pkgs=$( IFS=$' '; echo "${to_install[*]}" )
+    echo "We need to install the following packages: $pkgs"
+    read -p "Proceed? (y/n)?" choice
+    case "$choice" in
+        y|Y|"" )
+            echo "Yes"
+            if [ "$OS" = "ubuntu" ] ; then
+                sudo apt-get install -y unzip ipset selinux-utils
+            else
+                not_supported
+            fi
+            ;;
+        n|N )
+            echo "Exiting. These packages must be installed."
+            exit 0
+            ;;
+        * )
+            echo "Exiting. Did not recognize choice."
+            exit 1
+            ;;
+    esac
 }
 
 ###########################################################
@@ -300,10 +362,16 @@ fi
 ###################################
 ### Perform prerequisite checks ###
 ###################################
+detect_os_version
+check_by_distrib
+install_missing_pkgs
+
+###########################
+### Post-install checks ###
+###########################
 check_docker
 check_python
 check_jq
-check_by_distrib
 
 ##########################################
 ### Local deployment pre-configuration ###

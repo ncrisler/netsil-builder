@@ -15,11 +15,11 @@ You can browse through our [full documentation](https://docs.netsil.io), which p
 ### Resource Requirements
 Please provision a machine with sufficient resources to run Netsil AOC. The requirements are listed below.
 
-| Recommended | Minimum    |
-| ----------- | --------   |
-| 8 CPU       | 4 CPU      |
-| 32 GB Mem   | 16 GB Mem  |
-| 500 GB HDD  | 120 GB HDD |
+| Recommended |
+| ----------- |
+| 8 CPU       |
+| 32 GB Mem   |
+| 500 GB SSD  |
 
 ### Ports
 Ensure that port **443** and port **80** (optional) are open for web access to the AOC through HTTPS or HTTP.
