@@ -101,7 +101,6 @@ function parse_input() {
     fi
     case "$choice" in
         y|Y|"" )
-            echo "Yes"
             $yes_action
             ;;
         n|N )
@@ -208,13 +207,13 @@ function check_ubuntu() {
     declare -a binaries=("mkdir" "ln" "tar")
     for i in "${binaries[@]}"
     do
-        if [ -x "/usr/bin/$i" ] ; then
+        if [ ! -f "/usr/bin/$i" ] ; then
             echo "Symlinking $i"
             sudo ln -s /bin/$i /usr/bin/$i
         fi
     done
 
-    if [ -x "/usr/bin/useradd" ] ; then
+    if [ ! -f "/usr/bin/useradd" ] ; then
         sudo ln -s /usr/sbin/useradd /usr/bin/useradd
     fi
 
