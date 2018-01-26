@@ -91,14 +91,44 @@ function detect_os_version() {
 }
 
 function install_docker() {
-    
+    sudo apt-get -y update
+    sudo apt-get -y install \
+         apt-transport-https \
+         ca-certificates \
+         curl \
+         software-properties-common
+
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+    sudo add-apt-repository \
+         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+    sudo apt-get -y update
+    sudo apt-get install docker-ce
 }
 
 function check_docker() {
     (command -v docker || docker) > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
         echo "Unable to locate 'docker' in your path."
-        echo "Please make sure Docker is installed."
+        read -p "Do you want this script to install it for you? (y/n)" choice
+        if [ "$YES_ALL" = "yes" ] ; then
+            choice=y
+        fi
+        case "$choice" in
+            y|Y|"" ) echo "Yes" ;;
+            n|N )
+                echo "Exiting for manual package installation."
+                install_docker
+                exit 0
+                ;;
+            * )
+                echo "Exiting. Did not recognize choice."
+                exit 1
+                ;;
+        esac
         exit 1
     fi
 
@@ -109,6 +139,8 @@ function check_docker() {
     fi
 
     echo "Docker check passed."
+
+    echo "Please make sure Docker is installed."
 }
 
 function check_python() {
@@ -183,10 +215,16 @@ function check_by_distrib() {
 }
 
 function not_supported() {
-    echo "Your OS is not supported. If you have the packages installed, press (y) to proceed."
-    echo "Otherwise, exit with (n)."
+    echo "Your OS is not supported."
+    read "Use (y) to proceed. Otherwise, exit with (n)."
+    if [ "$YES_ALL" = "yes" ] ; then
+        choice=y
+    fi
     case "$choice" in
-        y|Y|"" ) echo "Yes" ;;
+        y|Y|"" )
+            echo "Yes"
+            exit 0
+            ;;
         n|N )
             echo "Exiting for manual package installation."
             exit 0
@@ -211,6 +249,7 @@ function install_missing_pkgs() {
             if [ "$OS" = "ubuntu" ] ; then
                 sudo apt-get install -y $pkgs
             else
+                # TODO: What was this for?...
                 not_supported
             fi
             ;;
