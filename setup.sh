@@ -201,7 +201,7 @@ function install_missing_pkgs() {
         y|Y|"" )
             echo "Yes"
             if [ "$OS" = "ubuntu" ] ; then
-                sudo apt-get install -y unzip ipset selinux-utils
+                sudo apt-get install -y $pkgs
             else
                 not_supported
             fi
@@ -359,9 +359,17 @@ if [ ! -d "${APPS_DIR}" ]; then
     exit 1
 fi
 
-###################################
-### Perform prerequisite checks ###
-###################################
+##########################
+### Pre-install checks ###
+##########################
+# We don't install these for you, as they are rather custom
+# May provide automatic installs in the future
+check_docker
+check_python
+
+##################################
+### Perform OS-specific checks ###
+##################################
 detect_os_version
 check_by_distrib
 install_missing_pkgs
@@ -369,8 +377,6 @@ install_missing_pkgs
 ###########################
 ### Post-install checks ###
 ###########################
-check_docker
-check_python
 check_jq
 
 ##########################################
