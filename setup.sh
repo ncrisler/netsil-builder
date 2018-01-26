@@ -146,6 +146,7 @@ function install_python() {
             parse_input "Symlinking python2.7 to /usr/bin/python." symlink_python "Exiting. Please symlink python2.7 to /usr/bin/python manually."
         else
             "Exiting. Cannot find python2.7 binary. Please symlink python2.7 binary to /usr/bin/python manually."
+            exit 1
         fi
     else
         echo "This script is not yet able to install python for your OS"
