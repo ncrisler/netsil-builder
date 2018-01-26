@@ -2,7 +2,7 @@
 set -e
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline] 
+    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline]
 
 
 Parameters:
@@ -51,19 +51,58 @@ function abs_path() {
     )
 }
 
+function detect_linux_distrib() {
+ 
+}
+
 function check_docker() {
     (command -v docker || docker) > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
         echo "Unable to locate 'docker' in your path."
         echo "Please make sure Docker is installed."
         exit 1
-    fi 
+    fi
 
     sudo docker info > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
         echo "Docker does not appear to be running locally."
         exit 1
     fi
+
+    echo "Docker check passed."
+}
+
+function check_python() {
+    if [ -x "/usr/bin/python" ] ; then
+        # Check python version as well
+        python_major_version=$(/usr/bin/python -c 'import platform; print(platform.python_version_tuple()[0])')
+        if [ "${python_major_version}" = "2" ] ; then
+            echo "Docker check passed."
+        else
+            echo "Python check failed."
+            echo "Python major version is ${python_major_version}. Please install python 2."
+            exit 1
+        fi
+    else
+        echo "Python check failed."
+        echo "Please install python 2."
+        exit 1
+    fi
+}
+
+function check_jq() {
+    if [ -x "/usr/bin/jq" ] ; then
+        echo "jq check passed."
+    else
+        echo "jq check passed."
+        echo "Please install jq."
+        exit 1
+    fi
+}
+
+function check_by_distrib() {
+    # Do checks based on linux distribution
+
 }
 
 ###########################################################
@@ -208,11 +247,18 @@ if [ ! -d "${APPS_DIR}" ]; then
     exit 1
 fi
 
-#############################################
-### Perform prerequisite check for Docker ###
-#############################################
+#################################
+### Detect linux distribution ###
+#################################
+detect_linux_distrib
+
+###################################
+### Perform prerequisite checks ###
+###################################
 check_docker
-echo "Docker check done"
+check_python
+check_jq
+check_by_distrib
 
 ##########################################
 ### Local deployment pre-configuration ###

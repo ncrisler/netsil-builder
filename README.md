@@ -4,7 +4,7 @@ The Netsil Application Operations Center (AOC) is a next-gen observability and a
 ## Introduction
 This repository provides scripts to install and deploy the AOC.
 
-Currently, these scripts support CoreOS and CentOS. They have been tested on CoreOS Stable and CentOS 7, though they should work on other versions of those Linux distributions.
+Currently, these scripts support CoreOS Stable, CentOS 7, and Ubuntu 16.04.
 
 Support for more Linux distributions is planned.
 
@@ -41,6 +41,13 @@ If deploying on a CentOS machine, ensure that:
 * The `jq` program is installed. You can enable the EPEL repository and install via `yum install jq`.
 * The `firewalld` service is stopped and disabled: `systemctl stop firewalld && systemctl disable firewalld`.
 * Please run the command `setenforce 0` as well for permissive selinux mode
+* Enable root ssh login (just during installation, can disable afterwards)
+
+### Ubuntu
+If deploying on an Ubuntu machine, ensure that:
+* Docker (preferably v.1.10.0 or above) is installed and configured to run at OS startup.
+* Python 2 is installed and available at `/usr/bin/python`.
+* The `jq` program is installed. You can enable the EPEL repository and install via `yum install jq`.
 * Enable root ssh login (just during installation, can disable afterwards)
 
 ## Quickstart
