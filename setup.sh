@@ -137,13 +137,13 @@ function install_docker() {
 	exit 0
     fi
 }
-
+function symlink_python () { ln -s /usr/bin/python2.7 /usr/bin/python ; }
 function install_python() {
     if [ "$OS" = "ubuntu" ] ; then
         sudo apt-get -y update
         sudo apt-get -y install python2.7
         if [ ! -f /usr/bin/python ] && [ -f /usr/bin/python2.7 ] ; then
-            parse_input "Symlinking python2.7 to /usr/bin/python." lmb() { ln -s /usr/bin/python2.7 /usr/bin/python ; } "Exiting. Please symlink python2.7 to /usr/bin/python manually."
+            parse_input "Symlinking python2.7 to /usr/bin/python." symlink_python "Exiting. Please symlink python2.7 to /usr/bin/python manually."
         else
             "Exiting. Cannot find python2.7 binary. Please symlink python2.7 binary to /usr/bin/python manually."
         fi
