@@ -91,21 +91,25 @@ function detect_os_version() {
 }
 
 function parse_input() {
+    prompt_text=$1
+    yes_action=$2
+    no_text=$3
+
     read -p "Do you want this script to install it for you? (y/n) " choice
     if [ "$YES_ALL" = "yes" ] ; then
         choice=y
     fi
     case "$choice" in
-        y|Y|"" ) 
-            echo "Yes" 
-            install_docker
+        y|Y|"" )
+            echo "Yes"
+            $yes_action
             ;;
         n|N )
-            echo "Exiting for manual package installation."
+            echo "$no_text"
             exit 0
             ;;
         * )
-            echo "Exiting. Did not recognize choice."
+            echo "Exiting. Invalid choice."
             exit 1
             ;;
     esac
@@ -150,24 +154,7 @@ function check_docker() {
     (command -v docker || docker) > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
         echo "Unable to locate 'docker' in your path."
-        read -p "Do you want this script to install it for you? (y/n) " choice
-        if [ "$YES_ALL" = "yes" ] ; then
-            choice=y
-        fi
-        case "$choice" in
-            y|Y|"" ) 
-                echo "Yes" 
-                install_docker
-                ;;
-            n|N )
-                echo "Exiting for manual package installation."
-                exit 0
-                ;;
-            * )
-                echo "Exiting. Did not recognize choice."
-                exit 1
-                ;;
-        esac
+        parse_input "Do you want this script to install it for you? (y/n) " install_docker "Exiting for manual package installation."
     fi
 
     sudo docker info > /dev/null 2>&1
@@ -180,38 +167,23 @@ function check_docker() {
 }
 
 function python_version_check() {
+    # Check python version as well
+    python_major_version=$(/usr/bin/python -c 'import platform; print(platform.python_version_tuple()[0])')
+    if [ "${python_major_version}" = "2" ] ; then
+        echo "Python check passed."
+    else
+        echo "Python check failed."
+        echo "Python major version is ${python_major_version}. Please install python 2."
+        exit 1
+    fi
 }
+
 function check_python() {
     if [ -x "/usr/bin/python" ] ; then
-        # Check python version as well
-        python_major_version=$(/usr/bin/python -c 'import platform; print(platform.python_version_tuple()[0])')
-        if [ "${python_major_version}" = "2" ] ; then
-            echo "Python check passed."
-        else
-            echo "Python check failed."
-            echo "Python major version is ${python_major_version}. Please install python 2."
-            exit 1
-        fi
+        python_version_check
     else
         echo "Unable to locate 'python' in your path."
-        read -p "Do you want this script to install it for you? (y/n) " choice
-        if [ "$YES_ALL" = "yes" ] ; then
-            choice=y
-        fi
-        case "$choice" in
-            y|Y|"" ) 
-                echo "Yes" 
-                install_python
-                ;;
-            n|N )
-                echo "Exiting for manual package installation."
-                exit 0
-                ;;
-            * )
-                echo "Exiting. Did not recognize choice."
-                exit 1
-                ;;
-        esac
+        parse_input "Do you want this script to install it for you? (y/n) " install_python "Exiting for manual package installation."
     fi
 }
 
@@ -270,50 +242,21 @@ function check_by_distrib() {
 
 function not_supported() {
     echo "This script does not support installing packages for your OS."
-    read "Proceed anyway with (y), exit to install packages manually with (n) "
-    if [ "$YES_ALL" = "yes" ] ; then
-        choice=y
+    parse_input "Proceed anyway with (y), exit to install packages manually with (n) " echo "Exiting for manual package installation."
+}
+
+function pkg_install_helper() {
+    if [ "$OS" = "ubuntu" ] ; then
+        sudo apt-get install -y $pkgs
+    else
+        not_supported
     fi
-    case "$choice" in
-        y|Y|"" )
-            echo "Yes"
-            ;;
-        n|N )
-            echo "Exiting for manual package installation."
-            exit 0
-            ;;
-        * )
-            echo "Exiting. Did not recognize choice."
-            exit 1
-            ;;
-    esac
 }
 
 function install_missing_pkgs() {
     pkgs=$( IFS=$' '; echo "${to_install[*]}" )
     echo "We need to install the following packages: $pkgs"
-    read -p "Proceed? (y/n) " choice
-    if [ "$YES_ALL" = "yes" ] ; then
-        choice=y
-    fi
-    case "$choice" in
-        y|Y|"" )
-            echo "Yes"
-            if [ "$OS" = "ubuntu" ] ; then
-                sudo apt-get install -y $pkgs
-            else
-                not_supported
-            fi
-            ;;
-        n|N )
-            echo "Exiting. These packages must be installed."
-            exit 0
-            ;;
-        * )
-            echo "Exiting. Did not recognize choice."
-            exit 1
-            ;;
-    esac
+    parse_input "Proceed? (y/n) " pkg_install_helper "Exiting. These packages must be installed."
 }
 
 ###########################################################
