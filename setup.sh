@@ -95,7 +95,7 @@ function parse_input() {
     yes_action=$2
     no_text=$3
 
-    read -p "Do you want this script to install it for you? (y/n) " choice
+    read -p "${prompt_text}" choice
     if [ "$YES_ALL" = "yes" ] ; then
         choice=y
     fi
@@ -137,13 +137,13 @@ function install_docker() {
 	exit 0
     fi
 }
-function symlink_python () { ln -s /usr/bin/python2.7 /usr/bin/python ; }
+function symlink_python () { sudo ln -s /usr/bin/python2.7 /usr/bin/python ; }
 function install_python() {
     if [ "$OS" = "ubuntu" ] ; then
         sudo apt-get -y update
         sudo apt-get -y install python2.7
         if [ ! -f /usr/bin/python ] && [ -f /usr/bin/python2.7 ] ; then
-            parse_input "Symlinking python2.7 to /usr/bin/python." symlink_python "Exiting. Please symlink python2.7 to /usr/bin/python manually."
+            parse_input "Found python2.7 binary. Do you want this script to symlink it to /usr/bin/python for you? (y/n) " symlink_python "Exiting. Please symlink python2.7 to /usr/bin/python manually."
         else
             "Exiting. Cannot find python2.7 binary. Please symlink python2.7 binary to /usr/bin/python manually."
             exit 1
