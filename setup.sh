@@ -1,8 +1,8 @@
 #!/bin/bash
-set -e
 
 OS=""
 VER=""
+PYTHON_VERSION=""
 declare -a to_install=()
 
 function display_usage() {
@@ -90,38 +90,77 @@ function detect_os_version() {
     echo "OS is $OS and Version is $VER"
 }
 
+function parse_input() {
+    read -p "Do you want this script to install it for you? (y/n) " choice
+    if [ "$YES_ALL" = "yes" ] ; then
+        choice=y
+    fi
+    case "$choice" in
+        y|Y|"" ) 
+            echo "Yes" 
+            install_docker
+            ;;
+        n|N )
+            echo "Exiting for manual package installation."
+            exit 0
+            ;;
+        * )
+            echo "Exiting. Did not recognize choice."
+            exit 1
+            ;;
+    esac
+}
+
 function install_docker() {
-    sudo apt-get -y update
-    sudo apt-get -y install \
-         apt-transport-https \
-         ca-certificates \
-         curl \
-         software-properties-common
+    if [ "$OS" = "ubuntu" ] ; then
+        sudo apt-get -y update
+        sudo apt-get -y install \
+             apt-transport-https \
+             ca-certificates \
+             curl \
+             software-properties-common
 
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-    sudo add-apt-repository \
-         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
+        sudo add-apt-repository \
+             "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-    sudo apt-get -y update
-    sudo apt-get install docker-ce
+        sudo apt-get -y update
+        sudo apt-get -y install docker-ce=17.12.0*
+    else
+        echo "This script is not yet able to install docker for your OS"
+	echo "Exiting for manual package installation."
+	exit 0
+    fi
+}
+
+function install_python() {
+    if [ "$OS" = "ubuntu" ] ; then
+        sudo apt-get -y update
+        sudo apt-get -y install python2.7
+    else
+        echo "This script is not yet able to install python for your OS"
+	echo "Exiting for manual package installation."
+	exit 0
+    fi
 }
 
 function check_docker() {
+    echo "Checking docker"
     (command -v docker || docker) > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
         echo "Unable to locate 'docker' in your path."
-        read -p "Do you want this script to install it for you? (y/n)" choice
+        read -p "Do you want this script to install it for you? (y/n) " choice
         if [ "$YES_ALL" = "yes" ] ; then
             choice=y
         fi
         case "$choice" in
-            y|Y|"" ) echo "Yes" ;;
+            y|Y|"" ) 
+                echo "Yes" 
+                install_docker
+                ;;
             n|N )
                 echo "Exiting for manual package installation."
-                install_docker
                 exit 0
                 ;;
             * )
@@ -129,7 +168,6 @@ function check_docker() {
                 exit 1
                 ;;
         esac
-        exit 1
     fi
 
     sudo docker info > /dev/null 2>&1
@@ -139,25 +177,41 @@ function check_docker() {
     fi
 
     echo "Docker check passed."
-
-    echo "Please make sure Docker is installed."
 }
 
+function python_version_check() {
+}
 function check_python() {
     if [ -x "/usr/bin/python" ] ; then
         # Check python version as well
         python_major_version=$(/usr/bin/python -c 'import platform; print(platform.python_version_tuple()[0])')
         if [ "${python_major_version}" = "2" ] ; then
-            echo "Docker check passed."
+            echo "Python check passed."
         else
             echo "Python check failed."
             echo "Python major version is ${python_major_version}. Please install python 2."
             exit 1
         fi
     else
-        echo "Python check failed."
-        echo "Please install python 2."
-        exit 1
+        echo "Unable to locate 'python' in your path."
+        read -p "Do you want this script to install it for you? (y/n) " choice
+        if [ "$YES_ALL" = "yes" ] ; then
+            choice=y
+        fi
+        case "$choice" in
+            y|Y|"" ) 
+                echo "Yes" 
+                install_python
+                ;;
+            n|N )
+                echo "Exiting for manual package installation."
+                exit 0
+                ;;
+            * )
+                echo "Exiting. Did not recognize choice."
+                exit 1
+                ;;
+        esac
     fi
 }
 
@@ -215,15 +269,14 @@ function check_by_distrib() {
 }
 
 function not_supported() {
-    echo "Your OS is not supported."
-    read "Use (y) to proceed. Otherwise, exit with (n)."
+    echo "This script does not support installing packages for your OS."
+    read "Proceed anyway with (y), exit to install packages manually with (n) "
     if [ "$YES_ALL" = "yes" ] ; then
         choice=y
     fi
     case "$choice" in
         y|Y|"" )
             echo "Yes"
-            exit 0
             ;;
         n|N )
             echo "Exiting for manual package installation."
@@ -239,7 +292,7 @@ function not_supported() {
 function install_missing_pkgs() {
     pkgs=$( IFS=$' '; echo "${to_install[*]}" )
     echo "We need to install the following packages: $pkgs"
-    read -p "Proceed? (y/n)?" choice
+    read -p "Proceed? (y/n) " choice
     if [ "$YES_ALL" = "yes" ] ; then
         choice=y
     fi
@@ -249,7 +302,6 @@ function install_missing_pkgs() {
             if [ "$OS" = "ubuntu" ] ; then
                 sudo apt-get install -y $pkgs
             else
-                # TODO: What was this for?...
                 not_supported
             fi
             ;;
