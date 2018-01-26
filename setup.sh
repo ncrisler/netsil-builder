@@ -142,7 +142,11 @@ function install_python() {
     if [ "$OS" = "ubuntu" ] ; then
         sudo apt-get -y update
         sudo apt-get -y install python2.7
-        python_version_check
+        if [ ! -f /usr/bin/python ] && [ -f /usr/bin/python2.7 ] ; then
+            parse_input "Symlinking python2.7 to /usr/bin/python." lmb() { ln -s /usr/bin/python2.7 /usr/bin/python ; } "Exiting. Please symlink python2.7 to /usr/bin/python manually."
+        else
+            "Exiting. Cannot find python2.7 binary. Please symlink python2.7 binary to /usr/bin/python manually."
+        fi
     else
         echo "This script is not yet able to install python for your OS"
         echo "Exiting for manual package installation."
@@ -168,6 +172,7 @@ function check_docker() {
 }
 
 function python_version_check() {
+    symlink=$1
     # Check python version as well
     python_major_version=$(/usr/bin/python -c 'import platform; print(platform.python_version_tuple()[0])')
     if [ "${python_major_version}" = "2" ] ; then
