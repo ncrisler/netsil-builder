@@ -94,10 +94,11 @@ function parse_input() {
     prompt_text=$1
     yes_action=$2
     no_text=$3
-
-    read -p "${prompt_text}" choice
+    choice="n"
     if [ "$SKIP_QUERY" = "yes" ] ; then
-        choice=y
+        choice="y"
+    elif [ "$SKIP_QUERY" = "no" ] ; then
+        read -p "${prompt_text}" choice
     fi
     case "$choice" in
         y|Y|"" )
@@ -350,7 +351,7 @@ CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
 REGISTRY=${REGISTRY:-"dockerhub"}
 OFFLINE=${OFFLINE:-"no"}
-SKIP_QUERY=${SKIP_QUERY:-"manual"}
+SKIP_QUERY=${SKIP_QUERY:-"no"}
 ############################################################
 ### If DCOS_PATH is defined:                             ###
 ###  * Replace with relative path with an absolute path. ###
