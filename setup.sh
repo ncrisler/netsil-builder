@@ -412,6 +412,12 @@ if [ ! -d "${APPS_DIR}" ]; then
     exit 1
 fi
 
+# Root check
+if [ $(id -u) = 0 ]; then
+   echo "Please run this script as a non-root user. This script will invoke sudo when it needs to."
+   exit 1
+fi
+
 ###################
 ### Gather info ###
 ###################
