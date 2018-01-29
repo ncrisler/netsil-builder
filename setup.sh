@@ -10,15 +10,16 @@ function display_usage() {
 
 
 Parameters:
-  -h, --host         Server hostname of IP address
-  -k, --ssh-key      Private SSH key path (default: ~/.ssh/id_ra)
-  -a, --apps-dir     The apps directory (default: ./apps)
-  -u, --user         SSH user for deployment (default: $USER)
-  -d, --dcos-path    Path to the DCOS release package
-  -r, --registry     For use with third party registries (default: dockerhub)
-                     You should pass the repository prefix of the 'netsil/<image>' images.
-  -o, --offline      Are we deploying offline? Choose 'yes' or 'no' (default: no)
-  -s, --skip-query   Skip query and auto-respond yes or no. Choose 'yes' or 'no' (default: no)
+  -h, --host             Server hostname of IP address
+  -k, --ssh-key          Private SSH key path (default: ~/.ssh/id_ra)
+  -a, --apps-dir         The apps directory (default: ./apps)
+  -u, --user             SSH user for deployment (default: $USER)
+  -d, --dcos-path        Path to the DCOS release package
+  -r, --registry         For use with third party registries (default: dockerhub)
+                         You should pass the repository prefix of the 'netsil/<image>' images.
+  -o, --offline          Are we deploying offline? Choose 'yes' or 'no' (default: no)
+  -a, --auto-response    Auto-respond to queries. Choose 'yes', 'continue', or 'user' (default: user).
+                         The 'continue' option automatically chooses a 'no' response without exiting.
 "
     exit 1
 }
@@ -95,17 +96,21 @@ function parse_input() {
     yes_action=$2
     no_text=$3
     choice="n"
-    if [ "$SKIP_QUERY" = "yes" ] ; then
+    if [ "$AUTO_RESPONSE" = "yes" ] ; then
         choice="y"
-    elif [ "$SKIP_QUERY" = "no" ] ; then
+    elif [ "$AUTO_RESPONSE" = "continue" ] ; then
+        choice="c"
+    elif [ "$AUTO_RESPONSE" = "user" ] ; then
         read -p "${prompt_text}" choice
     fi
     case "$choice" in
         y|Y|"" )
             $yes_action
             ;;
-        n|N )
+        c|C|n|N )
             echo "$no_text"
+            ;&
+        n|N )
             exit 0
             ;;
         * )
@@ -143,7 +148,7 @@ function install_python() {
         sudo apt-get -y update
         sudo apt-get -y install python2.7
         if [ ! -f /usr/bin/python ] && [ -f /usr/bin/python2.7 ] ; then
-            parse_input "Found python2.7 binary. Do you want this script to symlink it to /usr/bin/python for you? (y/n) " symlink_python "Exiting. Please symlink python2.7 to /usr/bin/python manually."
+            parse_input "Found python2.7 binary. Do you want this script to symlink it to /usr/bin/python for you? (y/n/c) " symlink_python "Exiting. Please symlink python2.7 to /usr/bin/python manually."
         else
             "Exiting. Cannot find python2.7 binary. Please symlink python2.7 binary to /usr/bin/python manually."
             exit 1
@@ -160,7 +165,7 @@ function check_docker() {
     (command -v docker || docker) > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
         echo "Unable to locate 'docker' in your path."
-        parse_input "Do you want this script to install it for you? (y/n) " install_docker "Exiting for manual package installation."
+        parse_input "Do you want this script to install it for you? (y/n/c) " install_docker "Exiting for manual package installation."
     fi
 
     sudo docker info > /dev/null 2>&1
@@ -185,12 +190,17 @@ function python_version_check() {
     fi
 }
 
+function centos_configure() {
+    systemctl stop firewalld && systemctl disable firewalld
+    setenforce 0
+}
+
 function check_python() {
     if [ -x "/usr/bin/python" ] ; then
         python_version_check
     else
         echo "Unable to locate 'python' in your path."
-        parse_input "Do you want this script to install it for you? (y/n) " install_python "Exiting for manual package installation."
+        parse_input "Do you want this script to install it for you? (y/n/c) " install_python "Exiting for manual package installation."
     fi
 }
 
@@ -229,7 +239,8 @@ function check_coreos() {
 }
 
 function check_centos() {
-    echo ""
+    echo "We need to disable firewalld and make selinux permissive."
+    parse_input "Proceed? (y/n/c) " centos_configure "Please disable firewalld and run selinux in permissive mode."
 }
 
 function check_by_distrib() {
@@ -263,7 +274,7 @@ function pkg_install_helper() {
 function install_missing_pkgs() {
     pkgs=$( IFS=$' '; echo "${to_install[*]}" )
     echo "We need to install the following packages: $pkgs"
-    parse_input "Proceed? (y/n) " pkg_install_helper "Exiting. These packages must be installed."
+    parse_input "Proceed? (y/n/c) " pkg_install_helper "Exiting. These packages must be installed."
 }
 
 ###########################################################
@@ -327,8 +338,8 @@ while [ $# -gt 0 ]; do
             OFFLINE="$2"
             shift 2
             ;;
-        -s|--skip-query)
-            SKIP_QUERY="$2"
+        -s|--auto-response)
+            AUTO_RESPONSE="$2"
             shift 2
             ;;
         *)
@@ -351,7 +362,7 @@ CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
 REGISTRY=${REGISTRY:-"dockerhub"}
 OFFLINE=${OFFLINE:-"no"}
-SKIP_QUERY=${SKIP_QUERY:-"no"}
+AUTO_RESPONSE=${AUTO_RESPONSE:-"user"}
 ############################################################
 ### If DCOS_PATH is defined:                             ###
 ###  * Replace with relative path with an absolute path. ###

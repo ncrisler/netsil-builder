@@ -6,10 +6,10 @@ This repository provides scripts to install and deploy the AOC.
 
 Currently, these scripts support CoreOS Stable, CentOS 7, and Ubuntu 16.04.
 
-Support for more Linux distributions is planned.
+Please contact us if you require support for other Linux distributions.
 
 ## Documentation
-You can browse through our [full documentation](https://docs.netsil.io), which provides API documentation, user guides, and more.
+You can browse through our [full documentation](https://docs.netsil.com), which provides API documentation, user guides, and more.
 
 ## Prerequisites 
 ### Resource Requirements
@@ -17,15 +17,15 @@ Please provision a machine with sufficient resources to run Netsil AOC. The requ
 
 | Recommended |
 | ----------- |
-| 8 CPU       |
-| 32 GB Mem   |
+| 8 vCPU      |
+| 32 GB RAM   |
 | 500 GB SSD  |
 
 ### Ports
-The following ports must be open on the AOC host to receive inbound traffic from the collectors:
-* **2000, 2001** (TCP) for collectors metrics channel.
-* **443** (TCP) for collectors control and data channel.
-* **80** (TCP) for 
+The following ports must be open on the AOC host:
+* **2000** (TCP) for collectors control and data channel.
+* **2001** (TCP) for collectors metrics channel.
+* **80/443** (TCP) for AOC web UI access.
 
 Finally, Netsil requires an open channel to a license site for verifying your license key.
 Thus, ensure that you can reach `lm.netsil.com` on port 443 from where you are running the AOC.
