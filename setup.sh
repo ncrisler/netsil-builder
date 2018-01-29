@@ -18,7 +18,7 @@ Parameters:
   -r, --registry     For use with third party registries (default: dockerhub)
                      You should pass the repository prefix of the 'netsil/<image>' images.
   -o, --offline      Are we deploying offline? Choose 'yes' or 'no' (default: no)
-  -y, --yes-all      Auto-respond yes to all queries. Choose 'yes' or 'no' (default: no)
+  -s, --skip-query   Skip query and auto-respond yes or no. Choose 'yes' or 'no' (default: no)
 "
     exit 1
 }
@@ -96,7 +96,7 @@ function parse_input() {
     no_text=$3
 
     read -p "${prompt_text}" choice
-    if [ "$YES_ALL" = "yes" ] ; then
+    if [ "$SKIP_QUERY" = "yes" ] ; then
         choice=y
     fi
     case "$choice" in
@@ -326,8 +326,8 @@ while [ $# -gt 0 ]; do
             OFFLINE="$2"
             shift 2
             ;;
-        -y|--yes-all)
-            YES_ALL="$2"
+        -s|--skip-query)
+            SKIP_QUERY="$2"
             shift 2
             ;;
         *)
@@ -350,7 +350,7 @@ CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
 REGISTRY=${REGISTRY:-"dockerhub"}
 OFFLINE=${OFFLINE:-"no"}
-YES_ALL=${YES_ALL:-"no"}
+SKIP_QUERY=${SKIP_QUERY:-"manual"}
 ############################################################
 ### If DCOS_PATH is defined:                             ###
 ###  * Replace with relative path with an absolute path. ###
