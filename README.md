@@ -22,11 +22,10 @@ Please provision a machine with sufficient resources to run Netsil AOC. The requ
 | 500 GB SSD  |
 
 ### Ports
-Ensure that port **443** and port **80** (optional) are open for web access to the AOC through HTTPS or HTTP.
-
-Additionally, the following ports must be open on the AOC host to receive inbound traffic from the collectors:
-* **2001** (TCP) for collectors metrics channel.
-* **2003** (TCP and UDP) for collectors control and data channel.
+The following ports must be open on the AOC host to receive inbound traffic from the collectors:
+* **2000, 2001** (TCP) for collectors metrics channel.
+* **443** (TCP) for collectors control and data channel.
+* **80** (TCP) for 
 
 Finally, Netsil requires an open channel to a license site for verifying your license key.
 Thus, ensure that you can reach `lm.netsil.com` on port 443 from where you are running the AOC.
@@ -41,22 +40,31 @@ If deploying on a CentOS machine, ensure that:
 * The `jq` program is installed. You can enable the EPEL repository and install via `yum install jq`.
 * The `firewalld` service is stopped and disabled: `systemctl stop firewalld && systemctl disable firewalld`.
 * Please run the command `setenforce 0` as well for permissive selinux mode
-* Enable root ssh login (just during installation, can disable afterwards)
+
+The `setup.sh` script can walk you through the installation and configuration of the above if you wish.
 
 ### Ubuntu
 If deploying on an Ubuntu machine, ensure that:
 * Docker (preferably v.1.10.0 or above) is installed and configured to run at OS startup.
 * Python 2 is installed and available at `/usr/bin/python`.
 * The `jq` program is installed. You can enable the EPEL repository and install via `yum install jq`.
-* Enable root ssh login (just during installation, can disable afterwards)
+
+The `setup.sh` script can walk you through the installation and configuration of the above if you wish.
 
 ## Quickstart
 To get started quickly, SSH into the machine where you're installing the AOC.
 Then, run the setup script:
 
-`./setup.sh -h localhost`
+`./setup.sh -h 127.0.0.1`
 
 This will start the installation process.
+
+The `setup.sh` script will also attempt to install and configure certain programs on your OS.
+If you wish to accept all of its changes, you can automate it by running the script like so:
+
+`./setup.sh -h 127.0.0.1 -s yes`
+
+This will auto-fill all of the yes/no user-input prompts with `yes`.
 
 ## Advanced Usage
 Here, we will elaborate on some of the advanced usage parameters of `setup.sh`:
