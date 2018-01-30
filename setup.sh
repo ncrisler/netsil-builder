@@ -136,10 +136,20 @@ function install_docker() {
 
         sudo apt-get -y update
         sudo apt-get -y install docker-ce=17.12.0*
+        sudo systemctl start docker && sudo systemctl enable docker
+    elif [ "$OS" = "centos" ] ; then
+        sudo yum install -y yum-utils \
+             device-mapper-persistent-data \
+             lvm2
+        sudo yum-config-manager \
+             --add-repo \
+             https://download.docker.com/linux/centos/docker-ce.repo
+        sudo yum install -y docker-ce-17.12.0.ce
+        sudo systemctl start docker && sudo systemctl enable docker
     else
-        echo "This script is not yet able to install docker for your OS"
-	echo "Exiting for manual package installation."
-	exit 0
+        echo "This script is not yet able to install docker for your OS."
+        echo "Exiting for manual package installation."
+        exit 0
     fi
 }
 function symlink_python () { sudo ln -s /usr/bin/python2.7 /usr/bin/python ; }
@@ -178,7 +188,6 @@ function check_docker() {
 }
 
 function python_version_check() {
-    symlink=$1
     # Check python version as well
     python_major_version=$(/usr/bin/python -c 'import platform; print(platform.python_version_tuple()[0])')
     if [ "${python_major_version}" = "2" ] ; then
@@ -191,8 +200,8 @@ function python_version_check() {
 }
 
 function centos_configure() {
-    systemctl stop firewalld && systemctl disable firewalld
-    setenforce 0
+    sudo systemctl stop firewalld && sudo systemctl disable firewalld
+    sudo setenforce 0
 }
 
 function check_python() {
@@ -204,11 +213,27 @@ function check_python() {
     fi
 }
 
+function add_epel() { yum install -y epel-release ;}
 function check_jq() {
     if [ -x "/usr/bin/jq" ] ; then
         echo "jq check passed."
     else
         echo "jq was not installed. Adding to list of packages to install."
+        if [ "$OS" = "ubuntu" ] ; then
+            to_install+=("jq")
+        elif [ "$OS" = "centos" ] ; then
+            parse_input "Need to add epel repository. Proceed? (y/n/c) " add_epel "Exiting for manual installation of epel repo."
+            to_install+=("jq")
+        else
+            echo "This script cannot install jq on your OS. Exiting for manual installation of jq."
+            exit 0
+        fi
+    fi
+
+    install_missing_pkgs
+
+    if [ -x "/usr/bin/jq" ] ; then
+        echo "Exiting. jq was not installed."
         exit 1
     fi
 }
@@ -228,10 +253,10 @@ function check_ubuntu() {
         sudo ln -s /usr/sbin/useradd /usr/bin/useradd
     fi
 
+    # TODO: Check for these before installing
     to_install+=("unzip")
     to_install+=("ipset")
     to_install+=("selinux-utils")
-    to_install+=("jq")
 }
 
 function check_coreos() {
@@ -241,6 +266,7 @@ function check_coreos() {
 function check_centos() {
     echo "We need to disable firewalld and make selinux permissive."
     parse_input "Proceed? (y/n/c) " centos_configure "Please disable firewalld and run selinux in permissive mode."
+    yum install -y epel-release
 }
 
 function check_by_distrib() {
@@ -256,6 +282,7 @@ function check_by_distrib() {
     elif [ "$OS" = "rhel" ] || [ "$OS" = "centos" ] ; then
         check_centos
     fi
+    install_missing_pkgs
 }
 
 function not_supported() {
@@ -266,6 +293,8 @@ function not_supported() {
 function pkg_install_helper() {
     if [ "$OS" = "ubuntu" ] ; then
         sudo apt-get install -y $pkgs
+    elif [ "$OS" = "centos" ] ; then
+        yum install -y $pkgs
     else
         not_supported
     fi
@@ -275,6 +304,7 @@ function install_missing_pkgs() {
     pkgs=$( IFS=$' '; echo "${to_install[*]}" )
     echo "We need to install the following packages: $pkgs"
     parse_input "Proceed? (y/n/c) " pkg_install_helper "Exiting. These packages must be installed."
+    unset to_install
 }
 
 ###########################################################
@@ -441,17 +471,12 @@ detect_os_version
 # These require more custom installation than a simple "apt-get" or "yum"
 check_docker
 check_python
+check_jq
 
 ##################################
 ### Perform OS-specific checks ###
 ##################################
 check_by_distrib
-install_missing_pkgs
-
-###########################
-### Post-install checks ###
-###########################
-check_jq
 
 ##########################################
 ### Local deployment pre-configuration ###
