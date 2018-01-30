@@ -4,29 +4,28 @@ The Netsil Application Operations Center (AOC) is a next-gen observability and a
 ## Introduction
 This repository provides scripts to install and deploy the AOC.
 
-Currently, these scripts support CoreOS and CentOS. They have been tested on CoreOS Stable and CentOS 7, though they should work on other versions of those Linux distributions.
+Currently, these scripts support CoreOS Stable, CentOS 7, and Ubuntu 16.04.
 
-Support for more Linux distributions is planned.
+Please contact us if you require support for other Linux distributions.
 
 ## Documentation
-You can browse through our [full documentation](https://docs.netsil.io), which provides API documentation, user guides, and more.
+You can browse through our [full documentation](https://docs.netsil.com), which provides API documentation, user guides, and more.
 
 ## Prerequisites 
 ### Resource Requirements
 Please provision a machine with sufficient resources to run Netsil AOC. The requirements are listed below.
 
-| Recommended | Minimum    |
-| ----------- | --------   |
-| 8 CPU       | 4 CPU      |
-| 32 GB Mem   | 16 GB Mem  |
-| 500 GB HDD  | 120 GB HDD |
+| Recommended |
+| ----------- |
+| 8 vCPU      |
+| 32 GB RAM   |
+| 500 GB SSD  |
 
 ### Ports
-Ensure that port **443** and port **80** (optional) are open for web access to the AOC through HTTPS or HTTP.
-
-Additionally, the following ports must be open on the AOC host to receive inbound traffic from the collectors:
+The following ports must be open on the AOC host:
+* **2000** (TCP) for collectors control and data channel.
 * **2001** (TCP) for collectors metrics channel.
-* **2003** (TCP and UDP) for collectors control and data channel.
+* **80/443** (TCP) for AOC web UI access.
 
 Finally, Netsil requires an open channel to a license site for verifying your license key.
 Thus, ensure that you can reach `lm.netsil.com` on port 443 from where you are running the AOC.
@@ -41,15 +40,32 @@ If deploying on a CentOS machine, ensure that:
 * The `jq` program is installed. You can enable the EPEL repository and install via `yum install jq`.
 * The `firewalld` service is stopped and disabled: `systemctl stop firewalld && systemctl disable firewalld`.
 * Please run the command `setenforce 0` as well for permissive selinux mode
-* Enable root ssh login (just during installation, can disable afterwards)
+
+The `setup.sh` script can walk you through the installation and configuration of the above if you wish.
+
+### Ubuntu
+If deploying on an Ubuntu machine, ensure that:
+* Docker (preferably v.1.10.0 or above) is installed and configured to run at OS startup.
+* Python 2 is installed and available at `/usr/bin/python`.
+* The `jq` program is installed. You can enable the EPEL repository and install via `yum install jq`.
+
+The `setup.sh` script can walk you through the installation and configuration of the above if you wish.
 
 ## Quickstart
 To get started quickly, SSH into the machine where you're installing the AOC.
-Then, run the setup script:
 
-`./setup.sh -h localhost`
+As a **non-root** user, run the following setup script:
+
+`./setup.sh -h 127.0.0.1`
 
 This will start the installation process.
+
+The `setup.sh` script will also attempt to install and configure certain programs on your OS.
+If you wish to accept all of its changes, you can automate it by running the script like so:
+
+`./setup.sh -h 127.0.0.1 -s yes`
+
+This will auto-fill all of the yes/no user-input prompts with `yes`.
 
 ## Advanced Usage
 Here, we will elaborate on some of the advanced usage parameters of `setup.sh`:

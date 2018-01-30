@@ -5,8 +5,8 @@ cluster_vars:
   is_private_registry: 'false'
   netsil_build_branch: stable
   netsil_build_number: '0'
-  netsil_commit_hash: 41c20fd
-  netsil_version_number: 1.8.1
-  netsil_version_tag: stable-1.8.1
+  netsil_commit_hash: 1ef44a434
+  netsil_version_number: 1.9.10
+  netsil_version_tag: stable-1.9.10
   resource_role: '*'
   uri_namespace: netsil

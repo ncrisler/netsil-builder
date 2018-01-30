@@ -1,19 +1,25 @@
 #!/bin/bash
-set -e
+
+OS=""
+VER=""
+PYTHON_VERSION=""
+declare -a to_install=()
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline] 
+    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline] [-s auto-response]
 
 
 Parameters:
-  -h, --host         Server hostname of IP address
-  -k, --ssh-key      Private SSH key path (default: ~/.ssh/id_ra)
-  -a, --apps-dir     The apps directory (default: ./apps)
-  -u, --user         SSH user for deployment (default: $USER)
-  -d, --dcos-path    Path to the DCOS release package
-  -r, --registry     For use with third party registries (default: dockerhub)
-                     You should pass the repository prefix of the 'netsil/<image>' images.
-  -o, --offline      Are we deploying offline? Choose 'Yes' or 'No' (default: No)
+  -h, --host             Server hostname of IP address
+  -k, --ssh-key          Private SSH key path (default: ~/.ssh/id_ra)
+  -a, --apps-dir         The apps directory (default: ./apps)
+  -u, --user             SSH user for deployment (default: $USER)
+  -d, --dcos-path        Path to the DCOS release package
+  -r, --registry         For use with third party registries (default: dockerhub)
+                         You should pass the repository prefix of the 'netsil/<image>' images.
+  -o, --offline          Are we deploying offline? Choose 'yes' or 'no' (default: no)
+  -s, --auto-response    Auto-respond to queries. Choose 'yes', 'continue', or 'user' (default: user).
+                         The 'continue' option automatically chooses a 'no' response without exiting.
 "
     exit 1
 }
@@ -21,7 +27,7 @@ Parameters:
 function deploy_aoc() {
     echo "deploying aoc"
     builder_image=netsil/netsil-builder
-    if [ "${OFFLINE}" = "No" ]; then
+    if [ "${OFFLINE}" = "no" ]; then
         sudo docker build -t ${builder_image} ${DIR}
     else
         if [ "${REGISTRY}" != "dockerhub" ] ; then
@@ -51,19 +57,224 @@ function abs_path() {
     )
 }
 
+function detect_os_version() {
+    # Do checks based on linux distribution
+    if [ -f /etc/os-release ]; then
+        # freedesktop.org and systemd
+        . /etc/os-release
+        OS=$ID
+        VER=$VERSION_ID
+    elif type lsb_release >/dev/null 2>&1; then
+        # linuxbase.org
+        OS=$(lsb_release -si)
+        VER=$(lsb_release -sr)
+    elif [ -f /etc/lsb-release ]; then
+        # For some versions of Debian/Ubuntu without lsb_release command
+        . /etc/lsb-release
+        OS=$DISTRIB_ID
+        VER=$DISTRIB_RELEASE
+    elif [ -f /etc/debian_version ]; then
+        # Older Debian/Ubuntu/etc.
+        OS=Debian
+        VER=$(cat /etc/debian_version)
+    elif [ -f /etc/SuSe-release ]; then
+        # Older SuSE/etc.
+        ...
+    elif [ -f /etc/redhat-release ]; then
+        # Older Red Hat, CentOS, etc.
+        ...
+    else
+        # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
+        OS=$(uname -s)
+        VER=$(uname -r)
+    fi
+    echo "OS is $OS and Version is $VER"
+}
+
+function parse_input() {
+    prompt_text=$1
+    yes_action=$2
+    no_text=$3
+    choice="n"
+    if [ "$AUTO_RESPONSE" = "yes" ] ; then
+        choice="y"
+    elif [ "$AUTO_RESPONSE" = "continue" ] ; then
+        choice="c"
+    elif [ "$AUTO_RESPONSE" = "user" ] ; then
+        read -p "${prompt_text}" choice
+    fi
+    case "$choice" in
+        y|Y|"" )
+            $yes_action
+            ;;
+        c|C|n|N )
+            echo "$no_text"
+            ;&
+        n|N )
+            exit 0
+            ;;
+        * )
+            echo "Exiting. Invalid choice."
+            exit 1
+            ;;
+    esac
+}
+
+function install_docker() {
+    if [ "$OS" = "ubuntu" ] ; then
+        sudo apt-get -y update
+        sudo apt-get -y install \
+             apt-transport-https \
+             ca-certificates \
+             curl \
+             software-properties-common
+
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+        sudo add-apt-repository \
+             "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+        sudo apt-get -y update
+        sudo apt-get -y install docker-ce=17.12.0*
+    else
+        echo "This script is not yet able to install docker for your OS"
+	echo "Exiting for manual package installation."
+	exit 0
+    fi
+}
+function symlink_python () { sudo ln -s /usr/bin/python2.7 /usr/bin/python ; }
+function install_python() {
+    if [ "$OS" = "ubuntu" ] ; then
+        sudo apt-get -y update
+        sudo apt-get -y install python2.7
+        if [ ! -f /usr/bin/python ] && [ -f /usr/bin/python2.7 ] ; then
+            parse_input "Found python2.7 binary. Do you want this script to symlink it to /usr/bin/python for you? (y/n/c) " symlink_python "Exiting. Please symlink python2.7 to /usr/bin/python manually."
+        else
+            "Exiting. Cannot find python2.7 binary. Please symlink python2.7 binary to /usr/bin/python manually."
+            exit 1
+        fi
+    else
+        echo "This script is not yet able to install python for your OS"
+        echo "Exiting for manual package installation."
+        exit 0
+    fi
+}
+
 function check_docker() {
+    echo "Checking docker"
     (command -v docker || docker) > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
         echo "Unable to locate 'docker' in your path."
-        echo "Please make sure Docker is installed."
-        exit 1
-    fi 
+        parse_input "Do you want this script to install it for you? (y/n/c) " install_docker "Exiting for manual package installation."
+    fi
 
     sudo docker info > /dev/null 2>&1
     if [ "$?" -ne 0 ]; then
-        echo "Docker does not appear to be running locally."
+        echo "Docker does not appear to be running locally. Please start the Docker daemon and ensure it is enabled at startup."
         exit 1
     fi
+
+    echo "Docker check passed."
+}
+
+function python_version_check() {
+    symlink=$1
+    # Check python version as well
+    python_major_version=$(/usr/bin/python -c 'import platform; print(platform.python_version_tuple()[0])')
+    if [ "${python_major_version}" = "2" ] ; then
+        echo "Python check passed."
+    else
+        echo "Python check failed."
+        echo "Python major version is ${python_major_version}. Please install python 2."
+        exit 1
+    fi
+}
+
+function centos_configure() {
+    systemctl stop firewalld && systemctl disable firewalld
+    setenforce 0
+}
+
+function check_python() {
+    if [ -x "/usr/bin/python" ] ; then
+        python_version_check
+    else
+        echo "Unable to locate 'python' in your path."
+        parse_input "Do you want this script to install it for you? (y/n/c) " install_python "Exiting for manual package installation."
+    fi
+}
+
+function check_jq() {
+    if [ -x "/usr/bin/jq" ] ; then
+        echo "jq check passed."
+    else
+        echo "jq was not installed. Adding to list of packages to install."
+        exit 1
+    fi
+}
+
+function check_ubuntu() {
+    # Do symlinking
+    declare -a binaries=("mkdir" "ln" "tar")
+    for i in "${binaries[@]}"
+    do
+        if [ ! -f "/usr/bin/$i" ] ; then
+            echo "Symlinking $i"
+            sudo ln -s /bin/$i /usr/bin/$i
+        fi
+    done
+
+    if [ ! -f "/usr/bin/useradd" ] ; then
+        sudo ln -s /usr/sbin/useradd /usr/bin/useradd
+    fi
+
+    to_install+=("unzip")
+    to_install+=("ipset")
+    to_install+=("selinux-utils")
+    to_install+=("jq")
+}
+
+function check_coreos() {
+    echo ""
+}
+
+function check_centos() {
+    echo "We need to disable firewalld and make selinux permissive."
+    parse_input "Proceed? (y/n/c) " centos_configure "Please disable firewalld and run selinux in permissive mode."
+}
+
+function check_by_distrib() {
+    if [ "$OS" = "ubuntu" ] ; then
+        if [ "$VER" = "16.04" ] ; then
+            check_ubuntu
+        else
+            echo "Exiting. This script only supports Ubuntu 16.04"
+            exit 1
+        fi
+    elif [ "$OS" = "coreos" ] ; then
+        check_coreos
+    elif [ "$OS" = "rhel" ] || [ "$OS" = "centos" ] ; then
+        check_centos
+    fi
+}
+
+function not_supported() {
+    echo "This script does not support installing packages for your OS."
+    parse_input "Proceed anyway with (y), exit to install packages manually with (n) " echo "Exiting for manual package installation."
+}
+
+function pkg_install_helper() {
+    if [ "$OS" = "ubuntu" ] ; then
+        sudo apt-get install -y $pkgs
+    else
+        not_supported
+    fi
+}
+
+function install_missing_pkgs() {
+    pkgs=$( IFS=$' '; echo "${to_install[*]}" )
+    echo "We need to install the following packages: $pkgs"
+    parse_input "Proceed? (y/n/c) " pkg_install_helper "Exiting. These packages must be installed."
 }
 
 ###########################################################
@@ -127,6 +338,10 @@ while [ $# -gt 0 ]; do
             OFFLINE="$2"
             shift 2
             ;;
+        -s|--auto-response)
+            AUTO_RESPONSE="$2"
+            shift 2
+            ;;
         *)
             echo "Unknown parameter \"$1\"" 1>&2
             display_usage
@@ -146,7 +361,8 @@ APPS_DIR=$(abs_path $APPS_DIR)
 CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
 REGISTRY=${REGISTRY:-"dockerhub"}
-OFFLINE=${OFFLINE:-"No"}
+OFFLINE=${OFFLINE:-"yes"}
+AUTO_RESPONSE=${AUTO_RESPONSE:-"user"}
 ############################################################
 ### If DCOS_PATH is defined:                             ###
 ###  * Replace with relative path with an absolute path. ###
@@ -208,11 +424,34 @@ if [ ! -d "${APPS_DIR}" ]; then
     exit 1
 fi
 
-#############################################
-### Perform prerequisite check for Docker ###
-#############################################
+# Root check
+if [ $(id -u) = 0 ]; then
+   echo "Please run this script as a non-root user. This script will invoke sudo when it needs to."
+   exit 1
+fi
+
+###################
+### Gather info ###
+###################
+detect_os_version
+
+##########################
+### Pre-install checks ###
+##########################
+# These require more custom installation than a simple "apt-get" or "yum"
 check_docker
-echo "Docker check done"
+check_python
+
+##################################
+### Perform OS-specific checks ###
+##################################
+check_by_distrib
+install_missing_pkgs
+
+###########################
+### Post-install checks ###
+###########################
+check_jq
 
 ##########################################
 ### Local deployment pre-configuration ###
