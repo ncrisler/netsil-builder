@@ -361,7 +361,7 @@ APPS_DIR=$(abs_path $APPS_DIR)
 CREDENTIALS_PATH=${CREDENTIALS_PATH:-~/credentials}
 ANSIBLE_USER=$USER
 REGISTRY=${REGISTRY:-"dockerhub"}
-OFFLINE=${OFFLINE:-"no"}
+OFFLINE=${OFFLINE:-"yes"}
 AUTO_RESPONSE=${AUTO_RESPONSE:-"user"}
 ############################################################
 ### If DCOS_PATH is defined:                             ###

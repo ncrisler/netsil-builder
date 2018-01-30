@@ -53,6 +53,7 @@ The `setup.sh` script can walk you through the installation and configuration of
 
 ## Quickstart
 To get started quickly, SSH into the machine where you're installing the AOC.
+
 As a **non-root** user, run the following setup script:
 
 `./setup.sh -h 127.0.0.1`
