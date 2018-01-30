@@ -16,7 +16,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/frontend:stable-1.8.1",
+         "image": "netsil/frontend:stable-1.9.2",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 443, "hostPort": 443, "protocol":"tcp"},
@@ -38,11 +38,11 @@
   },
   "env": {
     "NETSIL_BUILD_BRANCH": "stable",
-    "NETSIL_VERSION_NUMBER": "1.8.1",
-    "NETSIL_COMMIT_HASH": "41c20fd",
+    "NETSIL_VERSION_NUMBER": "1.9.10",
+    "NETSIL_COMMIT_HASH": "1ef44a434",
     "NETSIL_BUILD_NUMBER": "0",
-    "NETSIL_FRONTEND_VERSION": "1.8.1",
-    "NETSIL_COLLECTORS_VERSION": "1.8.1",
+    "NETSIL_FRONTEND_VERSION": "1.9.2",
+    "NETSIL_COLLECTORS_VERSION": "1.9.9",
     "DO_SCALE": "yes",
     "TIME_SERIES_ENDPOINT_HOST": "time-series-query-service.marathon.mesos",
     "TIME_SERIES_ENDPOINT_PORT": "9047",
@@ -54,8 +54,6 @@
     "TOPOLOGY_SERVICE_PORT": "9002",
     "ALERTS_SERVICE_HOST": "alerts.marathon.mesos",
     "ALERTS_SERVICE_PORT": "8881",
-    "ELASTICSEARCH_SERVER": "elasticsearch.marathon.mesos",
-    "ELASTICSEARCH_PORT": "9200",
     "METADATA_HOST": "metadata.marathon.mesos",
     "METADATA_PORT": "5444",
     "LICENSE_MANAGER_SERVICE_HOST": "license-manager.marathon.mesos",

@@ -26,7 +26,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/stream-processor:stable-1.8.1",
+         "image": "netsil/stream-processor:stable-1.9.10",
          "forcePullImage": false,
          "privileged": true,
          "portMappings": [
@@ -60,7 +60,8 @@
     "SP_LB_HOST": "sp-load-balancer.marathon.mesos",
     "BUILD_ENV": "production",
     "USER_PERSISTENCE_SERVER_HOST": "user-persistence.marathon.mesos",
-    "USER_PERSISTENCE_SERVER_PORT": "8891"
+    "USER_PERSISTENCE_SERVER_PORT": "8891",
+    "SYSTEM_RESOURCE_DISK_USAGE_PATH": "/var/log/netsil"
   }
 }
 

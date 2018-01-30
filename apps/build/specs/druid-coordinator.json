@@ -39,7 +39,8 @@
     "druid_coordinator_period": "PT60S",
     "TIME_SERIES_ENDPOINT_HOST": "time-series-query-service.marathon.mesos",
     "TIME_SERIES_ENDPOINT_PORT": "9047",
-    "COLLECT_DRUID_METRICS": "no"
+    "COLLECT_DRUID_METRICS": "no",
+    "LOCAL_DISK_USAGE_PATH": "/var/log/netsil"
   }
 }
 

@@ -16,10 +16,11 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/druid-realtime:stable-1.8.1",
+         "image": "netsil/druid-realtime:stable-1.9.2",
          "forcePullImage": false,
          "portMappings": [
-             {"containerPort": 31000, "hostPort": 31000, "protocol":"tcp"}
+             {"containerPort": 31000, "hostPort": 31000, "protocol":"tcp"},
+             {"containerPort": 9997, "hostPort": 9997, "protocol":"tcp"}
          ]
      }
  },
@@ -43,8 +44,8 @@
     "druid_port": "31000",
     "druid_realtime_specFile": "/opt/netsil/druid/druid_build/realtime.spec",
     "COLLECT_DRUID_METRICS": "no",
-    "ENABLE_REMOTE_JMX": "",
-    "JMX_PORT": ""
+    "ENABLE_REMOTE_JMX": "no",
+    "JMX_PORT": "9997"
   }
 }
 

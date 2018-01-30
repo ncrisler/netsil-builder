@@ -13,41 +13,38 @@
 
 # These encode the version numbers for our images
 images:
-    # TODO: Should we move the "netsil" image out of here and make this a list of pro-only images?
-    alerts:                     1.8.1
+    alerts:                     1.9.2
     backups:                    1.7.1
     ceph-monitor:               1.7.1
     ceph-osd:                   1.7.1
     ceph-rgw:                   1.7.1
-    collectors:                 1.8.1
+    collectors:                 1.9.9
     druid-broker:               1.8.1
     druid-coordinator:          1.8.1
     druid-historical:           1.8.1
     druid-overlord:             1.8.1
-    druid-realtime:             1.8.1
-    frontend:                   1.8.1
-    ingestion-server:           1.8.0
-    kafka:                      1.7.1
-    license-manager:            1.7.3
-    metadata:                   1.8.1
-    netsil:                     1.8.1
-    notifications:              1.8.1
+    druid-realtime:             1.9.2
+    frontend:                   1.9.2
+    ingestion-server:           1.9.0
+    kafka:                      1.9.0
+    license-manager:            1.9.0
+    metadata:                   1.9.2
+    notifications:              1.9.0
     redis:                      1.7.1
-    sp-load-balancer:           1.8.1
-    stream-processor:           1.8.1
+    sp-load-balancer:           1.9.10
+    stream-processor:           1.9.10
     superuser:                  1.8.0
-    time-series-query-service:  1.8.1
-    topology-service:           1.8.1
-    upgrade-manager:            1.7.1
+    time-series-query-service:  1.9.6
+    topology-service:           1.9.0
     user-db:                    1.7.1
-    user-persistence:           1.8.0
+    user-persistence:           1.9.5
 
 envDefaults:
     NETSIL_BUILD_BRANCH: master
     NETSIL_VERSION_MAJOR: 0
     NETSIL_VERSION_MINOR: 2
     NETSIL_BUILD_NUMBER: 0
-    NETSIL_VERSION_NUMBER: 1.8.1
+    NETSIL_VERSION_NUMBER: 1.9.10
     URI_NAMESPACE: netsil
     BUILD_TYPE: release
     PRODUCT_FLAVOR: Lite
@@ -72,6 +69,18 @@ branches:
         tagWithBuildMetadata: false
     staging:
         tagWithBuildMetadata: false
+
+collectorRepoInfo:
+  endpoint: 'repo.netsil.com'
+
+collectorPkgs:
+  # 1-1 mapping with the Dockerfiles we build with
+    deb:
+      deb-x64: 'debian-8-x64'
+      ubn-x64: 'ubuntu-16.04-x64'
+
+    rpm:
+      rpm-x64: 'centos-7-x64'
 
 flattenImages:
     Lite:
@@ -141,10 +150,15 @@ sources:
         dirs:
             - client
 
+aliasLatestImages:
+  - collectors
+
 pushImages:
+    Collectors:
+        - collectors
+
     Lite:
         - netsil
-        - collectors
 
     Pro:
         - alerts

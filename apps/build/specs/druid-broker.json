@@ -2,20 +2,16 @@
  "id": "druid-broker",
  "container": {
      "type": "DOCKER",
-     "volumes": [
-       {
-        "hostPath": "/var/log/netsil",
-        "containerPath": "/var/log/netsil",
-        "mode": "RW"
-       }
-     ],
+     "volumes": [],
      "docker": {
          "network": "BRIDGE",
          "image": "netsil/druid-broker:stable-1.8.1",
          "forcePullImage": false,
-         "portMappings": [
-             {"containerPort": 31004, "hostPort": 31004, "protocol":"tcp"}
-         ]
+         "portMappings": [{
+             "containerPort": 31004,
+             "hostPort": 31004,
+             "protocol":"tcp"
+         }]
      }
  },
   "cpus": 1.0,

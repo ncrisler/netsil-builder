@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/time-series-query-service:stable-1.8.1",
+         "image": "netsil/time-series-query-service:stable-1.9.6",
          "forcePullImage": false,
          "portMappings": [{
              "containerPort": 9047,
@@ -39,8 +39,6 @@
     "SQL_PORT": "8888",
     "USER_PERSISTENCE_SERVER_HOST": "user-persistence.marathon.mesos",
     "USER_PERSISTENCE_SERVER_PORT": "8891",
-    "ELASTICSEARCH_SERVER": "elasticsearch.marathon.mesos",
-    "ELASTICSEARCH_PORT" : "9200",
     "BUILD_ENV": "production",
     "PYTHON_SERVICE": "time_series_query_service"
   }
