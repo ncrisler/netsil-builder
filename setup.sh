@@ -6,7 +6,7 @@ PYTHON_VERSION=""
 declare -a to_install=()
 
 function display_usage() {
-    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline] [-y yes-all]
+    echo "Usage: ./setup.sh -h hostname [-k ssh_key] [-a apps_dir] [-u username] [-d dcos_path] [-r registry] [-o offline] [-s auto-response]
 
 
 Parameters:
@@ -18,7 +18,7 @@ Parameters:
   -r, --registry         For use with third party registries (default: dockerhub)
                          You should pass the repository prefix of the 'netsil/<image>' images.
   -o, --offline          Are we deploying offline? Choose 'yes' or 'no' (default: no)
-  -a, --auto-response    Auto-respond to queries. Choose 'yes', 'continue', or 'user' (default: user).
+  -s, --auto-response    Auto-respond to queries. Choose 'yes', 'continue', or 'user' (default: user).
                          The 'continue' option automatically chooses a 'no' response without exiting.
 "
     exit 1
