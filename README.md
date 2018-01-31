@@ -33,7 +33,7 @@ Thus, ensure that you can reach `lm.netsil.com` on port 443 from where you are r
 ### SSH Access
 You will need SSH access to the machine where you're installing the AOC.
 
-### CentOS
+### CentOS 7
 If deploying on a CentOS machine, ensure that:
 * Docker (preferably v.1.10.0 or above) is installed and configured to run at OS startup.
 * Python 2 is installed and available at `/usr/bin/python`.
@@ -43,7 +43,7 @@ If deploying on a CentOS machine, ensure that:
 
 The `setup.sh` script can walk you through the installation and configuration of the above if you wish.
 
-### Ubuntu
+### Ubuntu 16.04
 If deploying on an Ubuntu machine, ensure that:
 * Docker (preferably v.1.10.0 or above) is installed and configured to run at OS startup.
 * Python 2 is installed and available at `/usr/bin/python`.
