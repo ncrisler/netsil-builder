@@ -47,7 +47,7 @@ The `setup.sh` script can walk you through the installation and configuration of
 If deploying on an Ubuntu machine, ensure that:
 * Docker (preferably v.1.10.0 or above) is installed and configured to run at OS startup.
 * Python 2 is installed and available at `/usr/bin/python`.
-* The `jq` program is installed. You can enable the EPEL repository and install via `yum install jq`.
+* The `jq` program is installed. 
 
 The `setup.sh` script can walk you through the installation and configuration of the above if you wish.
 
