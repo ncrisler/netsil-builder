@@ -213,7 +213,7 @@ function check_python() {
     fi
 }
 
-function add_epel() { yum install -y epel-release ;}
+function add_epel() { sudo yum install -y epel-release ;}
 function check_jq() {
     if [ -x "/usr/bin/jq" ] ; then
         echo "jq check passed."
@@ -266,7 +266,7 @@ function check_coreos() {
 function check_centos() {
     echo "We need to disable firewalld and make selinux permissive."
     parse_input "Proceed? (y/n/c) " centos_configure "Please disable firewalld and run selinux in permissive mode."
-    yum install -y epel-release
+    sudo yum install -y epel-release
 }
 
 function check_by_distrib() {
@@ -294,7 +294,7 @@ function pkg_install_helper() {
     if [ "$OS" = "ubuntu" ] ; then
         sudo apt-get install -y $pkgs
     elif [ "$OS" = "centos" ] ; then
-        yum install -y $pkgs
+        sudo yum install -y $pkgs
     else
         not_supported
     fi
