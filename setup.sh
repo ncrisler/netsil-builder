@@ -232,7 +232,7 @@ function check_jq() {
 
     install_missing_pkgs
 
-    if [ -x "/usr/bin/jq" ] ; then
+    if [ ! -x "/usr/bin/jq" ] ; then
         echo "Exiting. jq was not installed."
         exit 1
     fi
