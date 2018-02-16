@@ -189,13 +189,14 @@ function check_docker() {
 }
 
 function python_version_check() {
+    python_location=$1
     # Check python version as well
-    python_major_version=$(/usr/bin/python -c 'import platform; print(platform.python_version_tuple()[0])')
+    python_major_version=$(${python_location} -c 'import platform; print(platform.python_version_tuple()[0])')
     if [ "${python_major_version}" = "2" ] ; then
         echo "Python check passed."
     else
         echo "Python check failed."
-        echo "Python major version is ${python_major_version}. Please install python 2."
+        echo "Python major version is ${python_major_version}. Please install python 2 at ${python_location}."
         exit 1
     fi
 }
@@ -206,8 +207,17 @@ function centos_configure() {
 }
 
 function check_python() {
-    if [ -x "/usr/bin/python" ] ; then
-        python_version_check
+    if [ "$OS" = "ubuntu" ] || [ "$OS" = "centos" ] ; then
+        python_location=/usr/bin/python
+    elif [ "$OS" = "coreos" ] ; then
+        python_location=/opt/bin/python
+    else
+        echo "Cannot detect OS, assuming python path is /usr/bin/python"
+        python_location=/usr/bin/python
+    fi
+
+    if [ -x "${python_location}" ] ; then
+        python_version_check ${python_location}
     else
         echo "Unable to locate 'python' in your path."
         parse_input "Do you want this script to install it for you? (y/n/c) " install_python "Exiting for manual package installation."
