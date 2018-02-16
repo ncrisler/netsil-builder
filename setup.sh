@@ -107,10 +107,11 @@ function parse_input() {
         y|Y|"" )
             $yes_action
             ;;
-        c|C|n|N )
-            echo "$no_text"
-            ;&
+        c|C|)
+            echo "Continuing with rest of script without executing input action."
+            ;;
         n|N )
+            echo "$no_text"
             exit 0
             ;;
         * )
@@ -267,6 +268,7 @@ function check_centos() {
     echo "We need to disable firewalld and make selinux permissive."
     parse_input "Proceed? (y/n/c) " centos_configure "Please disable firewalld and run selinux in permissive mode."
     sudo yum install -y epel-release
+    sudo systemctl restart docker
 }
 
 function check_by_distrib() {
