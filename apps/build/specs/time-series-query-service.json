@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/time-series-query-service:stable-1.9.6",
+         "image": "netsil/time-series-query-service:stable-1.9.7",
          "forcePullImage": false,
          "portMappings": [{
              "containerPort": 9047,
