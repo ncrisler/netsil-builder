@@ -107,7 +107,7 @@ function parse_input() {
         y|Y|"" )
             $yes_action
             ;;
-        c|C|)
+        c|C )
             echo "Continuing with rest of script without executing input action."
             ;;
         n|N )
