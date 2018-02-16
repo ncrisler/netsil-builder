@@ -33,10 +33,13 @@ Thus, ensure that you can reach `lm.netsil.com` on port 443 from where you are r
 ### SSH Access
 You will need SSH access to the machine where you're installing the AOC.
 
+### CoreOS
+* Ensure python 2 is installed at `/opt/bin/python`
+
 ### CentOS 7
 If deploying on a CentOS machine, ensure that:
 * Docker (preferably v.1.10.0 or above) is installed and configured to run at OS startup.
-* Python 2 is installed and available at `/usr/bin/python`.
+* Python 2 is installed at `/usr/bin/python`.
 * The `jq` program is installed. You can enable the EPEL repository and install via `yum install jq`.
 * The `firewalld` service is stopped and disabled: `systemctl stop firewalld && systemctl disable firewalld`.
 * Please run the command `setenforce 0` as well for permissive selinux mode
@@ -46,7 +49,7 @@ The `setup.sh` script can walk you through the installation and configuration of
 ### Ubuntu 16.04
 If deploying on an Ubuntu machine, ensure that:
 * Docker (preferably v.1.10.0 or above) is installed and configured to run at OS startup.
-* Python 2 is installed and available at `/usr/bin/python`.
+* Python 2 is installed at `/usr/bin/python`.
 * The `jq` program is installed. 
 
 The `setup.sh` script can walk you through the installation and configuration of the above if you wish.
