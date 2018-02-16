@@ -314,9 +314,11 @@ function pkg_install_helper() {
 
 function install_missing_pkgs() {
     pkgs=$( IFS=$' '; echo "${to_install[*]}" )
-    echo "We need to install the following packages: $pkgs"
-    parse_input "Proceed? (y/n/c) " pkg_install_helper "Exiting. These packages must be installed."
-    unset to_install
+    if [ -n "$pkgs" ] ; then
+        echo "We need to install the following packages: $pkgs"
+        parse_input "Proceed? (y/n/c) " pkg_install_helper "Exiting. These packages must be installed."
+        unset to_install
+    fi
 }
 
 ###########################################################
