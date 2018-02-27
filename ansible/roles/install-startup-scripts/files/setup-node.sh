@@ -57,6 +57,11 @@ function setup_worker() {
     curl -X DELETE "http://${marathon_host}:${marathon_port}/v2/apps/druid-historical/tasks?host=${worker_ip}&wipe=true"
     curl -X DELETE "http://${marathon_host}:${marathon_port}/v2/apps/ceph-osd/tasks?host=${worker_ip}&wipe=true"
 
+    # cleanup up data directories on the host
+    rm -rf /opt/netsil/kafka/kafka-log-dir # kafka
+    rm -rf /opt/netsil/druid/realtime-segments # druid realtime
+    rm -rf /var/tmp/druid/indexCache # druid historical
+
     # Kill all mesos-related services
     systemctl stop dcos-exhibitor
     systemctl stop dcos-marathon
