@@ -7,13 +7,17 @@
   include: template.yml
   when: build_type == "template"
 
+# Note: Not sure if this remote copying is necessary at all. May only be required in building machine images
 - name: Clean remote build directory
   file: path={{ build_specs_dir }}/ state=absent
+  when: build_type != "template"
 
 - name: Create remote build specs directory
   file: path={{ build_specs_dir }} state=directory
+  when: build_type != "template"
 
 - name: Copy build specs to remote host
-  copy: src={{ apps_dir }}/build/specs/{{ item }}.json dest={{ build_specs_dir }}
+  copy: src={{ apps_dir }}/build/specs/{{ item }}.json dest={{ build_specs_dir }} owner={{ local_user_id }}
   with_items: "{{ pushImages.Pro }}"
+  when: build_type != "template"
 
