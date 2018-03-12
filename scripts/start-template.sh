@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ansible_config_dir=/opt/ansible/etc
 # Create ansible config directory
 mkdir -p ${ansible_config_dir}
