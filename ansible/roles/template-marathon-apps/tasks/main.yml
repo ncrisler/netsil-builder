@@ -17,7 +17,7 @@
   when: build_type != "template"
 
 - name: Copy build specs to remote host
-  copy: src={{ apps_dir }}/build/specs/{{ item }}.json dest={{ build_specs_dir }} owner={{ local_user_id }}
+  copy: src={{ apps_dir }}/build/specs/{{ item }}.json dest={{ build_specs_dir }}
   with_items: "{{ pushImages.Pro }}"
   when: build_type != "template"
 
