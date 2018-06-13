@@ -9,7 +9,6 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       ca-certificates \
       curl \
-      python-pip \
       python-setuptools \
       python-dev \
       ssh-client \
@@ -19,7 +18,8 @@ RUN apt-get update && \
       vim
 
 ## Start: TODO: We have these two lines because we run ansible locally for the templating tasks...we should do away with that and run it remotely
-RUN pip install --upgrade pip wheel && \
+RUN easy_install pip && \
+    pip install --upgrade pip wheel && \
     pip install \
       apache-libcloud==1.5.0 \
       boto \
