@@ -40,7 +40,7 @@
      ],
      "docker": {
          "network": "HOST",
-         "image": "netsil/ceph-rgw:stable-1.7.1",
+         "image": "netsilprivate/ceph-rgw:master-1.7.1-4390591.551",
          "forcePullImage": false,
          "privileged": false
      }
@@ -60,6 +60,7 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
     "MON_IP": "ceph-monitor.marathon.mesos",
     "MON_PORT": "9001",

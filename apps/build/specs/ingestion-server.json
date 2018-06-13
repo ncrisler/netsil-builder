@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/ingestion-server:stable-1.9.0",
+         "image": "netsilprivate/ingestion-server:master-1.11.0-4390591.551",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 5000, "hostPort": 5000, "protocol":"tcp"}
@@ -29,6 +29,7 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+ "uris": ["file:///etc/docker.tar.gz"],
  "env": {
    "DO_SCALE": "yes",
    "PRODUCT_FLAVOR": "Pro",

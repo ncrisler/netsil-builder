@@ -4,15 +4,8 @@
      "type": "DOCKER",
      "volumes": [
        {
-         "containerPath": "kafka-log-dir",
-         "mode": "RW",
-         "persistent": {
-           "size": 10000
-         }
-       },
-       {
          "containerPath": "/opt/netsil/kafka/kafka-log-dir",
-         "hostPath": "kafka-log-dir",
+         "hostPath": "/opt/netsil/kafka/kafka-log-dir",
          "mode": "RW"
        },
        {
@@ -23,7 +16,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/kafka:stable-1.9.0",
+         "image": "netsilprivate/kafka:master-1.11.0-4390591.551",
          "forcePullImage": false,
          "portMappings": [
             {"containerPort": 9092, "hostPort": 9092, "protocol":"tcp"}
@@ -41,6 +34,7 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
     "DO_SCALE": "yes",
     "PRODUCT_FLAVOR": "Pro",

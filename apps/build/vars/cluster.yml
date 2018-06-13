@@ -2,11 +2,11 @@ cluster_vars:
   build_env: production
   dcos_version: '1.9'
   force_pull_image: 'false'
-  is_private_registry: 'false'
-  netsil_build_branch: stable
-  netsil_build_number: '0'
-  netsil_commit_hash: 1ef44a434
-  netsil_version_number: 1.9.10
-  netsil_version_tag: stable-1.9.10
+  is_private_registry: 'true'
+  netsil_build_branch: master
+  netsil_build_number: '551'
+  netsil_commit_hash: '4390591'
+  netsil_version_number: 1.11.0
+  netsil_version_tag: master-1.11.0-4390591.551
   resource_role: '*'
-  uri_namespace: netsil
+  uri_namespace: netsilprivate

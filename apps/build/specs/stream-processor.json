@@ -26,7 +26,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/stream-processor:stable-1.9.10",
+         "image": "netsilprivate/stream-processor:master-1.11.0-4390591.551",
          "forcePullImage": false,
          "privileged": true,
          "portMappings": [
@@ -49,6 +49,7 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
     "DO_SCALE": "yes",
     "PRODUCT_FLAVOR": "Pro",

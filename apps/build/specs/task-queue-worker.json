@@ -1,0 +1,35 @@
+{
+ "id": "task-queue-worker",
+ "container": {
+     "type": "DOCKER",
+     "volumes": [],
+     "docker": {
+         "network": "BRIDGE",
+         "image": "netsilprivate/task-queue-worker:master-1.11.0-4390591.551",
+         "forcePullImage": false,
+         "portMappings": []
+     }
+ },
+  "cpus": 1.0,
+  "mem": 16384,
+  "instances": 1,
+  "acceptedResourceRoles": ["*"],
+  "constraints": [
+      ["hostname", "UNIQUE"]
+  ],
+  "uris": ["file:///etc/docker.tar.gz"],
+  "env": {
+    "REDIS_HOST": "redis.marathon.mesos",
+    "REDIS_PORT": "6379",
+    "USER_DB_HOST": "user-db.marathon.mesos",
+    "USER_DB_PORT": "3306",
+    "SP_HOST": "stream-processor.marathon.mesos",
+    "SP_PORT": "2001",
+    "MYSQL_DATABASE": "netsil",
+    "MYSQL_USER": "netsil",
+    "MYSQL_PASSWORD": "epoch2391",
+    "TASK_QUEUE_TYPE": "worker",
+    "DEPLOY_ENV": "marathon"
+  }
+}
+

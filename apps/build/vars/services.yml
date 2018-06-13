@@ -1,54 +1,58 @@
 services_vars:
-  netsil_alerts_tag: stable-1.9.2
-  netsil_alerts_version: 1.9.2
-  netsil_backups_tag: stable-1.7.1
+  netsil_alerts_tag: master-1.10.1-4390591.551
+  netsil_alerts_version: 1.10.1
+  netsil_backups_tag: master-1.7.1-4390591.551
   netsil_backups_version: 1.7.1
-  netsil_build_config: /Users/luhkevin/gencore/aoc/BUILD.yaml
-  netsil_ceph_monitor_tag: stable-1.7.1
+  netsil_build_config: /home/netsil/mahir/AOC/BUILD.yaml
+  netsil_ceph_monitor_tag: master-1.7.1-4390591.551
   netsil_ceph_monitor_version: 1.7.1
-  netsil_ceph_osd_tag: stable-1.7.1
+  netsil_ceph_osd_tag: master-1.7.1-4390591.551
   netsil_ceph_osd_version: 1.7.1
-  netsil_ceph_rgw_tag: stable-1.7.1
+  netsil_ceph_rgw_tag: master-1.7.1-4390591.551
   netsil_ceph_rgw_version: 1.7.1
-  netsil_collectors_tag: stable-1.9.9
-  netsil_collectors_version: 1.9.9
-  netsil_druid_broker_tag: stable-1.8.1
-  netsil_druid_broker_version: 1.8.1
-  netsil_druid_coordinator_tag: stable-1.8.1
-  netsil_druid_coordinator_version: 1.8.1
-  netsil_druid_historical_tag: stable-1.8.1
-  netsil_druid_historical_version: 1.8.1
-  netsil_druid_overlord_tag: stable-1.8.1
-  netsil_druid_overlord_version: 1.8.1
-  netsil_druid_realtime_tag: stable-1.9.2
-  netsil_druid_realtime_version: 1.9.2
-  netsil_frontend_tag: stable-1.9.2
-  netsil_frontend_version: 1.9.2
-  netsil_ingestion_server_tag: stable-1.9.0
-  netsil_ingestion_server_version: 1.9.0
-  netsil_kafka_tag: stable-1.9.0
-  netsil_kafka_version: 1.9.0
-  netsil_license_manager_tag: stable-1.9.0
+  netsil_collectors_tag: master-1.11.0-4390591.551
+  netsil_collectors_version: 1.11.0
+  netsil_druid_broker_tag: master-1.10.3-4390591.551
+  netsil_druid_broker_version: 1.10.3
+  netsil_druid_coordinator_tag: master-1.10.3-4390591.551
+  netsil_druid_coordinator_version: 1.10.3
+  netsil_druid_historical_tag: master-1.10.3-4390591.551
+  netsil_druid_historical_version: 1.10.3
+  netsil_druid_overlord_tag: master-1.10.3-4390591.551
+  netsil_druid_overlord_version: 1.10.3
+  netsil_druid_realtime_tag: master-1.10.3-4390591.551
+  netsil_druid_realtime_version: 1.10.3
+  netsil_frontend_tag: master-1.11.0-4390591.551
+  netsil_frontend_version: 1.11.0
+  netsil_ingestion_server_tag: master-1.11.0-4390591.551
+  netsil_ingestion_server_version: 1.11.0
+  netsil_kafka_tag: master-1.11.0-4390591.551
+  netsil_kafka_version: 1.11.0
+  netsil_license_manager_tag: master-1.9.0-4390591.551
   netsil_license_manager_version: 1.9.0
-  netsil_metadata_tag: stable-1.9.2
-  netsil_metadata_version: 1.9.2
-  netsil_notifications_tag: stable-1.9.0
-  netsil_notifications_version: 1.9.0
-  netsil_redis_tag: stable-1.7.1
+  netsil_metadata_tag: master-1.11.0-4390591.551
+  netsil_metadata_version: 1.11.0
+  netsil_notifications_tag: master-1.11.0-4390591.551
+  netsil_notifications_version: 1.11.0
+  netsil_redis_tag: master-1.7.1-4390591.551
   netsil_redis_version: 1.7.1
-  netsil_sp_load_balancer_tag: stable-1.9.10
-  netsil_sp_load_balancer_version: 1.9.10
-  netsil_stream_processor_tag: stable-1.9.10
-  netsil_stream_processor_version: 1.9.10
-  netsil_superuser_tag: stable-1.8.0
-  netsil_superuser_version: 1.8.0
-  netsil_time_series_query_service_tag: stable-1.9.6
-  netsil_time_series_query_service_version: 1.9.6
-  netsil_topology_service_tag: stable-1.9.0
-  netsil_topology_service_version: 1.9.0
-  netsil_user_db_tag: stable-1.7.1
+  netsil_sp_load_balancer_tag: master-1.11.0-4390591.551
+  netsil_sp_load_balancer_version: 1.11.0
+  netsil_stream_processor_tag: master-1.11.0-4390591.551
+  netsil_stream_processor_version: 1.11.0
+  netsil_superuser_tag: master-1.10.0-4390591.551
+  netsil_superuser_version: 1.10.0
+  netsil_task_queue_scheduler_tag: master-1.11.0-4390591.551
+  netsil_task_queue_scheduler_version: 1.11.0
+  netsil_task_queue_worker_tag: master-1.11.0-4390591.551
+  netsil_task_queue_worker_version: 1.11.0
+  netsil_time_series_query_service_tag: master-1.11.0-4390591.551
+  netsil_time_series_query_service_version: 1.11.0
+  netsil_topology_service_tag: master-1.11.0-4390591.551
+  netsil_topology_service_version: 1.11.0
+  netsil_user_db_tag: master-1.7.1-4390591.551
   netsil_user_db_version: 1.7.1
-  netsil_user_persistence_tag: stable-1.9.5
-  netsil_user_persistence_version: 1.9.5
+  netsil_user_persistence_tag: master-1.10.4-4390591.551
+  netsil_user_persistence_version: 1.10.4
   netsil_version_major: '0'
   netsil_version_minor: '2'

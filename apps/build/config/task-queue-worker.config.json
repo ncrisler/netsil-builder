@@ -1,14 +1,12 @@
 {
-  "user-persistence": {
-    "app_id": "user-persistence",
-    "port": 8891,
+  "task-queue-worker": {
+    "app_id": "task-queue-worker",
     "redis_host": "redis.marathon.mesos",
-    "redis_port": 6379,
+    "redis_port": "6379",
     "user_db_host": "user-db.marathon.mesos",
     "user_db_port": "3306",
-    "nodejs_env": "NODE_ENV=production",
-    "license_manager_service_host": "license-manager.marathon.mesos",
-    "license_manager_service_port": 9009
+    "sp_host": "stream-processor.marathon.mesos",
+    "sp_port": "2001"
   },
     "uri_namespace": "netsilprivate",
     "netsil_build_branch": "master",
@@ -16,7 +14,7 @@
     "netsil_commit_hash": "4390591",
     "netsil_build_number": "551",
     "netsil_version_tag": "master-1.11.0-4390591.551",
-    "netsil_service_tag": "master-1.10.4-4390591.551",
+    "netsil_service_tag": "master-1.11.0-4390591.551",
     "netsil_alerts_version": "1.10.1",
     "netsil_user_persistence_version": "1.10.4",
     "netsil_notifications_version": "1.11.0",

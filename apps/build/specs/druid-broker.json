@@ -5,7 +5,7 @@
      "volumes": [],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/druid-broker:stable-1.8.1",
+         "image": "netsilprivate/druid-broker:master-1.10.3-4390591.551",
          "forcePullImage": false,
          "portMappings": [{
              "containerPort": 31004,
@@ -25,6 +25,7 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
     "DO_SCALE": "yes",
     "NODE_TYPE": "broker",

@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/alerts:stable-1.9.3",
+         "image": "netsilprivate/alerts:master-1.10.1-4390591.551",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 8070, "hostPort": 8070, "protocol":"tcp"},
@@ -31,8 +31,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
-    "NETSIL_ALERTS_VERSION": "1.9.2",
+    "NETSIL_ALERTS_VERSION": "1.10.1",
     "NODEJS_ENV": "NODE_ENV=production",
     "USER_DB_HOST": "user-db.marathon.mesos",
     "USER_DB_PORT": "3306",

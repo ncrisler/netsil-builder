@@ -23,7 +23,7 @@
       ],
       "docker": {
           "network": "BRIDGE",
-          "image": "netsil/license-manager:stable-1.9.0",
+          "image": "netsilprivate/license-manager:master-1.9.0-4390591.551",
           "forcePullImage": false,
           "portMappings": [
               {"containerPort": 9009, "hostPort": 9009, "protocol":"tcp"}
@@ -41,6 +41,7 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
     "PRODUCT_FLAVOR": "Pro",
     "LICENSE_MANAGER_API_ENDPOINT": "https://lm.netsil.com",
@@ -49,13 +50,13 @@
     "REDIS_PORT": "6379",
     "NETSIL_SPLB_HOST": "sp-load-balancer.marathon.mesos",
     "NETSIL_SPLB_PORT": "5005",
-    "URI_NAMESPACE": "netsil",
-    "NETSIL_BUILD_BRANCH": "stable",
-    "NETSIL_VERSION_NUMBER": "1.9.10",
-    "NETSIL_COMMIT_HASH": "1ef44a434",
-    "NETSIL_BUILD_NUMBER": "0",
-    "NETSIL_SERVICE_TAG": "stable-1.9.0",
-    "NETSIL_VERSION_TAG": "stable-1.9.10",
+    "URI_NAMESPACE": "netsilprivate",
+    "NETSIL_BUILD_BRANCH": "master",
+    "NETSIL_VERSION_NUMBER": "1.11.0",
+    "NETSIL_COMMIT_HASH": "4390591",
+    "NETSIL_BUILD_NUMBER": "551",
+    "NETSIL_SERVICE_TAG": "master-1.9.0-4390591.551",
+    "NETSIL_VERSION_TAG": "master-1.11.0-4390591.551",
     "BUILD_ENV": "production",
     "USER_PERSISTENCE_HOST": "user-persistence.marathon.mesos",
     "USER_PERSISTENCE_PORT": "8891"

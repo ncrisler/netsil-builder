@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/user-persistence:stable-1.9.5",
+         "image": "netsilprivate/user-persistence:master-1.10.4-4390591.551",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 8891, "hostPort": 8891, "protocol":"tcp"}
@@ -29,8 +29,9 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
-    "NETSIL_USER_PERSISTENCE_VERSION": "1.9.5",
+    "NETSIL_USER_PERSISTENCE_VERSION": "1.10.4",
     "PRODUCT_FLAVOR": "Pro",
     "REDIS_HOST": "redis.marathon.mesos",
     "REDIS_PORT": "6379",

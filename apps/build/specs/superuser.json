@@ -11,7 +11,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/superuser:stable-1.8.0",
+         "image": "netsilprivate/superuser:master-1.10.0-4390591.551",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 8443, "hostPort": 8443, "protocol":"tcp"}
@@ -29,6 +29,7 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
     "DO_SCALE": "yes",
     "API_SERVER_HOST": "stream-processor.marathon.mesos",

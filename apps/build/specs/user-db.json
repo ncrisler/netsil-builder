@@ -23,7 +23,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/user-db:stable-1.7.1",
+         "image": "netsilprivate/user-db:master-1.7.1-4390591.551",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 3306, "hostPort": 3306, "protocol":"tcp"}
@@ -41,6 +41,7 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "residency": {
     "taskLostBehavior": "WAIT_FOREVER"
   },

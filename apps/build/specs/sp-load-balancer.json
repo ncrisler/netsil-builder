@@ -16,7 +16,7 @@
      ],
      "docker": {
          "network": "BRIDGE",
-         "image": "netsil/sp-load-balancer:stable-1.10.0",
+         "image": "netsilprivate/sp-load-balancer:master-1.11.0-4390591.551",
          "forcePullImage": false,
          "portMappings": [
              {"containerPort": 5005, "hostPort": 5005, "protocol":"tcp"}
@@ -31,6 +31,7 @@
       "minimumHealthCapacity" : 0.5,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
     "LOAD_BALANCE_AOC_SP": "yes",
     "DO_SCALE": "yes",

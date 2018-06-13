@@ -11,7 +11,7 @@
       ],
       "docker": {
           "network": "BRIDGE",
-          "image": "netsil/topology-service:stable-1.9.1",
+          "image": "netsilprivate/topology-service:master-1.11.0-4390591.551",
           "forcePullImage": false,
           "portMappings": [{
               "containerPort": 9002,
@@ -30,6 +30,7 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
     "DO_SCALE": "yes",
     "PRODUCT_FLAVOR": "Pro",

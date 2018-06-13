@@ -5,7 +5,7 @@
     ],
     "docker": {
       "network": "BRIDGE",
-      "image": "netsil/druid-overlord:stable-1.8.1",
+      "image": "netsilprivate/druid-overlord:master-1.10.3-4390591.551",
       "forcePullImage": false,
       "portMappings": [
         {"containerPort": 31006, "hostPort": 31006},
@@ -41,6 +41,7 @@
       "minimumHealthCapacity" : 0,
       "maximumOverCapacity" : 0
   },
+  "uris": ["file:///etc/docker.tar.gz"],
   "env": {
     "NODE_TYPE": "overlord",
     "PRODUCT_FLAVOR": "Pro",
