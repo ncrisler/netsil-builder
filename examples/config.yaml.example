@@ -1,0 +1,21 @@
+dcos_config: "path to DCOS config file"
+cloud_auth:
+  - aws:
+      credentials: "path to AWS credentials file with access key, etc..."
+  #- gcp:
+  #    credentials: "path to GCP credentials file"
+
+epoch_auth:
+  default_user: "Default username"
+  default_pass: "Default password"
+
+ssh:
+  ssh_key: "path to private SSH keyfile"
+  ssh_user: "default ssh username"
+
+cluster_key: "Cluster key, which will identify the cluster"
+
+user_db_auth:
+  # Default username/password
+
+obj_store_prefix: "Essentially a bucket name"
