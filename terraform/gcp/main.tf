@@ -9,7 +9,7 @@ data "google_compute_image" "centos" {
 }
 
 variable "image_type" {
-  default = "ubuntu-1604-lts"
+  default = "ubuntu"
 }
 
 variable "resource_key" {
