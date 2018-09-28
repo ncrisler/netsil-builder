@@ -15,7 +15,7 @@
   local_action: template src={{ apps_dir }}/config/{{ item }}.json.j2 dest={{ apps_dir }}/build/config/{{ item }}.config.json
   vars:
     tmp_item: "{{ item | regex_replace('-', '_') }}"
-    netsil_service_tag: "{{ services_vars['netsil_' + tmp_item + '_tag'] | default(netsil_version_tag) }}"
+    epoch_service_tag: "{{ services_vars['epoch_' + tmp_item + '_tag'] | default(epoch_version_tag) }}"
   with_items: "{{ pushImages.Pro }}"
   when: is_ha != "yes"
 
@@ -23,7 +23,7 @@
   local_action: template src={{ apps_dir }}/ha-config/{{ item }}.json.j2 dest={{ apps_dir }}/build/config/{{ item }}.config.json
   vars:
     tmp_item: "{{ item | regex_replace('-', '_') }}"
-    netsil_service_tag: "{{ services_vars['netsil_' + tmp_item + '_tag'] | default(netsil_version_tag) }}"
+    epoch_service_tag: "{{ services_vars['epoch_' + tmp_item + '_tag'] | default(epoch_version_tag) }}"
   with_items: "{{ pushImages.Pro }}"
   when: is_ha == "yes"
 

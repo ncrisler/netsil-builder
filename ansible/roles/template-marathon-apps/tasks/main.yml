@@ -1,7 +1,7 @@
 ---
 - name: Set some build directory vars
   set_fact:
-    build_specs_dir: /opt/netsil/{{ netsil_build_branch }}-{{ netsil_version_number }}/apps/build/specs
+    build_specs_dir: /opt/netsil/{{ epoch_build_branch }}-{{ epoch_version_number }}/apps/build/specs
 
 - name: Template services 
   include: template.yml
